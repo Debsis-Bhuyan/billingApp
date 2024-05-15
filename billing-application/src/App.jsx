@@ -20,6 +20,8 @@ import CompanyPage from "./pages/CompanyPage";
 import HelpPage from "./pages/HelpPage";
 import EstimatePage from "./pages/EstimatePage";
 import CreateEstimate from "./components/CreateEstimate";
+import PurchaseOrderPage from "./pages/PuchaseOrderPage";
+import CreatePurchaseOrder from "./components/CreatePurchaseOrder";
 
 const Layout = () => {
   const { user } = useStore((state) => state);
@@ -53,13 +55,15 @@ function App() {
           <Route path="/sales" element={<Sales />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/feedback" element={<Contact />} />
-          {/* <Route path="/logout" element={<LogoutPage />} /> */}
+          
 
           <Route path="/items" element={<ItemsPage />} />
           <Route path="/expence" element={<ExpencePage />} />
           <Route path="/purchase" element={<PurchasePage />} />
+          <Route path="/purchase-order" element={<PurchaseOrderPage />} />
           <Route path="/estimate" element={<EstimatePage />} />
           <Route path="/create-estimate" element = {<CreateEstimate/>}/>
+          <Route path="/create-purchase" element = {<CreatePurchaseOrder/>}/>
           <Route path="/utilitis" element={<UtilityPage />} />
           <Route path="/settings" element={<SettingPage />} />
         </Route>

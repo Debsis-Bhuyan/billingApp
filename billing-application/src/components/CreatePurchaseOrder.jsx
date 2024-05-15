@@ -4,12 +4,14 @@ import { FaSearch, FaPlus, FaEllipsisV } from "react-icons/fa";
 import DeleteShareEdit from "../components/DeleteShareEdit";
 import { states } from "../utils/state";
 
-const CreateEstimate = () => {
+const CreatePurchaseOrder = () => {
   const [purchaseOrders, setPurchaseOrders] = useState([]);
 
-  const [date1, setDate1] = useState("");
-  const [ref, setRef] = useState(1);
+  const [orderDate, setOrderDate] = useState("");
+  const [orderNo, setOrderNo] = useState(1);
   const [addRow, setAddRow] = useState(false);
+  const [dueDate, setDueDate] = useState("");
+  const [paymentType, setPaymentType] = useState("Cash");
 
   // State for form fields
 
@@ -48,7 +50,8 @@ const CreateEstimate = () => {
       ...formData,
       amount:
         Number(formData.qty) * formData.pricePerUnit +
-        (Number(formData.qty) * formData.pricePerUnit * Number(formData.tax)) / 100,
+        (Number(formData.qty) * formData.pricePerUnit * Number(formData.tax)) /
+          100,
     };
     setItems([...items, newItem]);
     localStorage.setItem("items", JSON.stringify([...items, newItem]));
@@ -62,6 +65,7 @@ const CreateEstimate = () => {
   };
   const taxData = [28, 18, 12, 16];
   const unitData = ["m", "cm", "kg", "number"];
+  const paymentMode = ["Cash","UPI","Card"]
   useEffect(() => {
     let total = 0;
     let toatalQty = 0;
@@ -75,12 +79,13 @@ const CreateEstimate = () => {
   }, [items]);
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-2">
+        <h2 className=" text-3xl pb-3">Purchase Order</h2>
+        <hr />
       <div className=" w-full  p-4">
-        <h2 className=" text-2xl">Estimate/Quatation</h2>
         <div className="flex w-full justify-between items-center py-3">
-          <div className=" w-1/2 flex items-center justify-between">
-            <label htmlFor="type" className=" w-1/3 mb-2">
+          <div className=" w-1/2 flex  items-center  justify-between">
+            <label htmlFor="type" className=" w-1/3 ">
               Select Party :
             </label>
             <select
@@ -98,26 +103,38 @@ const CreateEstimate = () => {
           <div className="flex w-1/2 flex-col items-center justify-center">
             <div className="mb-2  w-full items-center flex justify-center">
               <label htmlFor="number1" className="1/3 mb-2 mr-3">
-                Reference No:
+                Order No:
               </label>
               <input
                 type="number"
                 id="number1"
-                className="w-2/3 px-4 py-2 border rounded-md mr-0"
-                value={ref}
-                onChange={(e) => setRef(e.target.value)}
+                className="w-2/3 px-4 py-1 border rounded-md mr-0"
+                value={orderNo}
+                onChange={(e) => setOrderNo(e.target.value)}
               />
             </div>
-            <div className="mb-4  w-full flex justify-center">
+            <div className="mb-2  w-full flex justify-center">
               <label htmlFor="number" className="inline-block 1/3 mb-2 mr-4">
-                Invoice Date:
+                Order Date:
               </label>
               <input
                 type="Date"
                 id="number"
-                className="w-2/3 px-4 py-2 border rounded-md"
-                value={date1}
-                onChange={(e) => setDate1(e.target.value)}
+                className="w-2/3 px-4 py-1 border rounded-md"
+                value={orderDate}
+                onChange={(e) => setOrderDate(e.target.value)}
+              />
+            </div>
+            <div className="mb-2  w-full flex justify-center">
+              <label htmlFor="number" className="inline-block 1/3 mb-2 mr-4">
+                Due Date:
+              </label>
+              <input
+                type="Date"
+                id="number"
+                className="w-2/3 px-4 py-1 border rounded-md"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
               />
             </div>
           </div>
@@ -211,7 +228,7 @@ const CreateEstimate = () => {
                       <input
                         type="text"
                         name="item"
-                        value={formData.item || " "}
+                        value={formData.item || ""}
                         onChange={handleChange}
                         placeholder="Item"
                         className=" border  m-3  px-4 text-black rounded"
@@ -220,7 +237,7 @@ const CreateEstimate = () => {
                       <input
                         type="number"
                         name="qty"
-                        value={formData.qty || "" }
+                        value={formData.qty || ""}
                         onChange={handleChange}
                         placeholder="Quantity"
                         className=" border  m-3  px-4 text-black rounded"
@@ -230,7 +247,7 @@ const CreateEstimate = () => {
                       <select
                         id="unit"
                         name="unit"
-                        value={formData.unit || " "}
+                        value={formData.unit || ""}
                         onChange={handleChange}
                         className="border  m-3  px-4 text-black rounded"
                         required
@@ -253,12 +270,12 @@ const CreateEstimate = () => {
                         required
                       />
                       <select
-                       id="unist"
-                       name="tax"
-                       value={formData.tax || " "}
-                       onChange={handleChange}
-                       className="border  m-3  px-4 text-black rounded"
-                       required
+                        id="unist"
+                        name="tax"
+                        value={formData.tax || " "}
+                        onChange={handleChange}
+                        className="border  m-3  px-4 text-black rounded"
+                        required
                       >
                         <option value=" ">Select Tax</option>
                         {taxData.map((state) => (
@@ -289,33 +306,56 @@ const CreateEstimate = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-end gap-4 w-full justify-center p-4">
-          <div>
-            <input
-              type="checkbox"
-              id="round"
-              onChange={(e) => {
-                setRound(!round);
-              }}
-            />
-            <label htmlFor="round"> Round Off</label>
+        <div className="flex">
+          <div className="flex items-center gap-4 w-full justify-start p-4">
+          <label htmlFor="payment" className="inline-block 1/3 mb-2 mr-4">
+               Payment Mode:
+              </label>
+            <select
+              id="payment"
+              name="paymentType"
+              value={paymentType}
+              onChange={(e)=>{setPaymentType(e.target.value)}}
+              className="border  m-3  px-4 text-black rounded"
+              required
+            >
+             
+              {paymentMode.map((state) => (
+                <option key={state} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
           </div>
-          {!round ? (
-            <div className=" flex">
-              Total Amount:
-              <span className="border mx-4 px-4 ">
-                {totalAmount.toFixed(2)}
-              </span>
+          <div className="flex items-end gap-4 w-full justify-center p-4">
+            <div>
+              <input
+                type="checkbox"
+                id="round"
+                onChange={(e) => {
+                  setRound(!round);
+                }}
+              />
+              <label htmlFor="round"> Round Off</label>
             </div>
-          ) : (
-            <div className=" flex ">
-              Total Amount:
-              <span className="border mx-4 px-4 ">
-                {Math.round(totalAmount)}
-              </span>
-            </div>
-          )}
+            {!round ? (
+              <div className=" flex">
+                Total Amount:
+                <span className="border mx-4 px-4 ">
+                  {totalAmount.toFixed(2)}
+                </span>
+              </div>
+            ) : (
+              <div className=" flex ">
+                Total Amount:
+                <span className="border mx-4 px-4 ">
+                  {Math.round(totalAmount)}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
+
         <hr />
         <div className="flex justify-end items-end">
           <button
@@ -332,4 +372,4 @@ const CreateEstimate = () => {
   );
 };
 
-export default CreateEstimate;
+export default CreatePurchaseOrder;

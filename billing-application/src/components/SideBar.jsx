@@ -58,6 +58,9 @@ const SideBar = () => {
             <Link to="/purchase" className="block pt-2   hover:bg-gray-700">
               Purchase
             </Link>
+            <Link to="/purchase-order" className="block pt-2   hover:bg-gray-700">
+              Purchase Order
+            </Link>
             <Link to="/estimate" className="block pt-2   hover:bg-gray-700">
               Estimate
             </Link>
