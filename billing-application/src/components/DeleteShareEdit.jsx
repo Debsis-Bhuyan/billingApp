@@ -12,7 +12,7 @@ const DeleteShareEdit = ({ setOpen, orderData }) => {
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg">
           <button
             className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-            //   onClick={() => setEditOpen(true)}
+              // onClick={() => setEditOpen(true)}
           >
             <FaEdit className="inline-block mr-2" />
             Edit

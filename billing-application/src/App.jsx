@@ -4,6 +4,7 @@ import Contact from "./pages/ContactForm";
 import Dashboard from "./pages/Dashboard";
 import StartPage from "./pages/StartPage";
 import SideBar from "./components/SideBar";
+
 import Navbar from "./components/NavBar";
 import Signin from "./components/Login";
 import SignUp from "./components/Register";
@@ -17,6 +18,8 @@ import UtilityPage from "./pages/UtilityPage";
 import SettingPage from "./pages/SettingPage";
 import CompanyPage from "./pages/CompanyPage";
 import HelpPage from "./pages/HelpPage";
+import EstimatePage from "./pages/EstimatePage";
+import CreateEstimate from "./components/CreateEstimate";
 
 const Layout = () => {
   const { user } = useStore((state) => state);
@@ -55,6 +58,8 @@ function App() {
           <Route path="/items" element={<ItemsPage />} />
           <Route path="/expence" element={<ExpencePage />} />
           <Route path="/purchase" element={<PurchasePage />} />
+          <Route path="/estimate" element={<EstimatePage />} />
+          <Route path="/create-estimate" element = {<CreateEstimate/>}/>
           <Route path="/utilitis" element={<UtilityPage />} />
           <Route path="/settings" element={<SettingPage />} />
         </Route>
