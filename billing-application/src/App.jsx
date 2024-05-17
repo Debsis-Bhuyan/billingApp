@@ -1,4 +1,6 @@
 import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import Sales from "./pages/Sales";
 import Contact from "./pages/ContactForm";
 import Dashboard from "./pages/Dashboard";
@@ -9,7 +11,6 @@ import Navbar from "./components/NavBar";
 import Signin from "./components/Login";
 import SignUp from "./components/Register";
 import ProfilePage from "./pages/ProfilePage";
-import useStore from "./store";
 
 import ItemsPage from "./pages/ItemsPage";
 import ExpencePage from "./pages/ExpencePage";
@@ -24,11 +25,10 @@ import PurchaseOrderPage from "./pages/PuchaseOrderPage";
 import CreatePurchaseOrder from "./components/CreatePurchaseOrder";
 
 const Layout = () => {
-  const { user } = useStore((state) => state);
-
+  const user = useSelector(state=>state.user)
   const location = useLocation();
 
-  return user?.token ? (
+  return user?.user?.token ? (
     <div className="w-full h-screen p-0 m-0 ">
       <Navbar />
       <div className="w-full h-full flex border-t ">
@@ -66,13 +66,14 @@ function App() {
           <Route path="/create-purchase" element = {<CreatePurchaseOrder/>}/>
           <Route path="/utilitis" element={<UtilityPage />} />
           <Route path="/settings" element={<SettingPage />} />
+          <Route path="/help" element={<HelpPage />} />
+
         </Route>
         <Route path="/auth/register" element={<SignUp />} />
         <Route path="/auth/login" element={<Signin />} />
         <Route path="/auth/forget" element={<Signin />} />
         <Route path="/auth" element={<StartPage />} />
         <Route path="/company" element={<CompanyPage />} />
-        <Route path="/help" element={<HelpPage />} />
       </Routes>
     </div>
   );

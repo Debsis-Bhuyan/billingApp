@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
-import useStore from "../store";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/userSlice";
 
 const Signin = () => {
-  const signIn = useStore((state) => state.signIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate=useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,27 +20,22 @@ const Signin = () => {
         email,
         password,
       });
-      // Handle success, e.g., show a success message to the user
+  
       console.log("User registered successfully:", response.data);
       setEmail("");
       setPassword("");
       if (response.data.success) {
         console.log(response.data.user);
-        localStorage.setItem("userInfo", JSON.stringify(response.data));
-        signIn(response.data);
+        dispatch(setUser(response.data));
 
         setTimeout(() => {
-          const userData = localStorage.getItem("userInfo");
-          console.log(userData.user);
-          console.log(userData.token);
           navigate("/dashboard");
-        }, 2000);
+        }, 1000);
       }
-      return response.data; // Return any data you want to use in your component
+      return response.data;
     } catch (error) {
-      // Handle error, e.g., show an error message to the user
       console.error("Error registering user:", error);
-      throw error; // Throw the error for further handling in the component
+      throw error;
     }
   };
 

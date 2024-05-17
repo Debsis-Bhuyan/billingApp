@@ -36,7 +36,7 @@ const HelpPage = () => {
   };
 
   return (
-    <div className=" w-full bg-gray-100 flex flex-col justify-center items-center">
+    <div className=" w-full bg-gray-100 flex  justify-center  items-center">
       <div className=" w-full items-center bg-white shadow-lg rounded-lg">
         <div className=" p-4 m-4 w-full">
           <h1 className="text-3xl font-semibold mb-4">Need Help?</h1>
@@ -92,6 +92,9 @@ const HelpPage = () => {
         </div>
         <br />
         <div className="block p-4 m-4 w-full">
+          <HelpDesk/>
+        </div>
+        <div className="block p-4 m-4 w-full">
           <form
             className="flex flex-col items-center mb-8 pt-4"
             onSubmit={handleSubmit}
@@ -102,6 +105,7 @@ const HelpPage = () => {
               onChange={(e)=>{setName(e.target.value)}}
               placeholder="Your Name"
               className="w-full max-w-md border border-blue-300 rounded-lg px-4 py-2 mb-4"
+              required
             />
             <input
               type="email"
@@ -109,12 +113,14 @@ const HelpPage = () => {
               onChange={(e)=>{setEmail(e.target.value)}}
               placeholder="Your Email"
               className="w-full max-w-md border border-blue-300 rounded-lg px-4 py-2 mb-4"
+              required
             />
             <textarea
               placeholder="Your Message"
               value={message}
               onChange={(e)=>{setMessage(e.target.value)}}
               className="w-full max-w-md border border-blue-300 rounded-lg px-4 py-2 mb-4 h-32"
+              required
             ></textarea>
             <button
               type="submit"
@@ -140,9 +146,7 @@ const HelpPage = () => {
           </button>
         </div>
       </div>
-      <div>
-        <HelpDesk/>
-      </div>
+      
     </div>
   );
 };

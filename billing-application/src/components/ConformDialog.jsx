@@ -1,34 +1,4 @@
-// import React from "react";
 
-// const ConformDialog = ({ message, setOPEN }) => {
-//   const handleClick = (e) => {
-//     e.preventDefault();
-//     console.log("Log out successfully completed.");
-//   };
-//   return (
-//     <div className="flex w-64 h-64 items-center border rounded-sm justify-center  p-20">
-//       <p className="text-base">{message}</p>
-
-//       <div className="w-full flex gap-6 justify-end mt-8">
-//         <button
-//           className="bg-red-600 text-red-600 bg-opacity-25 text-sm font-medium"
-//           onClick={handleClick}
-//         >
-//           OK
-//         </button>
-
-//         <button
-//           className="border border-slate-300 text-slate-600 text-sm"
-//           onClick={()=>{ setOPEN(false)}}
-//         >
-//           Cancel
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ConformDialog;
 import { useState } from 'react';
 
 const LogoutDialog = ({ isOpen, onClose, onLogout }) => {
@@ -36,12 +6,12 @@ const LogoutDialog = ({ isOpen, onClose, onLogout }) => {
 
   const handleLogout = () => {
     setIsLoading(true);
-    // Perform logout logic, like API call, etc.
-    // After logout is successful, setIsLoading(false);
+    
     setTimeout(() => {
       setIsLoading(false);
-      onLogout(); // Call the callback function passed from parent component
-    }, 1000); // Just for demonstration, replace with actual logout logic
+      console.log("hello")
+      onLogout(); 
+    }, 1000); 
   };
 
   return (

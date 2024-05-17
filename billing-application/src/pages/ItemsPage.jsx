@@ -4,7 +4,7 @@ import AddItem from "../components/AddItem";
 const ItemsPage = () => {
   return (
     <div>
-      ItemsPage
+     
       <div>
         <AddItem />
       </div>
