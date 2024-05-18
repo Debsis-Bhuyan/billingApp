@@ -23,6 +23,8 @@ import EstimatePage from "./pages/EstimatePage";
 import CreateEstimate from "./components/CreateEstimate";
 import PurchaseOrderPage from "./pages/PuchaseOrderPage";
 import CreatePurchaseOrder from "./components/CreatePurchaseOrder";
+import CreateExpence from "./components/AddExpence";
+import CreateExpencePage from "./pages/CreateExpencePage";
 
 const Layout = () => {
   const user = useSelector(state=>state.user)
@@ -35,9 +37,10 @@ const Layout = () => {
         <div className="hidden lg:flex ">
           <SideBar />
         </div>
-        <div className="w-full flex-1 px-6 py-4 overflow-y-auto">
+        <div className="w-full flex-1  pt-4 overflow-y-auto">
           <Outlet />
         </div>
+        
       </div>
     </div>
   ) : (
@@ -59,6 +62,7 @@ function App() {
 
           <Route path="/items" element={<ItemsPage />} />
           <Route path="/expence" element={<ExpencePage />} />
+          <Route path="/create-expence" element = {<CreateExpencePage/>}/>
           <Route path="/purchase" element={<PurchasePage />} />
           <Route path="/purchase-order" element={<PurchaseOrderPage />} />
           <Route path="/estimate" element={<EstimatePage />} />
@@ -67,13 +71,13 @@ function App() {
           <Route path="/utilitis" element={<UtilityPage />} />
           <Route path="/settings" element={<SettingPage />} />
           <Route path="/help" element={<HelpPage />} />
+          <Route path="/company" element={<CompanyPage />} />
 
         </Route>
         <Route path="/auth/register" element={<SignUp />} />
         <Route path="/auth/login" element={<Signin />} />
         <Route path="/auth/forget" element={<Signin />} />
         <Route path="/auth" element={<StartPage />} />
-        <Route path="/company" element={<CompanyPage />} />
       </Routes>
     </div>
   );

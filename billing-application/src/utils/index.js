@@ -42,3 +42,63 @@ export const uploadFile = (setFileUrl, file) => {
     }
   );
 };
+export const  numberToWords=(number) =>{
+  const ones = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+  const teens = ['Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+  const tens = ['Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+  if (number < 10) {
+      return ones[number];
+  } else if (number < 20) {
+      return teens[number - 10];
+  } else if (number < 100) {
+      const tenDigit = Math.floor(number / 10);
+      const oneDigit = number % 10;
+      if (oneDigit === 0) {
+          return tens[tenDigit - 2];
+      } else {
+          return tens[tenDigit - 2] + '-' + ones[oneDigit];
+      }
+  } else if (number < 1000) {
+      const hundredDigit = Math.floor(number / 100);
+      const remaining = number % 100;
+      if (remaining === 0) {
+          return ones[hundredDigit] + ' Hundred';
+      } else {
+          return ones[hundredDigit] + ' Hundred ' + numberToWords(remaining);
+      }
+  } else if (number < 10000) {
+      const thousandDigit = Math.floor(number / 1000);
+      const remaining = number % 1000;
+      if (remaining === 0) {
+          return ones[thousandDigit] + ' Thousand';
+      } else {
+          return ones[thousandDigit] + ' Thousand ' + numberToWords(remaining);
+      }
+  }
+  else if (number < 100000) {
+      const thousandDigit = Math.floor(number / 1000);
+      
+      const remaining = number % 1000;
+      if (remaining === 0) {
+
+          return numberToWords(thousandDigit) + ' Thousand';
+      } else {
+
+          return numberToWords(thousandDigit) + ' Thousand ' + numberToWords(remaining);
+      }
+  }
+  else if (number < 1000000) {
+      const thousandDigit = Math.floor(number / 100000);
+      const remaining = number % 100000;
+      if (remaining === 0) {
+          
+          return ones[thousandDigit] + ' Lakh';
+      } else {
+          return  ones[thousandDigit]+ ' Lakh ' + numberToWords(remaining);
+      }
+  } else {
+      return 'Number is too large to convert.';
+  }
+}
+

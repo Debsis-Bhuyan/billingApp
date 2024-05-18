@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../store/userSlice";
 
 const SideBar = () => {
-  const user =useSelector(state => state.user?.user)
+  const user = useSelector((state) => state.user?.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -37,7 +37,7 @@ const SideBar = () => {
                 />
 
                 <span className="font-medium text-white items-center p-1 pl-1 justify-center dark:text-gray-500">
-                  {user?.user.fullName}   
+                  {user?.user.fullName}
                 </span>
               </Link>
             </div>

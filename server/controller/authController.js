@@ -90,3 +90,33 @@ export const login = async (req, res, next) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+export const changePassword = async (req, res, next) => {
+  try {
+    const { userId, email, oldpassword, newpassword } = req.body;
+    
+
+    const user = await Users.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isMatch = await compareString(oldpassword, user?.password);
+
+  
+    if (!isMatch) {
+       res.json({ message: "Old password is incorrect" });
+       return
+    }
+
+    // Change password
+    const hashedPassword = await hashString(newpassword);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: error.message });
+  }
+};

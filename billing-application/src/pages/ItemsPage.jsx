@@ -4,10 +4,7 @@ import AddItem from "../components/AddItem";
 const ItemsPage = () => {
   return (
     <div>
-     
-      <div>
-        <AddItem />
-      </div>
+      <AddItem />
     </div>
   );
 };

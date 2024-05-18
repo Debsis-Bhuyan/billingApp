@@ -10,34 +10,59 @@ import { MdOutlineCreateNewFolder } from "react-icons/md";
 import Invoice from "../components/Invoice";
 
 const Dashboard = () => {
-  const [invoiceAmount, setInvoiceAmount] = useState("");
+  const [invoiceAmount, setInvoiceAmount] = useState(Number);
   const [receiveAmount, setReceiveAmount] = useState("");
   const [invoiceNo, setInvoiceNo] = useState(1000001);
   const [invoiceDate, setInvoiceDate] = useState(new Date());
   const [customerName, setCustomerName] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const [item, setItem]= useState([]);
+  const [itemName, setItemName]= useState("");
+  const [itemPrice, setItemPrice] = useState("");
+  const [itemQty, setItemQty] = useState("");
+
+  const [da, setDa] = useState("");
+
 
   const handleInvoiceAmountChange = (e) => {
     setInvoiceAmount(e.target.value);
   };
   const handleReceivedAmountChange = (e) => {
     setReceiveAmount(e.target.value);
-
   };
-  const [st,setSt] =useState({
-   dispay:"flex"
-  })
-  const[ da,setDa ]= useState("")
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const amount = Number(itemPrice) * Number(itemQty);
+    console.log(amount)
+        const data = {
+      itemName,
+      itemPrice,
+      itemQty,
+      totalPrice:amount,
+
+    }
+
+    const Item = [...item,data]
+    setItem(Item)
+    setItemName("")
+    setItemPrice("")
+    setItemQty("")
+   
+  };
+
   return (
     <div className="w-full">
-      <div className="w-full md:w-2/3 flex flex-col ">
-        <span className="py-2 px-2 text-2xl font-medium text-slate-700">
+      <div className={`w-full md:w-2/3  flex-col ${da} `}>
+        <span className="py-2 px-2 text-2xl font-medium text-slate-700 ">
           Dashboard
         </span>
       </div>
       <div className="flex gap-6 flex-col  md:flex-row py-2">
         <div className="flex  w-full  gap-6">
           {/* Left side: Form */}
-          <div className={`flex-1      bg-gray-100 h-screen w-full p-3 ${da}`} style={st} >
+          <div className={`flex-1      bg-gray-100 h-screen w-full p-3 ${da}`}>
             <div className="mb-6">
               <h2 className="text-xl font-bold">
                 Enter details to make your First Purchase Sale
@@ -91,11 +116,88 @@ const Dashboard = () => {
             </div>
             <div className="p-2 mb-2">
               <h3 className="text-lg font-bold flex items-center">
-                <button className=" py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+                <button
+                  className=" py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+                  onClick={(e) => setOpen(!open)}
+                >
                   <BiCommentAdd className="inline mb-1 mr-2 " />
                   Add sample item
                 </button>
               </h3>
+            </div>
+            <div>
+              {open && (
+                <div>
+                  
+                  <form className="w-full  " onSubmit={handleSubmit}>
+                    <div className="flex justify-between items-center">
+                      <div className="mb-4">
+                        <label
+                          className="block text-gray-700 text-sm font-bold mb-2"
+                          htmlFor="itemName"
+                        >
+                          Item Name
+                        </label>
+                        <input
+                          type="text"
+                          id="itemName"
+                          value={itemName}
+                          onChange={(e) => {
+                            setItemName(e.target.value);
+                          }}
+                          className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Enter item name"
+                          required
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          className="block text-gray-700 text-sm font-bold mb-2"
+                          htmlFor="itemPrice"
+                        >
+                          Item Price
+                        </label>
+                        <input
+                          type="number"
+                          id="itemPrice"
+                          value={itemPrice}
+                          onChange={(e) => {
+                            setItemPrice(e.target.value);
+                          }}
+                          className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Enter item price"
+                          required
+                        />
+                      </div>
+                      <div className="mb-4">
+                        <label
+                          className="block text-gray-700 text-sm font-bold mb-2"
+                          htmlFor="quantity"
+                        >
+                          Quantity
+                        </label>
+                        <input
+                          type="number"
+                          id="quantity"
+                          value={itemQty}
+                          onChange={(e) => {
+                            setItemQty(e.target.value);
+                          }}
+                          className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          placeholder="Enter item quantity"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Add Item
+                    </button>
+                  </form>
+                </div>
+              )}
             </div>
 
             <div className="mb-6">
@@ -112,15 +214,18 @@ const Dashboard = () => {
                       name="invoiceAmount"
                       className="border rounded-sm border-black p-1 w-full"
                       value={invoiceAmount}
-                      onChange={(e) => {
-                        setInvoiceAmount(e.target.value);
-                      }}
+                      // onChange={(e) => {
+                      //   setInvoiceAmount(e.target.value);
+                      // }}
+                      readOnly
                     />
                     <MdOutlineCurrencyRupee className="inline text-2xl mb-1 mr-2" />
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm pb-2">Received Amount*</p>
+                  <p className="text-sm pb-2">
+                    Received Amount*
+                  </p>
                   <div className="flex items-center">
                     <input
                       type="number"
@@ -139,7 +244,7 @@ const Dashboard = () => {
             <hr />
             <div className="p-4 mb-6">
               <p className="text-lg font-bold flex items-center">
-                Balance <MdOutlineCurrencyRupee className="inline mb-1 mr-2" />{" "}
+                Balance <MdOutlineCurrencyRupee className="inline mb-1 mr-2" />
                 {invoiceAmount - receiveAmount}
               </p>
             </div>
@@ -153,13 +258,8 @@ const Dashboard = () => {
           </div>
 
           {/* Right side: Image */}
-          <div className="flex-1 w-full flex h-screen  " >
-            {/* <img
-              src={image}
-              alt="Invoice Example"
-              className="w-auto flex  h-full object-cover"
-            /> */}
-            <Invoice setStyle={setDa}/>
+          <div className="flex-1 w-full flex h-screen  ">
+            <Invoice setStyle={setDa} itemData={item}  />
           </div>
         </div>
       </div>

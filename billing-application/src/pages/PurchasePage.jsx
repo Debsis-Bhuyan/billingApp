@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaPlus, FaEllipsisV } from "react-icons/fa";
 import DeleteShareEdit from "../components/DeleteShareEdit";
+import { useSelector, useDispatch } from "react-redux";
+import { addTransaction } from "../store/transactionSlice";
 
 const AddPurchaseOrder = () => {
+  const transctionData = useSelector((state) => state.transaction).transaction;
+  const dispatch = useDispatch();
+  console.log(transctionData);
   const [isPopupOpen, setPopupOpen] = useState(false);
-  const [purchaseOrders, setPurchaseOrders] = useState([]);
-  const [selectedOrderIndex, setSelectedOrderIndex] = useState(null);
-  const [isEditOpen, setEditOpen] = useState(false);
-  const [isDeleteOpen, setDeleteOpen] = useState(false);
-  const [isShareOpen, setShareOpen] = useState(false);
+  const [purchaseOrders, setPurchaseOrders] = useState(transctionData);
+  // const [selectedOrderIndex, setSelectedOrderIndex] = useState(null);
+  // const [isEditOpen, setEditOpen] = useState(false);
+  // const [isDeleteOpen, setDeleteOpen] = useState(false);
+  // const [isShareOpen, setShareOpen] = useState(false);
   const [isOpen, setOpen] = useState(false);
 
   // State for form fields
@@ -35,6 +40,9 @@ const AddPurchaseOrder = () => {
       type,
       status,
     };
+    // const d=[...purchaseOrders, formData]
+    dispatch(addTransaction(formData));
+    // localStorage.setItem('formData')
     setPurchaseOrders([...purchaseOrders, formData]);
     // Reset form fields
     setParty("");
@@ -43,8 +51,8 @@ const AddPurchaseOrder = () => {
     setDueDate("");
     setTotalAmount("");
     setBalance("");
-    setType("");
-    setStatus("");
+    setType("Sale");
+    setStatus("Pending");
 
     setPopupOpen(false);
   };
@@ -66,7 +74,7 @@ const AddPurchaseOrder = () => {
     <div className=" w-full  p-4">
       <div className="flex w-full justify-between items-center py-3">
         <div className="flex items-center">
-          <p className="mr-2 text-2xl">Transactions</p>
+          <p className="mr-2 text-2xl">All Transactions</p>
         </div>
         <div className="flex items-center">
           <input
@@ -84,7 +92,7 @@ const AddPurchaseOrder = () => {
             onClick={() => setPopupOpen(true)}
           >
             <FaPlus className="mr-2" />
-            Add Purchase Order
+            Add Transaction
           </button>
         </div>
       </div>
@@ -235,34 +243,38 @@ const AddPurchaseOrder = () => {
       <hr />
       <div className="flex items-center w-full justify-center p-4">
         {/* Table to display purchase orders */}
-        <table className="w-full mt-8">
+        <table className="w-full mt-4">
           <thead>
             <tr>
-              <th>Party</th>
-              <th>Number</th>
-              <th>Date</th>
-              <th>Due Date</th>
-              <th>Total Amount</th>
-              <th>Balance</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Action</th>
+              <th className="border px-4 py-2">#</th>
+              <th className="border px-4 py-2">Party</th>
+              <th className="border px-4 py-2">Number</th>
+              <th className="border px-4 py-2">Date</th>
+              <th className="border px-4 py-2">Due Date</th>
+              <th className="border px-4 py-2">Total Amount</th>
+              <th className="border px-4 py-2">Balance</th>
+              <th className="border px-4 py-2">Type</th>
+              <th className="border px-4 py-2">Status</th>
+              <th className="border px-4 py-2">Action</th>
             </tr>
           </thead>
 
           <tbody>
             {purchaseOrders.map((order, index) => (
               <tr key={index}>
-                <td>{order.party}</td>
-                <td>{order.number}</td>
-                <td>{order.date}</td>
-                <td>{order.dueDate}</td>
-                <td>{order.totalAmount}</td>
-                <td>{order.balance}</td>
-                <td>{order.type}</td>
-                <td>{order.status}</td>
+                <td className="border px-4 py-2">{index + 1}</td>
+
+                <td className="border px-4 py-2">{order.party}</td>
+                <td className="border px-4 py-2">{order.number}</td>
+                <td className="border px-4 py-2">{order.date}</td>
+                <td className="border px-4 py-2">{order.dueDate}</td>
+                <td className="border px-4 py-2">{order.totalAmount}</td>
+                <td className="border px-4 py-2">{order.balance}</td>
+                <td className="border px-4 py-2">{order.type}</td>
+                <td className="border px-4 py-2">{order.status}</td>
 
                 <td
+                  className="border px-4 py-2"
                   onClick={() => {
                     setOpen(true);
                   }}
