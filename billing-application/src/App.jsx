@@ -25,6 +25,7 @@ import PurchaseOrderPage from "./pages/PuchaseOrderPage";
 import CreatePurchaseOrder from "./components/CreatePurchaseOrder";
 import CreateExpence from "./components/AddExpence";
 import CreateExpencePage from "./pages/CreateExpencePage";
+import EditProfile from "./components/EditProfile";
 
 const Layout = () => {
   const user = useSelector(state=>state.user)
@@ -57,6 +58,7 @@ function App() {
 
           <Route path="/sales" element={<Sales />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/feedback" element={<Contact />} />
           
 

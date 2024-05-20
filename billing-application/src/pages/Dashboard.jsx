@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosRocket } from "react-icons/io";
 import image from "../assets/invoice.jpg";
 import { FaFileInvoice } from "react-icons/fa";
@@ -16,18 +16,19 @@ const Dashboard = () => {
   const [invoiceDate, setInvoiceDate] = useState(new Date());
   const [customerName, setCustomerName] = useState("");
   const [open, setOpen] = useState(false);
+  const [billDetails, setBillDetails] = useState({});
 
-  const [item, setItem]= useState([]);
-  const [itemName, setItemName]= useState("");
+  const [item, setItem] = useState([]);
+  const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [itemQty, setItemQty] = useState("");
 
   const [da, setDa] = useState("");
 
-
   const handleInvoiceAmountChange = (e) => {
     setInvoiceAmount(e.target.value);
   };
+
   const handleReceivedAmountChange = (e) => {
     setReceiveAmount(e.target.value);
   };
@@ -35,22 +36,34 @@ const Dashboard = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const amount = Number(itemPrice) * Number(itemQty);
-    console.log(amount)
-        const data = {
+    console.log(amount);
+    const data = {
       itemName,
       itemPrice,
       itemQty,
-      totalPrice:amount,
+      totalPrice: amount,
+    };
 
-    }
-
-    const Item = [...item,data]
-    setItem(Item)
-    setItemName("")
-    setItemPrice("")
-    setItemQty("")
-   
+    const Item = [...item, data];
+    setInvoiceAmount(invoiceAmount + amount)
+    setReceiveAmount(receiveAmount)
+    setItem(Item);
+    setItemName("");
+    setItemPrice("");
+    setItemQty("");
   };
+
+  useEffect(() => {
+    const obj = {
+      customerName: customerName,
+      invoiceNo: invoiceNo,
+      invoiceDate,
+
+      invoiceAmount: invoiceAmount,
+      receiveAmount: receiveAmount,
+    };
+    setBillDetails(obj);
+  }, [customerName, invoiceNo, invoiceDate, invoiceAmount, receiveAmount]);
 
   return (
     <div className="w-full">
@@ -128,7 +141,6 @@ const Dashboard = () => {
             <div>
               {open && (
                 <div>
-                  
                   <form className="w-full  " onSubmit={handleSubmit}>
                     <div className="flex justify-between items-center">
                       <div className="mb-4">
@@ -223,9 +235,7 @@ const Dashboard = () => {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm pb-2">
-                    Received Amount*
-                  </p>
+                  <p className="text-sm pb-2">Received Amount*</p>
                   <div className="flex items-center">
                     <input
                       type="number"
@@ -259,7 +269,7 @@ const Dashboard = () => {
 
           {/* Right side: Image */}
           <div className="flex-1 w-full flex h-screen  ">
-            <Invoice setStyle={setDa} itemData={item}  />
+            <Invoice setStyle={setDa} itemData={item} billDetails = {billDetails} />
           </div>
         </div>
       </div>

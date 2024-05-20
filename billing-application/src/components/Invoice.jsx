@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { numberToWords } from "../utils";
 
-const Invoice = ({ setStyle, itemData }) => {
+const Invoice = ({ setStyle, itemData,billDetails }) => {
   const [quantity, setQuantity] = useState(10);
   const [pricePerUnit, setPricePerUnit] = useState(100);
   const [invoiceAmount, setInvoiceAmount] = useState(0);
@@ -9,6 +9,7 @@ const Invoice = ({ setStyle, itemData }) => {
     numberToWords(invoiceAmount)
   );
 
+  console.log(billDetails)
 
   // Calculate invoice amount
   const calculateInvoiceAmount = () => {
@@ -54,12 +55,12 @@ const Invoice = ({ setStyle, itemData }) => {
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="border-purple-600 border p-2 rounded">
           <h2 className="font-bold text-purple-600">Bill To</h2>
-          <p>Your Customer Name</p>
+          <p>{billDetails?.customerName || "Enter Customer Name"}</p>
         </div>
         <div className="border-purple-600 border p-2 rounded">
           <h2 className="font-bold text-purple-600">Invoice Details</h2>
-          <p>Invoice No.: #1</p>
-          <p>Date: {new Date().toLocaleDateString()}</p>
+          <p>Invoice No.:{billDetails?.invoiceNo || "#1" }</p>
+          <p>Date: {  new Date().toLocaleDateString()}</p>
         </div>
       </div>
       <table className="w-full text-left border-collapse">
@@ -103,9 +104,9 @@ const Invoice = ({ setStyle, itemData }) => {
           <p>Amount In Words: {amountInWords}</p>
         </div>
         <div>
-          <p>Sub Total: {formatCurrency(invoiceAmount)}</p>
+          <p>Sub Total: {formatCurrency(billDetails?.invoiceAmount || 0.00)}</p>
           <p>Total: {formatCurrency(invoiceAmount)}</p>
-          <p>Balance Due: {formatCurrency(invoiceAmount)}</p>
+          <p>Balance Due: {formatCurrency(billDetails?.receiveAmount || 0.00)}</p>
         </div>
       </div>
     </div>

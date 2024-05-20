@@ -75,9 +75,9 @@ const SideBar = () => {
             >
               Estimate
             </Link>
-            <Link to="/utilitis" className="block p-1 px-4  hover:bg-gray-700">
+            {/* <Link to="/utilitis" className="block p-1 px-4  hover:bg-gray-700">
               Utilitis
-            </Link>
+            </Link> */}
             <Link to="/feedback" className="block p-1 px-4  hover:bg-gray-700">
               Feedback
             </Link>

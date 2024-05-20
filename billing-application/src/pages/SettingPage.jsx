@@ -65,7 +65,7 @@ const SettingsPage = () => {
           <form onSubmit={handleSaving}>
             <div className="mb-4">
               <label htmlFor="username" className="block font-medium mb-2">
-                Username
+                Email
               </label>
               <input
                 id="username"

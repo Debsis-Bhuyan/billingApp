@@ -120,3 +120,13 @@ export const changePassword = async (req, res, next) => {
     res.status(404).json({ message: error.message });
   }
 };
+
+export const updateProfile = async (req,res)=>{
+  try {
+    console.log("hi")
+    res.json({"msg":"update noy profile successfily"})
+  } catch (error) {
+    console.log(error)
+    res.json({msg :"update noy profile successfily"})
+  }
+}

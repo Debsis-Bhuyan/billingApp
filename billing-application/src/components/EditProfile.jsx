@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import image from "../assets/Logo.png";
+import { states } from "../utils/state";
+import { useSelector } from "react-redux";
 
-const ProfilePage = ({ initialValues, onSubmit }) => {
-  const [formValues, setFormValues] = useState(initialValues || {});
+const EditProfile = () => {
+  const user = useSelector((state) => state.user).user.user;
 
+  const [formValues, setFormValues] = useState(user || {});
+  console.log(formValues);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -11,15 +15,17 @@ const ProfilePage = ({ initialValues, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formValues);
+    const obj = {
+      userId: user?._id,
+      fullName: user?.fullName,
+      email: user?.email,
+      businessName: formValues?.businessName || "",
+      gstin: formValues?.gstin || "",
+      state: formValues?.state || "",
+      businessAddress: formValues?.businessAddress || "",
+    };
+    console.log(formValues);
   };
-   // List of states
-   const states = [
-    "Odisha",
-    "Pakisthan",
-    "Afganisthan",
-    // Add more states as needed
-  ];
 
   return (
     <div className="w-full justify-between shadow-md p-4 rounded-lg bg-white">
@@ -31,19 +37,36 @@ const ProfilePage = ({ initialValues, onSubmit }) => {
             WebkitTextFillColor: "transparent",
           }}
         >
-         Profile Page
+          Profile Page
         </span>
       </h1>
-      <div className="flex flex-wrap">
-        <div className="w-1/2 pr-4">
-          <img src={image} alt="Sample Image" className="w-full h-auto" />
-          <section className="text-center font-bold mt-4">
-            
-          </section>
+      <div className="flex flex-wrap items-center justify-center">
+        <div className="w-1/2 pr-4 ">
+          <img
+            src={user?.profileUrl}
+            alt="Sample Image"
+            className="w-full h-auto rounded-full"
+          />
         </div>
         <div className="w-1/2 pl-4">
           <form onSubmit={handleSubmit} className="w-full">
             <div className="flex flex-wrap -mx-3">
+              <div className="w-full md:w-1/2 px-3 mb-6">
+                <label
+                  htmlFor="fullName"
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
+                >
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formValues.fullName || ""}
+                  className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                  readOnly
+                />
+              </div>
               <div className="w-full md:w-1/2 px-3 mb-6">
                 <label
                   htmlFor="businessName"
@@ -90,7 +113,7 @@ const ProfilePage = ({ initialValues, onSubmit }) => {
                   value={formValues.phoneNo || ""}
                   onChange={handleInputChange}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
-                  placeholder="+91"                
+                  placeholder="+91"
                 />
               </div>
               <div className="w-full md:w-1/2 px-3 mb-6">
@@ -101,13 +124,13 @@ const ProfilePage = ({ initialValues, onSubmit }) => {
                   Email*
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   id="email"
                   name="email"
-                  value={formValues.email || ""}
-                  onChange={handleInputChange}
+                  value={formValues.email}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                  placeholder="xyz@gmail.com"                
+                  placeholder="xyz@gmail.com"
+                  readOnly
                 />
               </div>
               <div className="w-full md:w-1/2 px-3 mb-6">
@@ -157,15 +180,15 @@ const ProfilePage = ({ initialValues, onSubmit }) => {
                   Pincode*
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   id="pincode"
                   name="pincode"
-                  value={formValues.pincode || ""}
+                  value={formValues?.pincode || ""}
                   onChange={handleInputChange}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full  px-3 mb-6">
                 <label
                   htmlFor="businessDetails"
                   className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
@@ -187,18 +210,17 @@ const ProfilePage = ({ initialValues, onSubmit }) => {
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               >
-                Submit
+                Update
               </button>
             </div>
           </form>
         </div>
         <div className="text-center mt-4 font-bold">
-        &copy; 2024 SphereCode Private Limited
+          &copy; 2024 SphereCode Private Limited
+        </div>
       </div>
-      </div>
-      
     </div>
   );
 };
 
-export default ProfilePage;
+export default EditProfile;
