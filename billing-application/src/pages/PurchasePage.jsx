@@ -7,13 +7,12 @@ import { addTransaction } from "../store/transactionSlice";
 const AddPurchaseOrder = () => {
   const transctionData = useSelector((state) => state.transaction).transaction;
   const dispatch = useDispatch();
-  console.log(transctionData);
+  
+  const [numberData, setNumberData] = useState(Number(transctionData[transctionData.length-1].number) + 1)
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [purchaseOrders, setPurchaseOrders] = useState(transctionData);
-  // const [selectedOrderIndex, setSelectedOrderIndex] = useState(null);
-  // const [isEditOpen, setEditOpen] = useState(false);
-  // const [isDeleteOpen, setDeleteOpen] = useState(false);
-  // const [isShareOpen, setShareOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [isOpen, setOpen] = useState(false);
 
   // State for form fields
@@ -32,7 +31,7 @@ const AddPurchaseOrder = () => {
     // Handle form submission here
     const formData = {
       party,
-      number,
+      number:numberData ,
       date,
       dueDate,
       totalAmount,
@@ -40,9 +39,9 @@ const AddPurchaseOrder = () => {
       type,
       status,
     };
-    // const d=[...purchaseOrders, formData]
+
     dispatch(addTransaction(formData));
-    // localStorage.setItem('formData')
+
     setPurchaseOrders([...purchaseOrders, formData]);
     // Reset form fields
     setParty("");
@@ -53,9 +52,20 @@ const AddPurchaseOrder = () => {
     setBalance("");
     setType("Sale");
     setStatus("Pending");
+    setNumberData(numberData + 1)
 
     setPopupOpen(false);
   };
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  useEffect(() => {
+    const filteredOrders = transctionData.filter(order =>
+      order.party.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setPurchaseOrders(filteredOrders);
+  }, [searchQuery, transctionData]);
 
   // Load purchase orders from local storage on component mount
   useEffect(() => {
@@ -79,8 +89,8 @@ const AddPurchaseOrder = () => {
         <div className="flex items-center">
           <input
             type="text"
-            // value={searchValue}
-            // onChange={(e) => setSearchValue(e.target.value)}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search..."
             className="px-4 py-2 border rounded-md mr-2 focus:outline-none"
           />
@@ -117,7 +127,7 @@ const AddPurchaseOrder = () => {
                     onChange={(e) => setParty(e.target.value)}
                   />
                 </div>
-                <div className="mb-4 ">
+                {/* <div className="mb-4 ">
                   <label htmlFor="number" className="block mb-2">
                     Number:
                   </label>
@@ -128,7 +138,7 @@ const AddPurchaseOrder = () => {
                     value={number}
                     onChange={(e) => setNumber(e.target.value)}
                   />
-                </div>
+                </div> */}
                 <div className="mb-4">
                   <label htmlFor="date" className="block mb-2">
                     Date:
@@ -268,8 +278,8 @@ const AddPurchaseOrder = () => {
                 <td className="border px-4 py-2">{order.number}</td>
                 <td className="border px-4 py-2">{order.date}</td>
                 <td className="border px-4 py-2">{order.dueDate}</td>
-                <td className="border px-4 py-2">{order.totalAmount}</td>
-                <td className="border px-4 py-2">{order.balance}</td>
+                <td className="border px-4 py-2">{Number(order.totalAmount).toFixed()}</td>
+                <td className="border px-4 py-2">{Number(order.balance).toFixed()}</td>
                 <td className="border px-4 py-2">{order.type}</td>
                 <td className="border px-4 py-2">{order.status}</td>
 

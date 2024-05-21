@@ -104,12 +104,13 @@ const AddItem = () => {
           Add Item
         </button>
       </form>
-      <div className="mt-8">
-        <h2 className="text-lg font-bold">Items</h2>
+      <div className="mt-4">
+
+        <h2 className="text-2xl flex items-center justify-center font-bold">Items</h2>
         <table className="w-full mt-4">
           <thead>
             <tr>
-              <th className="border px-4 py-2">#</th>
+              <th className="border px-4 py-2">Sl No.</th>
               <th className="border px-4 py-2">Name</th>
               <th className="border px-4 py-2">Price</th>
               <th className="border px-4 py-2">Quantity</th>

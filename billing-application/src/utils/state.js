@@ -286,3 +286,5 @@ export const state = [
     ],
   },
 ];
+export const taxData = 
+[ 0, 5, 12, 18, 28]

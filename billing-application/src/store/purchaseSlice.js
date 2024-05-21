@@ -13,17 +13,21 @@ const purchaseSlice = createSlice({
       state.purchase.push(action.payload); // Add new item to the array
       localStorage.setItem("purchase", JSON.stringify(state.purchase))
     },
-    // removeItem: (state, action) => {
-    //   state.items = state.items.filter((item) => item.id !== action.payload.id); // Remove item from the array
-    // },
+    removeItem: (state, action) => {
+      state.purchase = state.purchase.filter((item, i) => i !== action.payload);
+      localStorage.setItem("purchase", JSON.stringify(state.purchase))
+
+    },
     
     // clear all the purchase order
     clearPurchase: (state) => {
       state.purchase = []; 
+      localStorage.setItem("purchase", JSON.stringify(state.purchase))
+
     },
   },
 });
 
-export const { addPurchase, clearPurchase } = purchaseSlice.actions;
+export const { addPurchase,removeItem, clearPurchase } = purchaseSlice.actions;
 
 export default purchaseSlice.reducer;

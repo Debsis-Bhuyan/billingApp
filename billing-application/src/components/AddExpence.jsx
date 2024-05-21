@@ -161,20 +161,20 @@ const CreateExpence = () => {
                   <th className="border border-gray-200 px-4 py-2">Qty</th>
                   <th className="border border-gray-200 px-4 py-2">Unit</th>
                   <th className="border border-gray-200 px-4 py-2">
-                    Price/Unit
+                    Price/Unit (with tax)
                   </th>
                   <th className="border border-gray-200 px-4 py-2">Tax </th>
                   <th className="border border-gray-200 px-4 py-2">Money</th>
 
                   <th className="border border-gray-200 px-4 py-2">Amount</th>
                 </tr>
-                <tr>
+                {/* <tr>
                   <th colSpan="4"></th>
                   <th className="border border-gray-200 px-4 py-2">
                     (without tax)
                   </th>
                   <th colSpan="3"></th>
-                </tr>
+                </tr> */}
               </thead>
               <tbody>
                 {items.map((item, index) => (

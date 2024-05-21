@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import CreateExpence from "../components/AddExpence";
+import CreateExpenceWithGst from "../components/AddExpence";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa";
+import CreateExpenseWithOutGst from "../components/CreateExpenseWithOutGst";
 
 const CreateExpencePage = () => {
   const [toggle, setToggle] = useState(false);
@@ -36,7 +37,7 @@ const CreateExpencePage = () => {
         </div>
       </div>
 
-      <div>{toggle ? <CreateExpence /> : <h2>world</h2>}</div>
+      <div>{toggle ? <CreateExpenceWithGst /> : <CreateExpenseWithOutGst/> }</div>
     </div>
   );
 };

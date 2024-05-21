@@ -12,17 +12,12 @@ const CreateEstimate = () => {
   const [addRow, setAddRow] = useState(false);
 
   // State for form fields
-
+  const [customerName, setCustomerName] = useState("");
   const [type, setType] = useState("Sale");
 
   const [totalAmount, setTotalAmount] = useState(0);
   const [toatalquantity, setTotalQuantity] = useState(0);
   const [round, setRound] = useState(false);
-
-  // Save purchase orders to local storage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("purchaseOrders", JSON.stringify(purchaseOrders));
-  }, [purchaseOrders]);
 
   // add Item code
   const [items, setItems] = useState([]);
@@ -48,7 +43,8 @@ const CreateEstimate = () => {
       ...formData,
       amount:
         Number(formData.qty) * formData.pricePerUnit +
-        (Number(formData.qty) * formData.pricePerUnit * Number(formData.tax)) / 100,
+        (Number(formData.qty) * formData.pricePerUnit * Number(formData.tax)) /
+          100,
     };
     setItems([...items, newItem]);
     localStorage.setItem("items", JSON.stringify([...items, newItem]));
@@ -71,58 +67,88 @@ const CreateEstimate = () => {
     });
     setTotalQuantity(toatalQty);
     setTotalAmount(total);
-    localStorage.setItem("items", JSON.stringify(items));
+    // localStorage.setItem("items", JSON.stringify(items));
   }, [items]);
+  const saveEstimate = (e) => {
+    e.preventDefault();
+    console.log(customerName, type, ref, totalAmount, toatalquantity);
+    alert("Saved");
+  };
 
   return (
     <div className="w-full p-4">
       <div className=" w-full  p-4">
         <h2 className=" text-2xl">Estimate/Quatation</h2>
-        <div className="flex w-full justify-between items-center py-3">
-          <div className=" w-1/2 flex items-center justify-between">
-            <label htmlFor="type" className=" w-1/3 mb-2">
-              Select Party :
-            </label>
-            <select
-              id="type"
-              required
-              className="w-2/3 mx-4 py-2 border rounded-md"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
+        <form onSubmit={saveEstimate} className="">
+          <div className="flex items-center justify-end">
+            <button
+              type="submit"
+              className="w-20 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
             >
-              <option value="Sale">Sale</option>
-              <option value="Purchase">Purchase</option>
-            </select>
+              Save
+            </button>
           </div>
-
-          <div className="flex w-1/2 flex-col items-center justify-center">
-            <div className="mb-2  w-full items-center flex justify-center">
-              <label htmlFor="number1" className="1/3 mb-2 mr-3">
-                Reference No:
-              </label>
-              <input
-                type="number"
-                id="number1"
-                className="w-2/3 px-4 py-2 border rounded-md mr-0"
-                value={ref}
-                onChange={(e) => setRef(e.target.value)}
-              />
+          <div className="flex w-full justify-between items-center py-3">
+            <div className="p-2">
+              <div className=" w-full flex items-center justify-between">
+                <label htmlFor="customerName" className=" w-1/3 mb-2">
+                  Party Name:
+                </label>
+                <input
+                  id="customerName"
+                  required
+                  className="w-2/3 mx-4 py-2 border rounded-md"
+                  name="customerName"
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
+                />
+              </div>
+              <div className=" w-full flex items-center justify-between">
+                <label htmlFor="type" className=" w-1/3 mb-2">
+                  Select Party:
+                </label>
+                <select
+                  id="type"
+                  required
+                  className="w-2/3 mx-4 py-2 border rounded-md"
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                >
+                  <option value="Sale">Sale</option>
+                  <option value="Purchase">Purchase</option>
+                </select>
+              </div>
             </div>
-            <div className="mb-4  w-full flex justify-center">
-              <label htmlFor="number" className="inline-block 1/3 mb-2 mr-4">
-                Invoice Date:
-              </label>
-              <input
-                type="Date"
-                id="number"
-                className="w-2/3 px-4 py-2 border rounded-md"
-                value={date1}
-                onChange={(e) => setDate1(e.target.value)}
-              />
+
+            <div className="flex w-1/2 flex-col items-center justify-center">
+              <div className="mb-2  w-full items-center flex justify-center">
+                <label htmlFor="number1" className="1/3 mb-2 mr-3">
+                  Reference No:
+                </label>
+                <input
+                  type="number"
+                  id="number1"
+                  className="w-2/3 px-4 py-2 border rounded-md mr-0"
+                  value={ref}
+                  onChange={(e) => setRef(e.target.value)}
+                />
+              </div>
+              <div className="mb-4  w-full flex justify-center">
+                <label htmlFor="Invoice" className="inline-block 1/3 mb-2 mr-4">
+                  Invoice Date:
+                </label>
+                <input
+                  type="Date"
+                  id="Invoice"
+                  className="w-2/3 px-4 py-2 border rounded-md"
+                  value={date1}
+                  onChange={(e) => setDate1(e.target.value)}
+                  required
+                />
+              </div>
             </div>
           </div>
-        </div>
-
+        </form>
         <hr />
         <div className="flex items-center w-full justify-center p-4">
           <div className="w-full mx-auto">
@@ -220,7 +246,7 @@ const CreateEstimate = () => {
                       <input
                         type="number"
                         name="qty"
-                        value={formData.qty || "" }
+                        value={formData.qty || ""}
                         onChange={handleChange}
                         placeholder="Quantity"
                         className=" border  m-3  px-4 text-black rounded"
@@ -253,12 +279,12 @@ const CreateEstimate = () => {
                         required
                       />
                       <select
-                       id="unist"
-                       name="tax"
-                       value={formData.tax || " "}
-                       onChange={handleChange}
-                       className="border  m-3  px-4 text-black rounded"
-                       required
+                        id="unist"
+                        name="tax"
+                        value={formData.tax || " "}
+                        onChange={handleChange}
+                        className="border  m-3  px-4 text-black rounded"
+                        required
                       >
                         <option value=" ">Select Tax</option>
                         {taxData.map((state) => (
