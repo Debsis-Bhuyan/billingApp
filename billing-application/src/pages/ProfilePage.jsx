@@ -5,9 +5,9 @@ import { FaEdit } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ProfilePage = ({ initialValues, onSubmit }) => {
-  const [formValues, setFormValues] = useState(initialValues || {});
+const ProfilePage = () => {
   const user = useSelector((state) => state.user).user.user;
+  const [formValues, setFormValues] = useState(user);
   console.log(user);
   const [userData, setUserData] = useState(user || null);
   const handleInputChange = (e) => {
@@ -187,7 +187,7 @@ const ProfilePage = ({ initialValues, onSubmit }) => {
                 <textarea
                   id="businessDetails"
                   name="businessDetails"
-                  value={user?.businessDetails || ""}
+                  value={user?.desc || ""}
                   // onChange={handleInputChange}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                   rows="5"

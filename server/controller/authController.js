@@ -94,21 +94,16 @@ export const login = async (req, res, next) => {
 export const changePassword = async (req, res, next) => {
   try {
     const { userId, email, oldpassword, newpassword } = req.body;
-    
-
     const user = await Users.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const isMatch = await compareString(oldpassword, user?.password);
-
-  
     if (!isMatch) {
-       res.json({ message: "Old password is incorrect" });
-       return
+      res.json({ message: "Old password is incorrect" });
+      return;
     }
-
     // Change password
     const hashedPassword = await hashString(newpassword);
     user.password = hashedPassword;
@@ -121,12 +116,73 @@ export const changePassword = async (req, res, next) => {
   }
 };
 
-export const updateProfile = async (req,res)=>{
-  try {
-    console.log("hi")
-    res.json({"msg":"update noy profile successfily"})
-  } catch (error) {
-    console.log(error)
-    res.json({msg :"update noy profile successfily"})
+// export const updateProfile = async (req, res) => {
+//   const {
+//     userId,
+//     fullName,
+//     phoneNo,
+//     email,
+//     businessName,
+//     pincode,
+//     gstin,
+//     state,
+//     businessAddress,
+//     desc,
+//   } = req.body;
+//   console.log(userId, fullName, phoneNo, email);
+
+//   try {
+//     const user = Users.findById(userId);
+//     console.log(user);
+//     console.log("hi");
+
+//     res.json({ msg: "update  profile successfily" });
+//   } catch (error) {
+//     console.log(error);
+//     res.json({ msg: "update not profile successfily" });
+//   }
+// };
+// import Users from './models/Users'; // Import your User model
+
+export const updateProfile = async (req, res) => {
+  const {
+    userId,
+    fullName,
+    phoneNo,
+    email,
+    businessName,
+    pincode,
+    gstin,
+    state,
+    businessAddress,
+    desc,
+  } = req.body;
+  const userExist = Users.findById(userId);
+  if (!userExist) {
+    return res.status(404).json({ msg: "User not found" });
   }
-}
+  try {
+    // Update the user document in the database
+    const user = await Users.findByIdAndUpdate(
+      userId,
+      {
+      
+        phoneNo,
+        email,
+        businessName,
+        pincode,
+        gstin,
+        state,
+        businessAddress,
+        desc,
+      },
+      { new: true }
+    ); // { new: true } ensures the updated document is returned
+
+    console.log("User updated successfully:", user);
+    res.json({ msg: "Profile updated successfully", user });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ msg: "Failed to update profile" });
+  }
+};

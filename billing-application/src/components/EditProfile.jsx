@@ -2,29 +2,51 @@ import React, { useState } from "react";
 import image from "../assets/Logo.png";
 import { states } from "../utils/state";
 import { useSelector } from "react-redux";
+import axios from 'axios'
 
 const EditProfile = () => {
-  const user = useSelector((state) => state.user).user.user;
-
-  const [formValues, setFormValues] = useState(user || {});
+  const user = useSelector((state) => state.user).user;
+console.log(user)
+  const [formValues, setFormValues] = useState(user.user || {});
   console.log(formValues);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const obj = {
-      userId: user?._id,
-      fullName: user?.fullName,
-      email: user?.email,
+      userId: user?.user?._id,
+      fullName: user?.user?.fullName,
+      email: user?.user?.email,
       businessName: formValues?.businessName || "",
+      pincode: formValues?.pincode || "",
       gstin: formValues?.gstin || "",
       state: formValues?.state || "",
       businessAddress: formValues?.businessAddress || "",
+      desc:formValues?.businessDetails ||"",
+      phoneNo:formValues?.phoneNo ||""
     };
     console.log(formValues);
+    console.log("obj", obj)
+    const url = "http://localhost:5000/api/user/update-profile"
+    const token = user.token
+    console.log(token)
+    try {
+      const response = await axios.put(url,
+        obj,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+
+      )
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -43,7 +65,7 @@ const EditProfile = () => {
       <div className="flex flex-wrap items-center justify-center">
         <div className="w-1/2 pr-4 ">
           <img
-            src={user?.profileUrl}
+            src={user?.user?.profileUrl}
             alt="Sample Image"
             className="w-full h-auto rounded-full"
           />
@@ -198,7 +220,7 @@ const EditProfile = () => {
                 <textarea
                   id="businessDetails"
                   name="businessDetails"
-                  value={formValues.businessDetails || ""}
+                  value={user?.user?.desc || formValues.businessDetails }
                   onChange={handleInputChange}
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded-lg py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                   rows="5"
