@@ -3,6 +3,10 @@ import image from "../assets/help.jpg";
 
 const HelpDesk = () => {
   const [showContainer, setShowContainer] = useState(false);
+  const [activeQuestionId, setActiveQuestionId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const questionsPerPage = 4;
   const questions = [
     {
       id: 1,
@@ -15,12 +19,12 @@ const HelpDesk = () => {
       answer: "Answer to question 2",
     },
     {
-      id: 4,
+      id: 3,
       question: "Question 3?",
       answer: "Answer to question 3",
     },
     {
-      id: 3,
+      id: 4,
       question: "Question 4?",
       answer: "Answer to question 4",
     },
@@ -49,43 +53,30 @@ const HelpDesk = () => {
       question: "Question 9?",
       answer: "Answer to question 9",
     },
-    {
-      id: 10,
-      question: "Question 10?",
-      answer: "Answer to question 10",
-    },
-    {
-      id: 11,
-      question: "Question 11?",
-      answer: "Answer to question 11",
-    },
-    {
-      id: 12,
-      question: "Question 12?",
-      answer: "Answer to question 12",
-    },
   ];
-  const [startIndex, setStartIndex] = useState(0);
-  const [endIndex, setEndIndex] = useState(5);
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   const handleLogoClick = () => {
     setShowContainer(!showContainer);
-    setSelectedQuestion(null);
   };
 
-  const handleNextQuestions = () => {
-    setStartIndex(endIndex);
-    setEndIndex(endIndex + 5);
+  const handleQuestionClick = (id) => {
+    setActiveQuestionId(id === activeQuestionId ? null : id);
   };
 
-  const handleQuestionClick = (index) => {
-    setSelectedQuestion(index);
+  const handleLoadMore = () => {
+    setCurrentPage(currentPage + 1);
+    setActiveQuestionId(null); // Reset the active question when loading more
   };
+
+  const startIndex = currentPage * questionsPerPage;
+  const displayedQuestions = questions.slice(
+    startIndex,
+    startIndex + questionsPerPage
+  );
 
   return (
-    <div className="flex justify-center items-center">
-      <div >
+    <div className="flex justify-center items-center relative">
+      <div>
         <div>
           <h2>Click this help image to get data related to help</h2>
         </div>
@@ -99,30 +90,30 @@ const HelpDesk = () => {
         </div>
       </div>
       {showContainer && (
-        <div className="absolute bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-          {questions.slice(startIndex, endIndex).map((question, index) => (
-            <div key={question.id} className="mb-4 border-b border-gray-200">
+        <div className="absolute top--20 right-0 bg-white p-4 rounded-lg shadow-lg max-w-xs w-full">
+          {displayedQuestions.map((question) => (
+            <div key={question.id} className="mb-4">
               <button
-                className={`question-button focus:outline-none text-left w-full py-2 hover:bg-gray-100`}
-                onClick={() => handleQuestionClick(startIndex + index)}
+                className="question-button text-left w-full py-2 border-b border-gray-200"
+                onClick={() => handleQuestionClick(question.id)}
               >
                 {question.question}
               </button>
-              {selectedQuestion === startIndex + index && (
+              {activeQuestionId === question.id && (
                 <div className="mt-2 text-gray-700">{question.answer}</div>
               )}
             </div>
           ))}
-          {endIndex < questions.length && (
+          {startIndex + questionsPerPage < questions.length && (
             <button
-              className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-              onClick={handleNextQuestions}
+              className="load-more-button text-blue-500 mt-4"
+              onClick={handleLoadMore}
             >
               Load More
             </button>
           )}
           <button
-            className="close-button absolute top-0 right-0 mt-2 mr-2"
+            className="close-button absolute top-2 right-2"
             onClick={handleLogoClick}
           >
             ✕
