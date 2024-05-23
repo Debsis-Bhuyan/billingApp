@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../store/itemSlice";
-
+import { addItem, removeItem } from "../store/itemSlice";
+import { FaTrashAlt } from "react-icons/fa";
 
 const AddItem = () => {
-  const item = useSelector(state => state.item).item
-  const dispatch =useDispatch()
-  const [items, setItems] = useState(
-    item
-  );
+  const item = useSelector((state) => state.item).item;
+  console.log(item);
+  const dispatch = useDispatch();
+
+  const [items, setItems] = useState(item || []);
   const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -22,12 +22,22 @@ const AddItem = () => {
     };
     const updatedItems = [...items, newItem];
     setItems(updatedItems);
+    console.log("ihkk",item)
     dispatch(addItem(newItem));
 
     setItemName("");
     setItemPrice("");
     setQuantity("");
   };
+
+  const handleDelete = (index) => {
+    console.log("delete")
+    dispatch(removeItem(index));
+  };
+  useEffect(() => {
+    console.log(item)
+    setItems(item);
+  }, [handleDelete]);
 
   return (
     <div className=" mx-auto mt-2  h-[90vh]  p-4">
@@ -105,8 +115,9 @@ const AddItem = () => {
         </button>
       </form>
       <div className="mt-4">
-
-        <h2 className="text-2xl flex items-center justify-center font-bold">Items</h2>
+        <h2 className="text-2xl flex items-center justify-center font-bold">
+          Items
+        </h2>
         <table className="w-full mt-4">
           <thead>
             <tr>
@@ -114,6 +125,7 @@ const AddItem = () => {
               <th className="border px-4 py-2">Name</th>
               <th className="border px-4 py-2">Price</th>
               <th className="border px-4 py-2">Quantity</th>
+              <th className="border px-4 py-2">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -123,6 +135,9 @@ const AddItem = () => {
                 <td className="border px-4 py-2">{item.name}</td>
                 <td className="border px-4 py-2">{item.price}</td>
                 <td className="border px-4 py-2">{item.qty}</td>
+                <td className="border px-4 py-2" onClick={()=>handleDelete(index)}>
+                  <FaTrashAlt />
+                </td>
               </tr>
             ))}
           </tbody>

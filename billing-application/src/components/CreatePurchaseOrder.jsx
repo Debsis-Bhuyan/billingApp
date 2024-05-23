@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { FaSearch, FaPlus, FaEllipsisV } from "react-icons/fa";
-import DeleteShareEdit from "../components/DeleteShareEdit";
-import { states } from "../utils/state";
+
 import { useSelector, useDispatch } from "react-redux";
 import { addPurchase, clearPurchase, removeItem } from "../store/purchaseSlice";
 import { MdDelete } from "react-icons/md";

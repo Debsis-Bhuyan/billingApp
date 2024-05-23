@@ -1,17 +1,16 @@
-
-import { useState } from 'react';
+import { useState } from "react";
 
 const LogoutDialog = ({ isOpen, onClose, onLogout }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogout = () => {
     setIsLoading(true);
-    
+
     setTimeout(() => {
       setIsLoading(false);
-      console.log("hello")
-      onLogout(); 
-    }, 1000); 
+      console.log("hello");
+      onLogout();
+    }, 1000);
   };
 
   return (
@@ -20,8 +19,10 @@ const LogoutDialog = ({ isOpen, onClose, onLogout }) => {
         <div className="fixed inset-0 z-10 flex items-center justify-center overflow-x-hidden overflow-y-auto outline-none focus:outline-none">
           <div className="relative w-auto max-w-sm mx-auto my-6">
             <div className="relative flex flex-col w-full bg-white border-0 rounded-lg shadow-lg outline-none focus:outline-none">
-              <div className="relative flex items-start justify-between p-5 border-b border-solid rounded-t border-blueGray-200">
-                <h3 className="text-lg items-center justify-center flex font-semibold">Logout</h3>
+                <div className="flex w-full items-center justify-center">
+                  <h3 className="text-lg font-semibold">Logout</h3>
+                </div>
+              <div className="relative flex items-start justify-between  border-b border-solid rounded-t border-blueGray-200">
                 <button
                   className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                   onClick={onClose}
@@ -44,13 +45,13 @@ const LogoutDialog = ({ isOpen, onClose, onLogout }) => {
                 </button>
                 <button
                   className={`bg-red-500 text-white active:bg-red-600 font-bold uppercase text-sm px-6 py-3 rounded shadow outline-none focus:outline-none ${
-                    isLoading ? 'cursor-not-allowed' : 'hover:bg-red-600'
+                    isLoading ? "cursor-not-allowed" : "hover:bg-red-600"
                   }`}
                   type="button"
                   disabled={isLoading}
                   onClick={handleLogout}
                 >
-                  {isLoading ? 'Logging out...' : 'Logout'}
+                  {isLoading ? "Logging out..." : "Logout"}
                 </button>
               </div>
             </div>
@@ -62,4 +63,3 @@ const LogoutDialog = ({ isOpen, onClose, onLogout }) => {
 };
 
 export default LogoutDialog;
-

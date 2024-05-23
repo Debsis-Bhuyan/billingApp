@@ -77,28 +77,44 @@ const CreateExpence = () => {
   return (
     <div className="w-full p-2">
       <hr />
-      <div className="w-full p-4">
-        <div className="flex w-full justify-between items-center py-3">
-          <div className="container mx-auto p-4">
-          <div className="mb-2 w-full items-center flex  ">
-              <label htmlFor="purchaserName" className="1/3 mb-2 mr-7">
-                Party Name
-              </label>
-              <input
-                type="text"
-                id="purchaserName"
-                className="w-full px-4 py-1 border rounded-md mr-0"
-                value={purchaserName}
-                onChange={(e) => setPurchaserName(e.target.value)}
-                required
-                placeholder="Enter Pary Name"
-              />
-            </div>
-            <div className="mb-2 w-full items-center flex  ">
-              <label htmlFor="number1" className="1/3 mb-2 mr-3" aria-required>
-                Party category
-              </label>
-              {/* <input
+      <div className="w-full pt-2">
+        <form className="w-full ">
+          <div className="flex justify-end gap-4 items-center">
+            <button
+              type="submit"
+              className="bg-blue-500 flex items-center hover:bg-blue-700 text-white font-bold  py-1   px-4 rounded"
+            >
+              Save
+            </button>
+            <button className="bg-blue-500 flex items-center hover:bg-blue-700 text-white font-bold py-1  px-4 rounded">
+              Cancel
+            </button>
+          </div>
+          <div className="flex w-full justify-between items-center ">
+            <div className="container mx-auto p-2">
+              <div className="mb-2 w-full items-center flex  ">
+                <label htmlFor="purchaserName" className="1/3 mb-2 mr-7">
+                  Party Name
+                </label>
+                <input
+                  type="text"
+                  id="purchaserName"
+                  className="w-full px-4 py-1 border rounded-md mr-0"
+                  value={purchaserName}
+                  onChange={(e) => setPurchaserName(e.target.value)}
+                  required
+                  placeholder="Enter Pary Name"
+                />
+              </div>
+              <div className="mb-2 w-full items-center flex  ">
+                <label
+                  htmlFor="number1"
+                  className="1/3 mb-2 mr-3"
+                  aria-required
+                >
+                  Party category
+                </label>
+                {/* <input
                 type="text"
                 id="purchaserName"
                 className="w-2/3 px-4 py-1 border rounded-md mr-0"
@@ -106,49 +122,50 @@ const CreateExpence = () => {
                 onChange={(e) => setPurchaseCat(e.target.value)}
                 required
               />  */}
-               <select
-              id="type"
-              required
-              name="purchaseCat"
-              className="w-full py-2 border rounded-md"
-              value={purchaseCat}
-              onChange={(e) => setPurchaseCat(e.target.value)}
-            >
-              <option value="Sale">Search By Name / Purchase</option>
-              <option value="Purchase">Purchase</option>
-            </select>
-            </div>
-           
-          </div>
-
-          <div className="flex w-1/2 flex-col items-center justify-center">
-            <div className="mb-2 w-full items-center flex justify-center">
-              <label htmlFor="number1" className="1/3 mb-2 mr-3">
-                Expense No:
-              </label>
-              <input
-                type="number"
-                id="number1"
-                className="w-2/3 px-4 py-1 border rounded-md mr-0"
-                value={orderNo}
-                onChange={(e) => setOrderNo(e.target.value)}
-              />
+                <select
+                  id="type"
+                  required
+                  name="purchaseCat"
+                  className="w-full py-2 border rounded-md"
+                  value={purchaseCat}
+                  onChange={(e) => setPurchaseCat(e.target.value)}
+                >
+                  <option value="">Select</option>
+                  <option value="Purchase">Purchase</option>
+                  <option value="Sale">Sale</option>
+                </select>
+              </div>
             </div>
 
-            <div className="mb-2 w-full flex justify-center">
-              <label htmlFor="number" className="inline-block 1/3 mb-2 mr-4">
-                Bill Date:
-              </label>
-              <input
-                type="Date"
-                id="number"
-                className="w-2/3 px-4 py-1 border rounded-md"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-              />
+            <div className="flex w-1/2 flex-col items-center justify-center">
+              <div className="mb-2 w-full items-center flex justify-center">
+                <label htmlFor="number1" className="1/3 mb-2 mr-3">
+                  Expense No:
+                </label>
+                <input
+                  type="number"
+                  id="number1"
+                  className="w-2/3 px-4 py-1 border rounded-md mr-0"
+                  value={orderNo}
+                  onChange={(e) => setOrderNo(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-2 w-full flex justify-center">
+                <label htmlFor="number" className="inline-block 1/3 mb-2 mr-4">
+                  Bill Date:
+                </label>
+                <input
+                  type="Date"
+                  id="number"
+                  className="w-2/3 px-4 py-1 border rounded-md"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </form>
 
         <hr />
         <div className="flex items-center w-full justify-center p-4">

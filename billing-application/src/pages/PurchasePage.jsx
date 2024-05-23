@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaPlus, FaEllipsisV } from "react-icons/fa";
-import DeleteShareEdit from "../components/DeleteShareEdit";
+import { FaSearch, FaPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { addTransaction } from "../store/transactionSlice";
 
@@ -8,7 +7,7 @@ const AddPurchaseOrder = () => {
   const transctionData = useSelector((state) => state.transaction).transaction;
   const dispatch = useDispatch();
   
-  const [numberData, setNumberData] = useState(Number(transctionData[transctionData.length-1].number) + 1)
+  const [numberData, setNumberData] = useState(Number(transctionData[transctionData.length-1].number) + 1 || 1)
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [purchaseOrders, setPurchaseOrders] = useState(transctionData);
   const [searchQuery, setSearchQuery] = useState("");
@@ -127,18 +126,7 @@ const AddPurchaseOrder = () => {
                     onChange={(e) => setParty(e.target.value)}
                   />
                 </div>
-                {/* <div className="mb-4 ">
-                  <label htmlFor="number" className="block mb-2">
-                    Number:
-                  </label>
-                  <input
-                    type="text"
-                    id="number"
-                    className="w-full px-4 py-2 border rounded-md"
-                    value={number}
-                    onChange={(e) => setNumber(e.target.value)}
-                  />
-                </div> */}
+                
                 <div className="mb-4">
                   <label htmlFor="date" className="block mb-2">
                     Date:
@@ -265,7 +253,6 @@ const AddPurchaseOrder = () => {
               <th className="border px-4 py-2">Balance</th>
               <th className="border px-4 py-2">Type</th>
               <th className="border px-4 py-2">Status</th>
-              <th className="border px-4 py-2">Action</th>
             </tr>
           </thead>
 
@@ -283,32 +270,13 @@ const AddPurchaseOrder = () => {
                 <td className="border px-4 py-2">{order.type}</td>
                 <td className="border px-4 py-2">{order.status}</td>
 
-                <td
-                  className="border px-4 py-2"
-                  onClick={() => {
-                    setOpen(true);
-                  }}
-                >
-                  <FaEllipsisV />
-                  {isOpen && (
-                    <DeleteShareEdit setOpen={setOpen} orderData={order} />
-                  )}
-                </td>
+              
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* <div>
-        <button
-          onClick={() => {
-            setOpen(true);
-          }}
-        >
-          <FaEllipsisV />
-        </button>
-      </div> */}
     </div>
   );
 };

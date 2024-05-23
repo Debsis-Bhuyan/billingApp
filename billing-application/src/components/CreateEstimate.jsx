@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
-
-import { FaSearch, FaPlus, FaEllipsisV } from "react-icons/fa";
-import DeleteShareEdit from "../components/DeleteShareEdit";
-import { states } from "../utils/state";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { addEstimate } from "../store/estimateSlice";
+import { addPurchaseItem, clearpurchaseItem, removeItem } from "../store/purchaseItem";
+import { MdDelete } from "react-icons/md";
 
 const CreateEstimate = () => {
-  const [purchaseOrders, setPurchaseOrders] = useState([]);
+  const estimateData = useSelector((state) => state.estimate).estimate;
+  const dispatch = useDispatch();
+  const purchaseItemData = useSelector((state) => state.purchaseItem).purchaseItem;
+  console.log(purchaseItemData);
+  // const [purchaseOrders, setPurchaseOrders] = useState(estimateData);
+  const [items, setItems] = useState(purchaseItemData || []);
+
 
   const [date1, setDate1] = useState("");
-  const [ref, setRef] = useState(1);
+  const [ref, setRef] = useState(
+    Number(estimateData[estimateData.length - 1]?.number) + 1 || 1
+  );
   const [addRow, setAddRow] = useState(false);
 
   // State for form fields
@@ -20,7 +29,6 @@ const CreateEstimate = () => {
   const [round, setRound] = useState(false);
 
   // add Item code
-  const [items, setItems] = useState([]);
   const [formData, setFormData] = useState({
     item: "",
     qty: "",
@@ -46,8 +54,10 @@ const CreateEstimate = () => {
         (Number(formData.qty) * formData.pricePerUnit * Number(formData.tax)) /
           100,
     };
-    setItems([...items, newItem]);
-    localStorage.setItem("items", JSON.stringify([...items, newItem]));
+    // setItems([...items, newItem]);
+    // localStorage.setItem("items", JSON.stringify([...items, newItem]));
+    dispatch(addPurchaseItem(newItem))
+    setItems([...items, newItem])
     setFormData({
       item: "",
       qty: "",
@@ -71,14 +81,45 @@ const CreateEstimate = () => {
   }, [items]);
   const saveEstimate = (e) => {
     e.preventDefault();
+    const tableData = {
+      party: customerName,
+      number: ref,
+      date: date1,
+      toatalquantity: toatalquantity,
+      totalAmount: totalAmount,
+      type: type,
+    };
+    dispatch(addEstimate(tableData));
+
+    console.log(tableData);
     console.log(customerName, type, ref, totalAmount, toatalquantity);
     alert("Saved");
   };
+  const handleClear = () => {
+    dispatch(clearpurchaseItem());
+    
+  };
+  const handleDelete = (index)=>{
+    dispatch(removeItem(index));
+  }
+  useEffect(()=>{
+    setItems(purchaseItemData)
+  }, [handleDelete, handleDelete])
 
   return (
     <div className="w-full p-4">
-      <div className=" w-full  p-4">
-        <h2 className=" text-2xl">Estimate/Quatation</h2>
+      <div className=" w-full  ">
+        <div className="flex items-center justify-between w-full">
+          <h2 className=" text-2xl">Estimate/Quatation</h2>
+          <div className="flex items-center justify-end pb-4">
+            <Link
+              to={"/view-estimate"}
+              className="  py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+            >
+              View Estimate Data
+            </Link>
+          </div>
+        </div>
         <form onSubmit={saveEstimate} className="">
           <div className="flex items-center justify-end">
             <button
@@ -88,6 +129,7 @@ const CreateEstimate = () => {
               Save
             </button>
           </div>
+
           <div className="flex w-full justify-between items-center py-3">
             <div className="p-2">
               <div className=" w-full flex items-center justify-between">
@@ -150,6 +192,15 @@ const CreateEstimate = () => {
           </div>
         </form>
         <hr />
+        <div className="py-2 flex items-center justify-end mr-5 ">
+          <button
+            onClick={handleClear}
+            className=" py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Clear items
+          </button>
+        </div>
+
         <div className="flex items-center w-full justify-center p-4">
           <div className="w-full mx-auto">
             <table className="w-full border-collapse border border-gray-200">
@@ -163,7 +214,9 @@ const CreateEstimate = () => {
                     Price/Unit (without tax)
                   </th>
                   <th className="border border-gray-200 px-4 py-2">Tax</th>
+
                   <th className="border border-gray-200 px-4 py-2">Amount</th>
+                  <th className="border border-gray-200 px-4 py-2">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -189,6 +242,11 @@ const CreateEstimate = () => {
                     </td>
                     <td className="border border-gray-200 px-4 py-2">
                       {item.amount.toFixed(2)}
+                    </td>
+                    <td className="border  border-gray-200 px-4 py-2">
+                      <button onClick={() => handleDelete(index)}>
+                        <MdDelete />
+                      </button>
                     </td>
                   </tr>
                 ))}

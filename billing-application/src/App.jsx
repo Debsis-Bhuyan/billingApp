@@ -26,6 +26,7 @@ import CreatePurchaseOrder from "./components/CreatePurchaseOrder";
 import CreateExpence from "./components/AddExpence";
 import CreateExpencePage from "./pages/CreateExpencePage";
 import EditProfile from "./components/EditProfile";
+import ViewEstimate from "./components/ViewEstimate";
 
 const Layout = () => {
   const user = useSelector(state=>state.user)
@@ -69,6 +70,7 @@ function App() {
           <Route path="/purchase-order" element={<PurchaseOrderPage />} />
           <Route path="/estimate" element={<EstimatePage />} />
           <Route path="/create-estimate" element = {<CreateEstimate/>}/>
+          <Route path="/view-estimate" element = {<ViewEstimate/>}/>
           <Route path="/create-purchase" element = {<CreatePurchaseOrder/>}/>
           <Route path="/utilitis" element={<UtilityPage />} />
           <Route path="/settings" element={<SettingPage />} />

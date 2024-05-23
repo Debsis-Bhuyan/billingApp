@@ -14,16 +14,19 @@ const itemSlice = createSlice({
       localStorage.setItem("items", JSON.stringify(state.item))
 
     },
-    // removeItem: (state, action) => {
-    //   state.items = state.items.filter((item) => item.id !== action.payload.id); // Remove item from the array
-    // },
+    removeItem: (state, action) => {
+      state.item = state.item.filter((it, i) => i !== action.payload);
+        localStorage.setItem("items", JSON.stringify(state.item))
+    },
     
     clearItems: (state) => {
       state.item = []; // Clear all items from the array
+      localStorage.setItem("items", JSON.stringify(state.item))
+
     },
   },
 });
 
-export const { addItem, clearItems } = itemSlice.actions;
+export const { addItem,removeItem, clearItems } = itemSlice.actions;
 
 export default itemSlice.reducer;

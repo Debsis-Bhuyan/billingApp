@@ -39,8 +39,8 @@ const ProfilePage = () => {
         </span>
       </h1>
       <div className="flex flex-wrap">
-        <div className="w-1/2 pr-4">
-          <img src={image} alt="Sample Image" className="w-full h-auto" />
+        <div className="w-1/2 pr-4  pt-5   ">
+          <img src={user?.profileUrl || image} alt="Sample Image" className="w-full h-auto" />
           <section className="text-center font-bold mt-4"></section>
         </div>
         <div className="w-1/2 pl-4">
