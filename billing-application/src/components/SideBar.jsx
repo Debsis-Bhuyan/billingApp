@@ -27,7 +27,7 @@ const SideBar = () => {
           </div>
           <nav className="flex-1  p-4 overflow-y-auto">
             <div className="flex gap-2 p-1 px-4 items-center mt-2">
-              <Link to="/profile" className="flex  gap-2">
+              <Link to="/profile" className="flex text-xl gap-2">
                 {/* {! user?.user.image ? ( */}
                 <img
                   src={user?.user.profileUrl || profile}
@@ -44,49 +44,52 @@ const SideBar = () => {
 
             <Link
               to="/dashboard"
-              className="block p-1 pt-2 px-4  hover:bg-gray-700"
+              className="block p-1 pt-2 px-4 text-xl  hover:bg-gray-700"
             >
               Dashboard
             </Link>
-            <Link to="/items" className="block  px-4  p-1 hover:bg-gray-700">
+            <Link to="/items" className="block text-xl  px-4  p-1 hover:bg-gray-700">
               items
             </Link>
-            <Link to="/sales" className="block  px-4  p-1 hover:bg-gray-700">
-              Sales
+            <Link to="/sales" className="block text-xl   px-4  p-1 hover:bg-gray-700">
+              Sales Order
             </Link>
-            <Link to="/expence" className="block  px-4  p-1 hover:bg-gray-700">
+            <Link to="/sales-data" className="block text-xl   px-4  p-1 hover:bg-gray-700">
+              Sales transaction
+            </Link>
+            <Link to="/expence" className="block text-xl px-4  p-1 hover:bg-gray-700">
               Expence
             </Link>
             <Link
               to="/purchase"
-              className="block p-1  px-4   hover:bg-gray-700"
+              className="block p-1  px-4 text-xl   hover:bg-gray-700"
             >
-              Purchase
+              Purchase Data
             </Link>
             <Link
               to="/purchase-order"
-              className="block pt-1  px-4    hover:bg-gray-700"
+              className="block p-1  px-4 text-xl   hover:bg-gray-700"
             >
               Purchase Order
             </Link>
             <Link
               to="/estimate"
-              className="block p-1 px-4    hover:bg-gray-700"
+              className="block p-1 px-4  text-xl  hover:bg-gray-700"
             >
               Estimate
             </Link>
             {/* <Link to="/utilitis" className="block p-1 px-4  hover:bg-gray-700">
               Utilitis
             </Link> */}
-            <Link to="/feedback" className="block p-1 px-4  hover:bg-gray-700">
+            <Link to="/feedback" className="block p-1 text-xl px-4  hover:bg-gray-700">
               Feedback
             </Link>
-            <Link to="/settings" className="block p-1 px-4  hover:bg-gray-700">
+            <Link to="/settings" className="block p-1 text-xl px-4  hover:bg-gray-700">
               Settings
             </Link>
 
             <Link
-              className="block p-1  px-4  hover:bg-gray-700"
+              className="block p-1 text-xl px-4  hover:bg-gray-700"
               onClick={() => {
                 setOpen(true);
               }}
@@ -96,7 +99,7 @@ const SideBar = () => {
           </nav>
         </div>
       </nav>
-      <div className="flex items-center justify-center max-w-96">
+      <div className="flex items-center  justify-center max-w-96">
         <ConformDialog
           isOpen={open}
           onClose={() => setOpen(false)}

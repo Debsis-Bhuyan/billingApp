@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaPlus, FaEllipsisV } from "react-icons/fa";
-import DeleteShareEdit from "../components/DeleteShareEdit";
+
 
 const CreateExpence = () => {
   const [purchaseOrders, setPurchaseOrders] = useState([]);
@@ -49,7 +48,7 @@ const CreateExpence = () => {
       taxAmount: taxAmount,
     };
     setItems([...items, newItem]);
-    localStorage.setItem("items", JSON.stringify([...items, newItem]));
+    // localStorage.setItem("items", JSON.stringify([...items, newItem]));
     setFormData({
       item: "",
       qty: "",

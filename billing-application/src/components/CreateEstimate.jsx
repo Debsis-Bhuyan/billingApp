@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { addEstimate } from "../store/estimateSlice";
-import { addPurchaseItem, clearpurchaseItem, removeItem } from "../store/purchaseItem";
+import {
+  addPurchaseItem,
+  clearpurchaseItem,
+  removeItem,
+} from "../store/purchaseItem";
 import { MdDelete } from "react-icons/md";
 
 const CreateEstimate = () => {
   const estimateData = useSelector((state) => state.estimate).estimate;
   const dispatch = useDispatch();
-  const purchaseItemData = useSelector((state) => state.purchaseItem).purchaseItem;
-  console.log(purchaseItemData);
+  const purchaseItemData = useSelector(
+    (state) => state.purchaseItem
+  ).purchaseItem;
+   
   // const [purchaseOrders, setPurchaseOrders] = useState(estimateData);
   const [items, setItems] = useState(purchaseItemData || []);
-
 
   const [date1, setDate1] = useState("");
   const [ref, setRef] = useState(
@@ -56,8 +61,8 @@ const CreateEstimate = () => {
     };
     // setItems([...items, newItem]);
     // localStorage.setItem("items", JSON.stringify([...items, newItem]));
-    dispatch(addPurchaseItem(newItem))
-    setItems([...items, newItem])
+    dispatch(addPurchaseItem(newItem));
+    setItems([...items, newItem]);
     setFormData({
       item: "",
       qty: "",
@@ -90,48 +95,48 @@ const CreateEstimate = () => {
       type: type,
     };
     dispatch(addEstimate(tableData));
-
-    console.log(tableData);
-    console.log(customerName, type, ref, totalAmount, toatalquantity);
+ 
     alert("Saved");
   };
   const handleClear = () => {
     dispatch(clearpurchaseItem());
-    
   };
-  const handleDelete = (index)=>{
+  const handleDelete = (index) => {
     dispatch(removeItem(index));
-  }
-  useEffect(()=>{
-    setItems(purchaseItemData)
-  }, [handleDelete, handleDelete])
+  };
+  useEffect(() => {
+    setItems(purchaseItemData);
+  }, [handleDelete, handleDelete]);
 
   return (
     <div className="w-full p-4">
       <div className=" w-full  ">
         <div className="flex items-center justify-between w-full">
           <h2 className=" text-2xl">Estimate/Quatation</h2>
-          <div className="flex items-center justify-end pb-4">
-            <Link
-              to={"/view-estimate"}
-              className="  py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-            >
-              View Estimate Data
-            </Link>
-          </div>
+          
         </div>
         <form onSubmit={saveEstimate} className="">
-          <div className="flex items-center justify-end">
-            <button
-              type="submit"
-              className="w-20 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-            >
-              Save
-            </button>
+          <div className="flex w-full justify-end items-center gap-3">
+            <div className="flex items-center justify-end  ">
+              <Link
+                to={"/view-estimate"}
+                className="  py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                View Estimate Data
+              </Link>
+            </div>
+            <div className="flex items-center justify-end">
+              <button
+                type="submit"
+                className=" py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                Save
+              </button>
+            </div>
           </div>
 
-          <div className="flex w-full justify-between items-center py-3">
-            <div className="p-2">
+          <div className="flex w-full justify-center items-center py-3">
+            <div className="w-full gap-3 ">
               <div className=" w-full flex items-center justify-between">
                 <label htmlFor="customerName" className=" w-1/3 mb-2">
                   Party Name:
@@ -145,7 +150,7 @@ const CreateEstimate = () => {
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
               </div>
-              <div className=" w-full flex items-center justify-between">
+              <div className=" w-full flex items-center p-1 justify-between">
                 <label htmlFor="type" className=" w-1/3 mb-2">
                   Select Party:
                 </label>
@@ -295,7 +300,7 @@ const CreateEstimate = () => {
                       <input
                         type="text"
                         name="item"
-                        value={formData.item || " "}
+                        value={formData.item || ""}
                         onChange={handleChange}
                         placeholder="Item"
                         className=" border  m-3  px-4 text-black rounded"

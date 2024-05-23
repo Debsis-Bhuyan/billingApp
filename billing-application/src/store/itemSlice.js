@@ -12,7 +12,6 @@ const itemSlice = createSlice({
       state.item.push(action.payload); 
       // Add new item to the array
       localStorage.setItem("items", JSON.stringify(state.item))
-
     },
     removeItem: (state, action) => {
       state.item = state.item.filter((it, i) => i !== action.payload);
