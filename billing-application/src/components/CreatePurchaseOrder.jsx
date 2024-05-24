@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-
 import { useSelector, useDispatch } from "react-redux";
 import { addPurchase, clearPurchase, removeItem } from "../store/purchaseSlice";
 import { MdDelete } from "react-icons/md";
 import { addTransaction } from "../store/transactionSlice";
+import { Link } from "react-router-dom";
 
 const CreatePurchaseOrder = () => {
   const purchaseData = useSelector((state) => state.purchase).purchase;
   const transctionData = useSelector((state) => state.transaction).transaction;
-  console.log(transctionData);
   const dispatch = useDispatch();
   const [purchaseOrders, setPurchaseOrders] = useState(purchaseData);
   const [orderDate, setOrderDate] = useState("");
@@ -27,11 +26,6 @@ const CreatePurchaseOrder = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [toatalquantity, setTotalQuantity] = useState(0);
   const [round, setRound] = useState(false);
-
-  // Save purchase orders to local storage whenever it changes
-  // useEffect(() => {
-  //   localStorage.setItem("purchaseOrders", JSON.stringify(purchaseOrders));
-  // }, [purchaseOrders]);
 
   // add Item code
   const [items, setItems] = useState([]);
@@ -114,14 +108,14 @@ const CreatePurchaseOrder = () => {
     setDueDate("");
     // setBalance(0);
     setPaymentType("Sale");
-    setOrderNo(orderNo+ 1);
+    setOrderNo(orderNo + 1);
   };
 
-  const handleClear =()=>{
-    dispatch(clearPurchase())
-    setTotalAmount(0)
-    setTotalQuantity(0)
-  }
+  const handleClear = () => {
+    dispatch(clearPurchase());
+    setTotalAmount(0);
+    setTotalQuantity(0);
+  };
   return (
     <div className="w-full p-2">
       <h2 className=" text-3xl pb-3">Purchase Order</h2>
@@ -135,7 +129,6 @@ const CreatePurchaseOrder = () => {
             >
               Save
             </button>
-           
           </div>
           <div className="flex w-full justify-between items-center py-3">
             <div className=" w-1/2 flex  items-center  justify-between">
@@ -201,14 +194,13 @@ const CreatePurchaseOrder = () => {
         <hr />
         <div className="flex items-center w-full justify-center p-4">
           <div className="w-full mx-auto">
-            <div className="flex items-center justify-end"> 
-
-            <button
-              onClick={handleClear}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-            >
-              Clear
-            </button>
+            <div className="flex items-center justify-end">
+              <button
+                onClick={handleClear}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
+              >
+                Clear
+              </button>
             </div>
             <table className="w-full border-collapse border border-gray-200">
               <thead className="bg-gray-100">
@@ -434,14 +426,16 @@ const CreatePurchaseOrder = () => {
 
         <hr />
         <div className="flex justify-end items-end">
-          <button
+          <Link
+            to={"/create-purchase-bills"}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-            onClick={() => {
-              window.print();
+            state={{
+              name: "Some thing",
+              price: 123,
             }}
           >
-            Print
-          </button>
+            Goto create bills
+          </Link>
         </div>
       </div>
     </div>

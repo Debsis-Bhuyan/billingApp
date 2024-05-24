@@ -15,7 +15,7 @@ const CreateEstimate = () => {
   const purchaseItemData = useSelector(
     (state) => state.purchaseItem
   ).purchaseItem;
-   
+
   // const [purchaseOrders, setPurchaseOrders] = useState(estimateData);
   const [items, setItems] = useState(purchaseItemData || []);
 
@@ -95,7 +95,7 @@ const CreateEstimate = () => {
       type: type,
     };
     dispatch(addEstimate(tableData));
- 
+
     alert("Saved");
   };
   const handleClear = () => {
@@ -113,7 +113,6 @@ const CreateEstimate = () => {
       <div className=" w-full  ">
         <div className="flex items-center justify-between w-full">
           <h2 className=" text-2xl">Estimate/Quatation</h2>
-          
         </div>
         <form onSubmit={saveEstimate} className="">
           <div className="flex w-full justify-end items-center gap-3">

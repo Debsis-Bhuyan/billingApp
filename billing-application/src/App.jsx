@@ -27,11 +27,13 @@ import CreateExpence from "./components/AddExpence";
 import CreateExpencePage from "./pages/CreateExpencePage";
 import EditProfile from "./components/EditProfile";
 import ViewEstimate from "./components/ViewEstimate";
-import SalesOrder from './components/CreateSaleOrder'
+import SalesOrder from "./components/CreateSaleOrder";
 import SalesTransaction from "./pages/SalesTransaction";
+import CreatePurchaseBills from "./pages/CreatePurchaseBills";
+import CreateSalesBills from "./pages/CreateSalesBills";
 
 const Layout = () => {
-  const user = useSelector(state=>state.user)
+  const user = useSelector((state) => state.user);
   const location = useLocation();
 
   return user?.user?.token ? (
@@ -44,7 +46,6 @@ const Layout = () => {
         <div className="w-full flex-1  pt-4 overflow-y-auto">
           <Outlet />
         </div>
-        
       </div>
     </div>
   ) : (
@@ -62,30 +63,34 @@ function App() {
           <Route path="/sales" element={<Sales />} />
           <Route path="/sales-data" element={<SalesTransaction />} />
           <Route path="/create-sales" element={<SalesOrder />} />
+
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/feedback" element={<Contact />} />
-          
 
           <Route path="/items" element={<ItemsPage />} />
           <Route path="/expence" element={<ExpencePage />} />
-          <Route path="/create-expence" element = {<CreateExpencePage/>}/>
+          <Route path="/create-expence" element={<CreateExpencePage />} />
           <Route path="/purchase" element={<PurchasePage />} />
           <Route path="/purchase-order" element={<PurchaseOrderPage />} />
           <Route path="/estimate" element={<EstimatePage />} />
-          <Route path="/create-estimate" element = {<CreateEstimate/>}/>
-          <Route path="/view-estimate" element = {<ViewEstimate/>}/>
-          <Route path="/create-purchase" element = {<CreatePurchaseOrder/>}/>
+          <Route path="/create-estimate" element={<CreateEstimate />} />
+          <Route path="/view-estimate" element={<ViewEstimate />} />
+          <Route path="/create-purchase" element={<CreatePurchaseOrder />} />
           <Route path="/utilitis" element={<UtilityPage />} />
           <Route path="/settings" element={<SettingPage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="/company" element={<CompanyPage />} />
-
         </Route>
         <Route path="/auth/register" element={<SignUp />} />
         <Route path="/auth/login" element={<Signin />} />
         <Route path="/auth/forget" element={<Signin />} />
         <Route path="/auth" element={<StartPage />} />
+        <Route path="/create-sales-bills" element={<CreateSalesBills />} />
+        <Route
+          path="/create-purchase-bills"
+          element={<CreatePurchaseBills />}
+        />
       </Routes>
     </div>
   );

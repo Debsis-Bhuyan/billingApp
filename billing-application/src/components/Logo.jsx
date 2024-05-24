@@ -6,8 +6,8 @@ const Logo = ({ type }) => {
       <img
           src={sphereCodeLogo}
           alt="sphere code logo"
-          style={{ width: "80px", height: "40px" }}
-          className="flex "
+          style={{ width: "70px", height: "50px" }}
+          className="flex rounded-full "
         />
       <Link
         to="/"

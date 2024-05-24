@@ -26,9 +26,10 @@ const SalesTransaction = () => {
   const [status, setStatus] = useState("Pending");
 
   // Function to handle form submission
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
+    
     const formData = {
       party,
       number:numberData ,
@@ -43,7 +44,7 @@ const SalesTransaction = () => {
     dispatch(addSales(formData));
 
     setPurchaseOrders([...purchaseOrders, formData]);
-    // Reset form fields
+ 
     setParty("");
     setNumber("");
     setDate("");
@@ -56,9 +57,7 @@ const SalesTransaction = () => {
 
     setPopupOpen(false);
   };
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  
 
   useEffect(() => {
     const filteredOrders = salesData.filter(order =>
@@ -67,8 +66,7 @@ const SalesTransaction = () => {
     setPurchaseOrders(filteredOrders);
   }, [searchQuery, salesData]);
 
-  // Load purchase orders from local storage on component mount
- 
+  
 
   return (
     <div className=" w-full  p-4">
@@ -97,10 +95,10 @@ const SalesTransaction = () => {
         </div>
         <div className="flex items-center space-x-4">
           <Link
-            to={"/create-estimate"}
+            to={"/create-sales"}
             className=" bg-blue-500 text-white px-4 py-2 rounded-md flex items-center"
           >
-            Create Estimate
+            Create Sales
           </Link>
         </div>
       </div>

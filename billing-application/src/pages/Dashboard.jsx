@@ -8,12 +8,15 @@ import { FaRupeeSign } from "react-icons/fa";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
 import { MdOutlineCreateNewFolder } from "react-icons/md";
 import Invoice from "../components/Invoice";
+import { numberToWords } from "../utils";
 
 const Dashboard = () => {
-  const [invoiceAmount, setInvoiceAmount] = useState(Number);
+  const [invoiceAmount, setInvoiceAmount] = useState(0);
   const [receiveAmount, setReceiveAmount] = useState("");
   const [invoiceNo, setInvoiceNo] = useState(1000001);
   const [invoiceDate, setInvoiceDate] = useState(new Date());
+
+  const [totalQuantity, setTotalQuantity] = useState(0);
   const [customerName, setCustomerName] = useState("");
   const [open, setOpen] = useState(false);
   const [billDetails, setBillDetails] = useState({});
@@ -25,18 +28,10 @@ const Dashboard = () => {
 
   const [da, setDa] = useState("");
 
-  const handleInvoiceAmountChange = (e) => {
-    setInvoiceAmount(e.target.value);
-  };
-
-  const handleReceivedAmountChange = (e) => {
-    setReceiveAmount(e.target.value);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const amount = Number(itemPrice) * Number(itemQty);
-    console.log(amount);
+
     const data = {
       itemName,
       itemPrice,
@@ -45,8 +40,7 @@ const Dashboard = () => {
     };
 
     const Item = [...item, data];
-    setInvoiceAmount(invoiceAmount + amount)
-    setReceiveAmount(receiveAmount)
+
     setItem(Item);
     setItemName("");
     setItemPrice("");
@@ -59,12 +53,27 @@ const Dashboard = () => {
       invoiceNo: invoiceNo,
       invoiceDate,
 
-      invoiceAmount: invoiceAmount,
+      invoiceAmount: invoiceAmount ,
       receiveAmount: receiveAmount,
+      totalQuantity,
+      balanceDues: invoiceAmount - Number(receiveAmount),
+       
+      amountInWords:numberToWords((invoiceAmount  ) || 0 )
     };
     setBillDetails(obj);
-  }, [customerName, invoiceNo, invoiceDate, invoiceAmount, receiveAmount]);
+  }, [customerName, invoiceAmount, receiveAmount]);
 
+  useEffect(() => {
+    let total = 0;
+    let toatalQty = 0;
+    item.forEach((it) => {
+      total += it.totalPrice;
+      toatalQty += Number(it.itemQty);
+    });
+
+    setTotalQuantity(toatalQty);
+    setInvoiceAmount(total);
+  }, [item]);
   return (
     <div className="w-full">
       <div className={`w-full md:w-2/3  flex-col ${da} `}>
@@ -269,7 +278,11 @@ const Dashboard = () => {
 
           {/* Right side: Image */}
           <div className="flex-1 w-full flex h-screen  ">
-            <Invoice setStyle={setDa} itemData={item} billDetails = {billDetails} />
+            <Invoice
+              setStyle={setDa}
+              itemData={item}
+              billDetails={billDetails}
+            />
           </div>
         </div>
       </div>

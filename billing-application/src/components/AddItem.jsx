@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../store/itemSlice";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaSearch, FaTrashAlt } from "react-icons/fa";
 
 const AddItem = () => {
-  const item = useSelector((state) => state.item).item;
-  console.log(item);
+  const itemData = useSelector((state) => state.item).item;
   const dispatch = useDispatch();
 
-  const [items, setItems] = useState(item || []);
+  const [items, setItems] = useState(itemData);
   const [itemName, setItemName] = useState("");
   const [itemPrice, setItemPrice] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,34 +20,38 @@ const AddItem = () => {
       price: itemPrice,
       qty: quantity,
     };
-    const updatedItems = [...items, newItem];
-    setItems(updatedItems);
-    console.log("ihkk",item)
-    dispatch(addItem(newItem));
 
+    dispatch(addItem(newItem));
     setItemName("");
     setItemPrice("");
     setQuantity("");
+    setItems(itemData)
   };
 
   const handleDelete = (index) => {
-    console.log("delete")
     dispatch(removeItem(index));
   };
+
+  // useEffect(() => {
+  //   setItems(itemData);
+  // }, [itemData]);
+
   useEffect(() => {
-    console.log(item)
-    setItems(item);
-  }, [handleDelete]);
+    const filteredItems = itemData.filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setItems(filteredItems);
+  }, [searchQuery, itemData]);
 
   return (
-    <div className=" mx-auto mt-2  h-[90vh]  p-4">
+    <div className="mx-auto mt-2 h-[90vh] p-4">
       <h1
         style={{ color: "orange", textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}
         className="text-3xl mb-6"
       >
         Inventory items
       </h1>
-      <form onSubmit={handleSubmit} className="w-full  ">
+      <form onSubmit={handleSubmit} className="w-full">
         <div className="flex justify-between items-center">
           <div className="mb-4">
             <label
@@ -60,9 +64,7 @@ const AddItem = () => {
               type="text"
               id="itemName"
               value={itemName}
-              onChange={(e) => {
-                setItemName(e.target.value);
-              }}
+              onChange={(e) => setItemName(e.target.value)}
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Enter item name"
               required
@@ -79,9 +81,7 @@ const AddItem = () => {
               type="number"
               id="itemPrice"
               value={itemPrice}
-              onChange={(e) => {
-                setItemPrice(e.target.value);
-              }}
+              onChange={(e) => setItemPrice(e.target.value)}
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Enter item price"
               required
@@ -98,9 +98,7 @@ const AddItem = () => {
               type="number"
               id="quantity"
               value={quantity}
-              onChange={(e) => {
-                setQuantity(e.target.value);
-              }}
+              onChange={(e) => setQuantity(e.target.value)}
               className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               placeholder="Enter item quantity"
               required
@@ -114,6 +112,18 @@ const AddItem = () => {
           Add Item
         </button>
       </form>
+      <div className="flex py-4 items-center justify-end gap-4">
+        <label htmlFor="searchQuery"> Search Items</label>
+        <input
+          type="text"
+          id="searchQuery"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search items"
+          className="px-4 py-2 border rounded-md mr-2 focus:outline-none"
+        />
+        <FaSearch className="text-gray-700" />
+      </div>
       <div className="mt-4">
         <h2 className="text-2xl flex items-center justify-center font-bold">
           Items
@@ -135,7 +145,10 @@ const AddItem = () => {
                 <td className="border px-4 py-2">{item.name}</td>
                 <td className="border px-4 py-2">{item.price}</td>
                 <td className="border px-4 py-2">{item.qty}</td>
-                <td className="border px-4 py-2" onClick={()=>handleDelete(index)}>
+                <td
+                  className="border px-4 py-2 cursor-pointer"
+                  onClick={() => handleDelete(index)}
+                >
                   <FaTrashAlt />
                 </td>
               </tr>
@@ -144,6 +157,7 @@ const AddItem = () => {
         </table>
       </div>
     </div>
+
   );
 };
 

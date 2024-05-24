@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 const ProfilePage = () => {
   const user = useSelector((state) => state.user).user.user;
   const [formValues, setFormValues] = useState(user);
-  console.log(user);
   const [userData, setUserData] = useState(user || null);
   const handleInputChange = (e) => {
     const { name, value } = e.target;

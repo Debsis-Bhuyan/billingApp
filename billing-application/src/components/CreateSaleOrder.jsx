@@ -18,6 +18,7 @@ const CreateSaleOrder = () => {
   const dispatch = useDispatch("");
 
   const [purchaseOrders, setPurchaseOrders] = useState(purchaseData);
+  const [partyData, setPartyData] = useState({})
   const [orderDate, setOrderDate] = useState("");
   const [orderNo, setOrderNo] = useState(
     Number(transctionData[transctionData.length - 1].number) + 1
@@ -93,6 +94,20 @@ const CreateSaleOrder = () => {
     setTotalAmount(total);
   }, [items, handleDelete]);
 
+  useEffect(()=>{
+    const obj = {
+      party: partyName,
+      number: orderNo,
+      date: orderDate,
+      dueDate,
+      totalAmount: totalAmount,
+      balance: totalAmount,
+      type: paymentType,
+      status: paymentStatus,
+      toatalquantity
+    };
+    setPartyData(obj)
+  },[partyName, orderNo,orderDate, dueDate, totalAmount,paymentStatus,paymentType])
   useEffect(() => {
     setPurchaseOrders(purchaseData);
   }, [handleDelete]);
@@ -114,11 +129,13 @@ const CreateSaleOrder = () => {
       type: paymentType,
       status: paymentStatus,
     };
+
     dispatch(addSales(obj));
     // localStorage.setItem('formData')
     // setPurchaseOrders([...purchaseOrders, obj]);
 
     alert("Sale item added Successfully.");
+    setPartyData(obj)
 
     setPartyName("");
     setOrderDate("");
@@ -489,14 +506,15 @@ const CreateSaleOrder = () => {
         <hr />
         <div className="flex justify-end w-full">
           <div className="flex justify-end items-end">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-              onClick={() => {
-                window.print();
-              }}
-            >
-              Print
-            </button>
+          <Link
+            to={"/create-sales-bills"}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
+           
+            state={{purchaseOrders, partyData}}
+          >
+            Goto create bills
+          </Link>
+
           </div>
         </div>
       </div>

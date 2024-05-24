@@ -22,7 +22,7 @@ const MobileMenu = ({ user, signOut }) => {
   };
 
   return (
-    <div className="flex  ">
+    <div className="flex bg-blue-800 text-white  ">
       <button
         onClick={toggleMenu}
         className="lg:hidden p-2 text-gray-600 hover:text-gray-800"
@@ -141,10 +141,10 @@ const Navbar = () => {
 
   return (
     <div>
-      <nav className="flex  md:flex-row w-full py-2 lg:pl-6 2xl:px-8   items-center justify-between gap-4 md:gap-0">
+      <nav className="flex  md:flex-row w-full py-2 lg:pl-6 2xl:px-8 bg-blue-800  items-center justify-between gap-4 md:gap-0">
         <Logo />
         <div className="hidden md:flex gap-10 items-start  px-6  ">
-          <ul className="flex pl-4 gap-8 text-base text-black dark:text-white">
+          <ul className="flex pl-4 gap-8 text-base  text-white dark:text-white">
             <NavLink
               to="/company"
               className={({ isActive, isPending }) =>

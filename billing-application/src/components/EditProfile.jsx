@@ -6,9 +6,9 @@ import axios from 'axios'
 
 const EditProfile = () => {
   const user = useSelector((state) => state.user).user;
-console.log(user)
+ 
   const [formValues, setFormValues] = useState(user.user || {});
-  console.log(formValues);
+   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -28,11 +28,10 @@ console.log(user)
       desc:formValues?.businessDetails ||"",
       phoneNo:formValues?.phoneNo ||""
     };
-    console.log(formValues);
-    console.log("obj", obj)
+     
     const url = "http://localhost:5000/api/user/update-profile"
     const token = user.token
-    console.log(token)
+    
     try {
       const response = await axios.put(url,
         obj,

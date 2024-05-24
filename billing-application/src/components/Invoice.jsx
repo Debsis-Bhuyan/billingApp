@@ -2,20 +2,9 @@ import React, { useState } from "react";
 import { numberToWords } from "../utils";
 
 const Invoice = ({ setStyle, itemData,billDetails }) => {
-  const [quantity, setQuantity] = useState(10);
-  const [pricePerUnit, setPricePerUnit] = useState(100);
-  const [invoiceAmount, setInvoiceAmount] = useState(0);
-  const [amountInWords, setAmountInWords] = useState(
-    numberToWords(invoiceAmount)
-  );
+  
+  
 
-  console.log(billDetails)
-
-  // Calculate invoice amount
-  const calculateInvoiceAmount = () => {
-    const amount = quantity * pricePerUnit;
-    setInvoiceAmount(amount);
-  };
 
   // Format currency
   const formatCurrency = (amount) => {
@@ -89,24 +78,26 @@ const Invoice = ({ setStyle, itemData,billDetails }) => {
           ))}
 
           <tr>
-            <td className="py-2 px-4 border border-purple-600">Total</td>
-            <td className="py-2 px-4 border border-purple-600" colSpan="2">
-              {quantity}
+            <td className="py-2 px-4 border border-purple-600">Total quantity</td>
+            <td className="py-2 px-4 border border-purple-600" colSpan="">
+              {billDetails.totalQuantity}
             </td>
+            <td className="py-2 px-4 border border-purple-600">Total Amount</td>
+
             <td className="py-2 px-4 border border-purple-600">
-              {formatCurrency(invoiceAmount)}
+              {formatCurrency(billDetails?.invoiceAmount || 0.00)}
             </td>
           </tr>
         </tbody>
       </table>
       <div className="flex justify-between items-center mt-4">
+         
         <div>
-          <p>Amount In Words: {amountInWords}</p>
-        </div>
-        <div>
-          <p>Sub Total: {formatCurrency(billDetails?.invoiceAmount || 0.00)}</p>
-          <p>Total: {formatCurrency(invoiceAmount)}</p>
-          <p>Balance Due: {formatCurrency(billDetails?.receiveAmount || 0.00)}</p>
+          <p>Total: {formatCurrency(billDetails?.invoiceAmount || 0.00)}</p>
+          <p>Paid: {formatCurrency(billDetails?.receiveAmount || 0.00)}</p>
+          <p>Balance Due: {formatCurrency(billDetails?.balanceDues || 0.00)}</p>
+          <p>Amount In Words: {billDetails.amountInWords }</p>
+
         </div>
       </div>
     </div>
