@@ -85,7 +85,7 @@ const Invoice = ({ setStyle, itemData,billDetails }) => {
             <td className="py-2 px-4 border border-purple-600">Total Amount</td>
 
             <td className="py-2 px-4 border border-purple-600">
-              {formatCurrency(billDetails?.invoiceAmount || 0.00)}
+              {formatCurrency(billDetails?.invoiceAmount || 0.00)} Rs
             </td>
           </tr>
         </tbody>
@@ -93,10 +93,10 @@ const Invoice = ({ setStyle, itemData,billDetails }) => {
       <div className="flex justify-between items-center mt-4">
          
         <div>
-          <p>Total: {formatCurrency(billDetails?.invoiceAmount || 0.00)}</p>
-          <p>Paid: {formatCurrency(billDetails?.receiveAmount || 0.00)}</p>
-          <p>Balance Due: {formatCurrency(billDetails?.balanceDues || 0.00)}</p>
-          <p>Amount In Words: {billDetails.amountInWords }</p>
+          <p>Total: {formatCurrency(billDetails?.invoiceAmount || 0.00)} Rs</p>
+          <p>Paid: {formatCurrency(billDetails?.receiveAmount || 0.00)} Rs</p>
+          <p>Balance Due: {formatCurrency(billDetails?.balanceDues || 0.00)} Rs</p>
+          <p>Amount In Words: {billDetails.amountInWords } only</p>
 
         </div>
       </div>

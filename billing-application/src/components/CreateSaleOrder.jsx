@@ -18,11 +18,12 @@ const CreateSaleOrder = () => {
   const dispatch = useDispatch("");
 
   const [purchaseOrders, setPurchaseOrders] = useState(purchaseData);
-  const [partyData, setPartyData] = useState({})
+  const [partyData, setPartyData] = useState({});
   const [orderDate, setOrderDate] = useState("");
   const [orderNo, setOrderNo] = useState(
     Number(transctionData[transctionData.length - 1].number) + 1
   );
+  console.log( Number(transctionData[transctionData.length - 1].number) + 1)
   const [addRow, setAddRow] = useState(false);
   const [dueDate, setDueDate] = useState("");
   const [paymentType, setPaymentType] = useState("Cash");
@@ -94,7 +95,7 @@ const CreateSaleOrder = () => {
     setTotalAmount(total);
   }, [items, handleDelete]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const obj = {
       party: partyName,
       number: orderNo,
@@ -104,10 +105,18 @@ const CreateSaleOrder = () => {
       balance: totalAmount,
       type: paymentType,
       status: paymentStatus,
-      toatalquantity
+      toatalquantity,
     };
-    setPartyData(obj)
-  },[partyName, orderNo,orderDate, dueDate, totalAmount,paymentStatus,paymentType])
+    setPartyData(obj);
+  }, [
+    partyName,
+    orderNo,
+    orderDate,
+    dueDate,
+    totalAmount,
+    paymentStatus,
+    paymentType,
+  ]);
   useEffect(() => {
     setPurchaseOrders(purchaseData);
   }, [handleDelete]);
@@ -122,7 +131,7 @@ const CreateSaleOrder = () => {
     const obj = {
       party: partyName,
       number: orderNo,
-      date: orderDate,
+      date: new Date().toLocaleDateString(),
       dueDate,
       totalAmount: totalAmount,
       balance: totalAmount,
@@ -131,25 +140,30 @@ const CreateSaleOrder = () => {
     };
 
     dispatch(addSales(obj));
-    // localStorage.setItem('formData')
-    // setPurchaseOrders([...purchaseOrders, obj]);
 
     alert("Sale item added Successfully.");
-    setPartyData(obj)
+    setPartyData(obj);
 
-    setPartyName("");
-    setOrderDate("");
-    setDueDate("");
-    // setBalance(0);
-    setPaymentType("Sale");
-    setOrderNo(orderNo + 1);
-    setPhoneNo("");
+    // setPartyName("");
+    // setOrderDate("");
+    // setDueDate("");
+    // // setBalance(0);
+    // setPaymentType("Sale");
+    // setOrderNo(orderNo + 1);
+    // setPhoneNo("");
   };
 
   const handleClear = () => {
     dispatch(clearsalesItem());
     setTotalAmount(0);
     setTotalQuantity(0);
+    setPartyName("");
+    
+    setDueDate("");
+    // setBalance(0);
+    setPaymentType("Sale");
+    setOrderNo( Number(transctionData[transctionData.length - 1].number) + 1);
+    setPhoneNo("");
   };
   return (
     <div className="w-full p-2">
@@ -228,14 +242,17 @@ const CreateSaleOrder = () => {
                 <label htmlFor="number" className="inline-block 1/3   mr-4">
                   Order Date:
                 </label>
-                <input
+                {/* <input
                   type="Date"
                   id="number"
                   className="w-2/3 px-4  border rounded-md"
                   value={orderDate}
                   onChange={(e) => setOrderDate(e.target.value)}
                   required
-                />
+                /> */}
+                <p className="w-2/3 px-4  border rounded-md mr-0">
+                  {new Date().toLocaleDateString()}
+                </p>
               </div>
               <div className="mb-2  w-full flex justify-center">
                 <label htmlFor="number" className="inline-block 1/3   mr-7">
@@ -258,7 +275,7 @@ const CreateSaleOrder = () => {
             onClick={handleClear}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
           >
-            Clear
+            Clear All
           </button>
         </div>
         <hr />
@@ -274,7 +291,7 @@ const CreateSaleOrder = () => {
                   <th className="border border-gray-200 px-4 py-2">
                     Price/Unit (without tax)
                   </th>
-                  <th className="border border-gray-200 px-4 py-2">Tax</th>
+                  <th className="border border-gray-200 px-4 py-2">GST</th>
                   <th className="border border-gray-200 px-4 py-2">Amount</th>
                   <th className="border border-gray-200 px-4 py-2">Delete</th>
                 </tr>
@@ -404,7 +421,7 @@ const CreateSaleOrder = () => {
                         className="border  m-3  px-4 text-black rounded"
                         required
                       >
-                        <option value="">Select Tax</option>
+                        <option value="">Select GST</option>
                         {taxData.map((state) => (
                           <option key={state} value={state}>
                             {state}
@@ -506,15 +523,13 @@ const CreateSaleOrder = () => {
         <hr />
         <div className="flex justify-end w-full">
           <div className="flex justify-end items-end">
-          <Link
-            to={"/create-sales-bills"}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-           
-            state={{purchaseOrders, partyData}}
-          >
-            Goto create bills
-          </Link>
-
+            <Link
+              to={"/create-sales-bills"}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
+              state={{ purchaseOrders, partyData }}
+            >
+              Goto create bills
+            </Link>
           </div>
         </div>
       </div>

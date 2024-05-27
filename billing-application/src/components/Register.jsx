@@ -4,21 +4,37 @@ import Logo from "./Logo";
 import axios from "axios";
 import { uploadFile } from "../utils";
 import useStore from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../store/userSlice";
 const SignUp = () => {
+  const userData = useSelector((state) => state.user).user;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [conformPassword, setConformPassword] = useState("");
   const [name, setName] = useState("");
   const [file, setFile] = useState(null);
   const [fileURL, setFileUrl] = useState("");
-  const navigate = useNavigate();
-  const signIn = useStore((state) => state.signIn);
+  const [err, setErr] = useState("");
+
   useEffect(() => {
     file && uploadFile(setFileUrl, file);
   }, [file]);
+  useEffect(() => {
+    setTimeout(() => {
+      setErr("");
+    }, 3000);
+  }, [err]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(email, password, name, fileURL);
+    console.log(password, conformPassword);
+    if (password !== conformPassword) {
+      setErr("Password and Conform Password are not matched");
+      return;
+    }
+    console.log(email, password, name, conformPassword);
     const url = "http://localhost:5000/api/user/register";
     try {
       const response = await axios.post(url, {
@@ -27,20 +43,16 @@ const SignUp = () => {
         password,
         profileUrl: fileURL,
       });
-      // Handle success, e.g., show a success message to the user
       console.log("User registered successfully:", response.data);
       setFile(null);
+      alert(response.data.message)
       if (response.data.success) {
         console.log(response.data.user);
-        localStorage.setItem("userInfo", JSON.stringify(response.data));
-        signIn(response.data);
+        dispatch(setUser(response.data));
 
         setTimeout(() => {
-          const userData = localStorage.getItem("userInfo");
-          console.log(userData.user);
-          console.log(userData.token);
           navigate("/dashboard");
-        }, 2000);
+        }, 1000);
       }
       return response.data; // Return any data you want to use in your component
     } catch (error) {
@@ -77,6 +89,7 @@ const SignUp = () => {
               }}
               className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-300"
               placeholder="Enter your Name"
+              required
             />
           </div>
           <div className="mb-4">
@@ -96,6 +109,7 @@ const SignUp = () => {
               }}
               className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-300"
               placeholder="Enter your email"
+              required
             />
           </div>
           <div className="mb-4">
@@ -115,14 +129,36 @@ const SignUp = () => {
               }}
               className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-300"
               placeholder="Enter your password"
+              required
             />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="conformPassword"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Conform Password
+            </label>
+            <input
+              type="password"
+              id="conformPassword"
+              name="conformPassword"
+              value={conformPassword}
+              onChange={(e) => {
+                setConformPassword(e.target.value);
+              }}
+              className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-300"
+              placeholder="Conform your password"
+              required
+            />
+            {err && <p className="  text-red-700">{err}</p>}
           </div>
           <div className="mb-4">
             <label
               htmlFor="file"
               className="block text-sm font-medium text-gray-700"
             >
-              Upload Profile photo
+              Upload Business Logo
             </label>
             <input
               type="file"
@@ -133,6 +169,7 @@ const SignUp = () => {
               }}
               className="mt-1 p-2 w-full border rounded-md focus:ring focus:ring-blue-300"
               placeholder="Enter your password"
+              required
             />
           </div>
 

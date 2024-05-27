@@ -7,14 +7,11 @@ import { MdDelete } from "react-icons/md";
 const CreateSalesBills = () => {
   const user = useSelector((state) => state.user).user.user;
 
-  console.log(user);
   const location = useLocation();
   const data = location.state;
-  console.log(data)
   const [purchaseDetails, setPurchaseDetails] = useState(data.purchaseOrders);
   const [partyData, setPartyData] = useState(data.partyData);
-  console.log(purchaseDetails)
-  console.log(partyData)
+  
 const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
   const handlePrint = () => {
     window.print();
@@ -57,7 +54,7 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
         </div>
         <div className="text-gray-700">
           <p className="font-semibold">Order Details</p>
-          <p>Date: {partyData?.date}</p>
+          <p>Date: {new Date().toLocaleDateString()}</p>
           <p>Due Date: {partyData?.dueDate}</p>
         </div>
       </div>
@@ -65,40 +62,40 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
         <table className="w-full border-collapse border border-gray-200">
           <thead className="bg-gray-100">
             <tr>
-              <th className="border border-gray-200 px-4 py-2">Sl No</th>
-              <th className="border border-gray-200 px-4 py-2">Item</th>
-              <th className="border border-gray-200 px-4 py-2">Qty</th>
-              <th className="border border-gray-200 px-4 py-2">Unit</th>
-              <th className="border border-gray-200 px-4 py-2">
+              <th className="border border-gray-200 px-4 py-1">Sl No</th>
+              <th className="border border-gray-200 px-4 py-1">Item</th>
+              <th className="border border-gray-200 px-4 py-1">Qty</th>
+              <th className="border border-gray-200 px-4 py-1">Unit</th>
+              <th className="border border-gray-200 px-4 py-1">
                 Price/Unit (without tax)
               </th>
-              <th className="border border-gray-200 px-4 py-2">Tax</th>
-              <th className="border border-gray-200 px-4 py-2">Amount</th>
+              <th className="border border-gray-200 px-4 py-1">Tax</th>
+              <th className="border border-gray-200 px-4 py-1">Amount</th>
             </tr>
           </thead>
           <tbody>
             {purchaseDetails.map((item, index) => (
                   <tr key={index}>
-                    <td className="border border-gray-200 px-4 py-2">
+                    <td className="border border-gray-200 px-4 py-1">
                       {index + 1}
                     </td>
-                    <td className="border border-gray-200 px-4 py-2">
+                    <td className="border border-gray-200 px-4 py-1">
                       {item.item}
                     </td>
-                    <td className="border border-gray-200 px-4 py-2">
+                    <td className="border border-gray-200 px-4 py-1">
                       {item.qty}
                     </td>
-                    <td className="border border-gray-200 px-4 py-2">
+                    <td className="border border-gray-200 px-4 py-1">
                       {item.unit}
                     </td>
-                    <td className="border border-gray-200 px-4 py-2">
-                      {item.pricePerUnit}
+                    <td className="border border-gray-200 px-4 py-1">
+                      {item.pricePerUnit} Rs
                     </td>
-                    <td className="border border-gray-200 px-4 py-2">
+                    <td className="border border-gray-200 px-4 py-1">
                       {item.tax}
                     </td>
-                    <td className="border border-gray-200 px-4 py-2">
-                      {Number(item.amount).toFixed(2)}
+                    <td className="border border-gray-200 px-4 py-1">
+                      {Number(item.amount).toFixed(2)} Rs
                     </td>
                     
                   </tr>
@@ -108,21 +105,21 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
             <tr>
               <td
                 colSpan="2"
-                className="border border-gray-200 px-4 py-2 text-right"
+                className="border border-gray-200 px-4 py-1 text-right"
               >
                 Total quantity:
               </td>
-              <td className="border border-gray-200 px-4 py-2">
+              <td className="border border-gray-200 px-4 py-1">
                 {partyData?.toatalquantity}
               </td>
               <td
                 colSpan="3"
-                className="border border-gray-200 px-4 py-2 text-right"
+                className="border border-gray-200 px-4 py-1 text-right"
               >
                 Total Amount:
               </td>
-              <td className="border border-gray-200 px-4 py-2">
-              {partyData?.totalAmount}
+              <td className="border border-gray-200 px-4 py-1">
+              {partyData?.totalAmount} Rs
               </td>
             </tr>
           </tfoot>
@@ -131,7 +128,7 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
       <div className="flex py-2 px-2">
         <div className="w-1/2 pr-4 text-gray-700">
           <p className="font-semibold">Order Amount In Words</p>
-          <p>{amount}</p>
+          <p>{amount} only</p>
           <p className="mt-4 font-semibold">Terms and Conditions</p>
           <p>Thanks for doing business with us!</p>
           <p>Please visit Again</p>
@@ -139,15 +136,15 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
         <div className="w-1/2 text-gray-700">
           <div className="flex justify-between bg-purple-100 p-1">
             <p className="font-semibold">Total</p>
-            <p>{partyData?.totalAmount}</p>
+            <p>{partyData?.totalAmount} Rs</p>
           </div>
           <div className="flex justify-between p-1  ">
             <p>Paid</p>
-            <p>{partyData?.totalAmount}</p>
+            <p>{partyData?.totalAmount} Rs</p>
           </div>
           <div className="flex justify-between p-1">
             <p>Balance</p>
-            <p>{partyData?.totalAmount}</p>
+            <p>{partyData?.totalAmount} Rs</p>
           </div>
         </div>
       </div>
