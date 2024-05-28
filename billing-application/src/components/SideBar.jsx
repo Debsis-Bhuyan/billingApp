@@ -48,17 +48,30 @@ const SideBar = () => {
             >
               Dashboard
             </Link>
-            <Link to="/items" className="block text-xl  px-4  p-1 rounded hover:bg-blue-500">
+            <Link
+              to="/items"
+              className="block text-xl  px-4  p-1 rounded hover:bg-blue-500"
+            >
               items
             </Link>
-            <Link to="/sales" className="block text-xl   px-4  p-1 rounded hover:bg-blue-500">
+            <Link
+              to="/sales"
+              className="block text-xl   px-4  p-1 rounded hover:bg-blue-500"
+            >
               Sales Order
             </Link>
-            <Link to="/sales-data" className="block text-xl   px-4  p-1 rounded hover:bg-blue-500">
+            <Link
+              to="/sales-data"
+              className="block text-xl   px-4  p-1 rounded hover:bg-blue-500"
+            >
               Sales transaction
             </Link>
-            <Link to="/expence" className="block text-xl px-4  p-1 rounded hover:bg-blue-500">
-              Expence
+
+            <Link
+              to="/purchase-order"
+              className="block p-1  px-4 text-xl   rounded hover:bg-blue-500"
+            >
+              Purchase Order
             </Link>
             <Link
               to="/purchase"
@@ -67,10 +80,10 @@ const SideBar = () => {
               Purchase transaction
             </Link>
             <Link
-              to="/purchase-order"
-              className="block p-1  px-4 text-xl   rounded hover:bg-blue-500"
+              to="/expence"
+              className="block text-xl px-4  p-1 rounded hover:bg-blue-500"
             >
-              Purchase Order
+              Expence
             </Link>
             <Link
               to="/estimate"
@@ -78,16 +91,21 @@ const SideBar = () => {
             >
               Estimate
             </Link>
-            {/* <Link to="/utilitis" className="block p-1 px-4  hover:bg-gray-700">
-              Utilitis
-            </Link> */}
-            <Link to="/feedback" className="block p-1 text-xl px-4  rounded hover:bg-blue-500">
-              Feedback
-            </Link>
-            <Link to="/settings" className="block p-1 text-xl px-4  rounded hover:bg-blue-500">
+             
+            <Link
+              to="/settings"
+              className="block p-1 text-xl px-4  rounded hover:bg-blue-500"
+            >
               Settings
             </Link>
 
+            <Link
+              to="/feedback"
+              className="block p-1 text-xl px-4  rounded hover:bg-blue-500"
+            >
+              Feedback
+            </Link>
+            
             <Link
               className="block p-1 text-xl px-4  rounded hover:bg-blue-500"
               onClick={() => {
