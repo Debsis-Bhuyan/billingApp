@@ -64,7 +64,7 @@ const SideBar = () => {
               to="/purchase"
               className="block p-1  px-4 text-xl  rounded hover:bg-blue-500"
             >
-              Purchase Data
+              Purchase transaction
             </Link>
             <Link
               to="/purchase-order"

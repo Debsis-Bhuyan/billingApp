@@ -18,12 +18,12 @@ const CreateEstimate = () => {
 
   // const [purchaseOrders, setPurchaseOrders] = useState(estimateData);
   const [items, setItems] = useState(purchaseItemData || []);
-
   const [date1, setDate1] = useState("");
   const [ref, setRef] = useState(
     Number(estimateData[estimateData.length - 1]?.number) + 1 || 1
   );
   const [addRow, setAddRow] = useState(false);
+  const [partyData,setPartyData]= useState({})
 
   // State for form fields
   const [customerName, setCustomerName] = useState("");
@@ -82,23 +82,25 @@ const CreateEstimate = () => {
     });
     setTotalQuantity(toatalQty);
     setTotalAmount(total);
-    // localStorage.setItem("items", JSON.stringify(items));
   }, [items]);
   const saveEstimate = (e) => {
     e.preventDefault();
     const tableData = {
       party: customerName,
-      number: ref,
+      number: Number(estimateData[estimateData.length - 1]?.number) + 1 || 1,
       date: date1,
       toatalquantity: toatalquantity,
       totalAmount: totalAmount,
       type: type,
     };
+    setPartyData(tableData)
     dispatch(addEstimate(tableData));
-
     alert("Saved");
   };
   const handleClear = () => {
+    setCustomerName("");
+    setRef(Number(estimateData[estimateData.length - 1]?.number) + 1 || 1);
+
     dispatch(clearpurchaseItem());
   };
   const handleDelete = (index) => {
@@ -106,7 +108,7 @@ const CreateEstimate = () => {
   };
   useEffect(() => {
     setItems(purchaseItemData);
-  }, [handleDelete, handleDelete]);
+  }, [saveEstimate, handleDelete]);
 
   return (
     <div className="w-full p-4">
@@ -116,14 +118,6 @@ const CreateEstimate = () => {
         </div>
         <form onSubmit={saveEstimate} className="">
           <div className="flex w-full justify-end items-center gap-3">
-            <div className="flex items-center justify-end  ">
-              <Link
-                to={"/view-estimate"}
-                className="  py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-              >
-                View Estimate Data
-              </Link>
-            </div>
             <div className="flex items-center justify-end">
               <button
                 type="submit"
@@ -131,6 +125,14 @@ const CreateEstimate = () => {
               >
                 Save
               </button>
+            </div>
+            <div className="flex items-center justify-end  ">
+              <Link
+                to={"/view-estimate"}
+                className="  py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                View Estimate Data
+              </Link>
             </div>
           </div>
 
@@ -210,17 +212,17 @@ const CreateEstimate = () => {
             <table className="w-full border-collapse border border-gray-200">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="border border-gray-200 px-4 py-2">#</th>
+                  <th className="border border-gray-200 px-4 py-2">Sl No.</th>
                   <th className="border border-gray-200 px-4 py-2">Item</th>
                   <th className="border border-gray-200 px-4 py-2">Qty</th>
                   <th className="border border-gray-200 px-4 py-2">Unit</th>
                   <th className="border border-gray-200 px-4 py-2">
                     Price/Unit (without tax)
                   </th>
-                  <th className="border border-gray-200 px-4 py-2">Tax</th>
+                  <th className="border border-gray-200 px-4 py-2">GST</th>
 
                   <th className="border border-gray-200 px-4 py-2">Amount</th>
-                  <th className="border border-gray-200 px-4 py-2">Delete</th>
+                  <th className="border border-gray-200 px-2 py-2">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -245,9 +247,9 @@ const CreateEstimate = () => {
                       {item.tax}
                     </td>
                     <td className="border border-gray-200 px-4 py-2">
-                      {item.amount.toFixed(2)}
+                      {item.amount.toFixed(2)} Rs
                     </td>
-                    <td className="border  border-gray-200 px-4 py-2">
+                    <td className="border  border-gray-200 px-2 py-2">
                       <button onClick={() => handleDelete(index)}>
                         <MdDelete />
                       </button>
@@ -258,7 +260,7 @@ const CreateEstimate = () => {
               <tfoot>
                 <tr>
                   <td
-                    colSpan="3"
+                    colSpan="2"
                     className="border border-gray-200 px-4 py-2 text-right"
                   >
                     Total quantity:
@@ -267,13 +269,13 @@ const CreateEstimate = () => {
                     {toatalquantity}
                   </td>
                   <td
-                    colSpan="2"
+                    colSpan="3"
                     className="border border-gray-200 px-4 py-2 text-right"
                   >
                     Total Amount:
                   </td>
                   <td className="border border-gray-200 px-4 py-2">
-                    {totalAmount.toFixed(2)}
+                    {totalAmount.toFixed(2) + " Rs"}
                   </td>
                 </tr>
               </tfoot>
@@ -308,7 +310,7 @@ const CreateEstimate = () => {
                       <input
                         type="number"
                         name="qty"
-                        value={formData.qty || ""}
+                        value={formData.qty}
                         onChange={handleChange}
                         placeholder="Quantity"
                         className=" border  m-3  px-4 text-black rounded"
@@ -318,12 +320,12 @@ const CreateEstimate = () => {
                       <select
                         id="unit"
                         name="unit"
-                        value={formData.unit || " "}
+                        value={formData.unit || ""}
                         onChange={handleChange}
                         className="border  m-3  px-4 text-black rounded"
                         required
                       >
-                        <option value=" ">Select Unit</option>
+                        <option value="">Select Unit</option>
                         {unitData.map((state) => (
                           <option key={state} value={state}>
                             {state}
@@ -343,12 +345,12 @@ const CreateEstimate = () => {
                       <select
                         id="unist"
                         name="tax"
-                        value={formData.tax || " "}
+                        value={formData.tax}
                         onChange={handleChange}
                         className="border  m-3  px-4 text-black rounded"
                         required
                       >
-                        <option value=" ">Select Tax</option>
+                        <option value=" ">Select GST</option>
                         {taxData.map((state) => (
                           <option key={state} value={state}>
                             {state}
@@ -405,15 +407,16 @@ const CreateEstimate = () => {
           )}
         </div>
         <hr />
-        <div className="flex justify-end items-end">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-            onClick={() => {
-              window.print();
-            }}
-          >
-            Print
-          </button>
+        <div className="flex justify-end w-full">
+          <div className="flex justify-end items-end">
+            <Link
+              to={"/create-estimate-bills"}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
+              state={{ purchaseItemData ,partyData}}
+            >
+              Goto create bills
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -31,6 +31,9 @@ import SalesOrder from "./components/CreateSaleOrder";
 import SalesTransaction from "./pages/SalesTransaction";
 import CreatePurchaseBills from "./pages/CreatePurchaseBills";
 import CreateSalesBills from "./pages/CreateSalesBills";
+import CreateEstimateBills from "./pages/CreateEstimateBills";
+import ExpenceData from "./pages/ExpenceData";
+import CreateExpenceBills from "./pages/CreateExpenceBills";
 
 const Layout = () => {
   const user = useSelector((state) => state.user);
@@ -70,6 +73,7 @@ function App() {
 
           <Route path="/items" element={<ItemsPage />} />
           <Route path="/expence" element={<ExpencePage />} />
+          <Route path="/expence-data" element={<ExpenceData />} />
           <Route path="/create-expence" element={<CreateExpencePage />} />
           <Route path="/purchase" element={<PurchasePage />} />
           <Route path="/purchase-order" element={<PurchaseOrderPage />} />
@@ -90,6 +94,14 @@ function App() {
         <Route
           path="/create-purchase-bills"
           element={<CreatePurchaseBills />}
+        />
+        <Route
+          path="/create-estimate-bills"
+          element={<CreateEstimateBills />}
+        />
+         <Route
+          path="/create-expence-bills"
+          element={<CreateExpenceBills />}
         />
       </Routes>
     </div>

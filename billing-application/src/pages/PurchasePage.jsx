@@ -2,27 +2,27 @@ import React, { useState, useEffect } from "react";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { addTransaction } from "../store/transactionSlice";
+import { Link } from "react-router-dom";
 
 const AddPurchaseOrder = () => {
   const transctionData = useSelector((state) => state.transaction).transaction;
   const dispatch = useDispatch();
-  
-  const [numberData, setNumberData] = useState(Number(transctionData[transctionData.length-1].number) + 1 || 1)
+
+  const [numberData, setNumberData] = useState(
+    Number(transctionData[transctionData.length - 1]?.number) + 1 || 1
+  );
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [purchaseOrders, setPurchaseOrders] = useState(transctionData);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [isOpen, setOpen] = useState(false);
 
   // State for form fields
   const [party, setParty] = useState("");
-  const [number, setNumber] = useState("");
-  const [date, setDate] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [balance, setBalance] = useState("");
-  const [type, setType] = useState("Sale");
-  const [status, setStatus] = useState("Pending");
+  const [type, setType] = useState("Cash");
+  const [status, setStatus] = useState("Paid");
 
   // Function to handle form submission
   const handleSubmit = (e) => {
@@ -30,8 +30,8 @@ const AddPurchaseOrder = () => {
     // Handle form submission here
     const formData = {
       party,
-      number:numberData ,
-      date,
+      number: numberData,
+      date:new Date().toLocaleDateString(),
       dueDate,
       totalAmount,
       balance,
@@ -44,14 +44,13 @@ const AddPurchaseOrder = () => {
     setPurchaseOrders([...purchaseOrders, formData]);
     // Reset form fields
     setParty("");
-    setNumber("");
-    setDate("");
+     
     setDueDate("");
     setTotalAmount("");
     setBalance("");
-    setType("Sale");
-    setStatus("Pending");
-    setNumberData(numberData + 1)
+    setType("Cash");
+    setStatus("Paid");
+    setNumberData(numberData + 1);
 
     setPopupOpen(false);
   };
@@ -60,30 +59,20 @@ const AddPurchaseOrder = () => {
   };
 
   useEffect(() => {
-    const filteredOrders = transctionData.filter(order =>
+    const filteredOrders = transctionData.filter((order) =>
       order.party.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setPurchaseOrders(filteredOrders);
   }, [searchQuery, transctionData]);
 
-  // Load purchase orders from local storage on component mount
-  useEffect(() => {
-    const savedPurchaseOrders = localStorage.getItem("purchaseOrders");
-    if (savedPurchaseOrders) {
-      setPurchaseOrders(JSON.parse(savedPurchaseOrders));
-    }
-  }, []);
 
-  // Save purchase orders to local storage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("purchaseOrders", JSON.stringify(purchaseOrders));
-  }, [purchaseOrders]);
+
 
   return (
     <div className=" w-full  p-4">
       <div className="flex w-full justify-between items-center py-3">
         <div className="flex items-center">
-          <p className="mr-2 text-2xl">All Transactions</p>
+          <p className="mr-2 text-2xl">All Purchase Transactions</p>
         </div>
         <div className="flex items-center">
           <input
@@ -104,6 +93,14 @@ const AddPurchaseOrder = () => {
             Add Transaction
           </button>
         </div>
+        <div className="flex items-center space-x-4">
+          <Link
+            to={"/create-purchase"}
+            className=" bg-blue-500 text-white px-4 py-2 rounded-md flex items-center"
+          >
+            Create Purchase
+          </Link>
+        </div>
       </div>
       <div className="flex w-full justify-center items-center py-3">
         {isPopupOpen && (
@@ -116,7 +113,7 @@ const AddPurchaseOrder = () => {
               >
                 <div className="mb-4 ">
                   <label htmlFor="party" className="block mb-2">
-                    Party:
+                    Party Name:
                   </label>
                   <input
                     type="text"
@@ -124,20 +121,24 @@ const AddPurchaseOrder = () => {
                     className="w-full px-4 py-2 border rounded-md"
                     value={party}
                     onChange={(e) => setParty(e.target.value)}
+                    required
                   />
                 </div>
-                
+
                 <div className="mb-4">
                   <label htmlFor="date" className="block mb-2">
-                    Date:
+                   Purchase Date:
                   </label>
-                  <input
+                  {/* <input
                     type="date"
                     id="date"
                     className="w-full px-4 py-2 border rounded-md"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                  />
+                  /> */}
+                  <p className="w-full px-4 py-2  border rounded-md mr-0">
+                    {new Date().toLocaleDateString()}
+                  </p>
                 </div>
                 <div className="mb-4 ">
                   <label htmlFor="dueDate" className="block mb-2">
@@ -149,6 +150,7 @@ const AddPurchaseOrder = () => {
                     className="w-full px-4 py-2 border rounded-md"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-4 ">
@@ -161,6 +163,7 @@ const AddPurchaseOrder = () => {
                     className="w-full px-4 py-2 border rounded-md"
                     value={totalAmount}
                     onChange={(e) => setTotalAmount(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-4 ">
@@ -173,6 +176,7 @@ const AddPurchaseOrder = () => {
                     className="w-full px-4 py-2 border rounded-md"
                     value={balance}
                     onChange={(e) => setBalance(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-4">
@@ -185,8 +189,9 @@ const AddPurchaseOrder = () => {
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                   >
-                    <option value="Sale">Sale</option>
-                    <option value="Purchase">Purchase</option>
+                    <option value="Cash">Cash</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Card</option>
                   </select>
                 </div>
                 <div className="mb-4 ">
@@ -199,22 +204,11 @@ const AddPurchaseOrder = () => {
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
                   >
-                    <option value="Pending">Pending</option>
                     <option value="Paid">Paid</option>
+                    <option value="Pending">Pending</option>
                   </select>
                 </div>
-                {/* <div className="mb-4 mx-4">
-                  <label htmlFor="action" className="block mb-2">
-                    Action:
-                  </label>
-                  <input
-                    type="text"
-                    id="action"
-                    className="w-full px-4 py-2 border rounded-md"
-                    value={action}
-                    onChange={(e) => setAction(e.target.value)}
-                  />
-                </div> */}
+                 
 
                 <div className="mx-4">
                   <div className="my-2">
@@ -240,11 +234,10 @@ const AddPurchaseOrder = () => {
 
       <hr />
       <div className="flex items-center w-full justify-center p-4">
-        {/* Table to display purchase orders */}
         <table className="w-full mt-4">
           <thead>
             <tr>
-              <th className="border px-4 py-2">#</th>
+              <th className="border px-4 py-2">Sl No.</th>
               <th className="border px-4 py-2">Party</th>
               <th className="border px-4 py-2">Number</th>
               <th className="border px-4 py-2">Date</th>
@@ -265,18 +258,19 @@ const AddPurchaseOrder = () => {
                 <td className="border px-4 py-2">{order.number}</td>
                 <td className="border px-4 py-2">{order.date}</td>
                 <td className="border px-4 py-2">{order.dueDate}</td>
-                <td className="border px-4 py-2">{Number(order.totalAmount).toFixed()}</td>
-                <td className="border px-4 py-2">{Number(order.balance).toFixed()}</td>
+                <td className="border px-4 py-2">
+                  {Number(order.totalAmount).toFixed()}
+                </td>
+                <td className="border px-4 py-2">
+                  {Number(order.balance).toFixed()}
+                </td>
                 <td className="border px-4 py-2">{order.type}</td>
                 <td className="border px-4 py-2">{order.status}</td>
-
-              
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
     </div>
   );
 };

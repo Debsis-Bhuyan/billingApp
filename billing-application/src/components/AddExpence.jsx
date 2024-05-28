@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { addExpenceItem, clearExpenceItem } from "../store/expenceItem";
+import { addExpence } from "../store/expenceSlice";
+import { MdDelete } from "react-icons/md";
 
 const CreateExpence = () => {
-  const [purchaseOrders, setPurchaseOrders] = useState([]);
-  const [orderDate, setOrderDate] = useState("");
-  const [orderNo, setOrderNo] = useState(1);
+  const dispatch = useDispatch();
+  const expenseData = useSelector((state) => state.expence).expence;
+  const expenceItem = useSelector((state) => state.expenceItem).expenceItem;
+
+  const [partyData, setPartyData] = useState({});
+  const [orderNo, setOrderNo] = useState(
+    Number(expenseData[expenseData.length - 1]?.number) + 1 || 1
+  );
   const [addRow, setAddRow] = useState(false);
-  const [dueDate, setDueDate] = useState("");
-  const [paymentType, setPaymentType] = useState("Cash");
-  const [type, setType] = useState("Sale");
   const [totalAmount, setTotalAmount] = useState(0);
   const [toatalquantity, setTotalQuantity] = useState(0);
   const [round, setRound] = useState(false);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(expenceItem);
   const [purchaserName, setPurchaserName] = useState("");
   const [purchaseCat, setPurchaseCat] = useState("");
   const [formData, setFormData] = useState({
@@ -22,10 +28,6 @@ const CreateExpence = () => {
     pricePerUnit: "",
     tax: "",
   });
-
-  useEffect(() => {
-    localStorage.setItem("purchaseOrders", JSON.stringify(purchaseOrders));
-  }, [purchaseOrders]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,8 +49,8 @@ const CreateExpence = () => {
       amount: Number(formData.qty) * Number(formData.pricePerUnit) + taxAmount,
       taxAmount: taxAmount,
     };
-    setItems([...items, newItem]);
-    // localStorage.setItem("items", JSON.stringify([...items, newItem]));
+    // setItems([...items, newItem]);
+    dispatch(addExpenceItem(newItem));
     setFormData({
       item: "",
       qty: "",
@@ -60,7 +62,31 @@ const CreateExpence = () => {
 
   const taxData = [28, 18, 12, 16];
   const unitData = ["m", "cm", "kg", "number"];
-  const paymentMode = ["Cash", "UPI", "Card"];
+
+  const saveExpence = (e) => {
+    e.preventDefault();
+    const obj = {
+      party: purchaserName,
+      number: orderNo,
+      date: new Date().toLocaleDateString(),
+      purchaseCat,
+      totalAmount: totalAmount,
+      toatalquantity,
+    };
+    setPartyData(obj);
+    dispatch(addExpence(obj));
+    alert("successfully updated");
+  };
+
+  const handleClear = () => {
+    dispatch(clearExpenceItem());
+    setTotalAmount(0);
+    setTotalQuantity(0);
+
+    setPurchaserName("");
+
+    setOrderNo( Number(expenseData[expenseData.length - 1]?.number) + 1 || 1);
+   };
 
   useEffect(() => {
     let total = 0;
@@ -71,23 +97,35 @@ const CreateExpence = () => {
     });
     setTotalQuantity(toatalQty);
     setTotalAmount(total);
-    // localStorage.setItem("items", JSON.stringify(items));
   }, [items]);
+  const handleDelete = (index) => {
+    dispatch(clearExpenceItem(index));
+  };
+  useEffect(() => {
+    setItems(expenceItem);
+  }, [handleSubmit,handleDelete]);
   return (
     <div className="w-full p-2">
       <hr />
       <div className="w-full pt-2">
-        <form className="w-full ">
-          <div className="flex justify-end gap-4 items-center">
-            <button
-              type="submit"
-              className="bg-blue-500 flex items-center hover:bg-blue-700 text-white font-bold  py-1   px-4 rounded"
-            >
-              Save
-            </button>
-            <button className="bg-blue-500 flex items-center hover:bg-blue-700 text-white font-bold py-1  px-4 rounded">
-              Cancel
-            </button>
+        <form className="w-full " onSubmit={saveExpence}>
+          <div className="flex justify-end items-center gap-4">
+            <div className="flex items-center justify-end">
+              <button
+                type="submit"
+                className="w-20 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                Save
+              </button>
+            </div>
+            <div className="flex items-center justify-end">
+              <Link
+                to={"/expence-data"}
+                className="  py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                view Expences
+              </Link>
+            </div>
           </div>
           <div className="flex w-full justify-between items-center ">
             <div className="container mx-auto p-2">
@@ -113,14 +151,7 @@ const CreateExpence = () => {
                 >
                   Party category
                 </label>
-                {/* <input
-                type="text"
-                id="purchaserName"
-                className="w-2/3 px-4 py-1 border rounded-md mr-0"
-                value={purchaseCat}
-                onChange={(e) => setPurchaseCat(e.target.value)}
-                required
-              />  */}
+
                 <select
                   id="type"
                   required
@@ -152,15 +183,11 @@ const CreateExpence = () => {
 
               <div className="mb-2 w-full flex justify-center">
                 <label htmlFor="number" className="inline-block 1/3 mb-2 mr-4">
-                  Bill Date:
+                  Date:
                 </label>
-                <input
-                  type="Date"
-                  id="number"
-                  className="w-2/3 px-4 py-1 border rounded-md"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                />
+                <p className="w-2/3 px-4  border rounded-md">
+                  {new Date().toLocaleDateString()}
+                </p>
               </div>
             </div>
           </div>
@@ -169,6 +196,14 @@ const CreateExpence = () => {
         <hr />
         <div className="flex items-center w-full justify-center p-4">
           <div className="w-full mx-auto">
+            <div className="flex items-center justify-end">
+              <button
+                onClick={handleClear}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
+              >
+                Clear
+              </button>
+            </div>
             <table className="w-full border-collapse border border-gray-200">
               <thead className="bg-gray-100">
                 <tr>
@@ -183,14 +218,8 @@ const CreateExpence = () => {
                   <th className="border border-gray-200 px-4 py-2">Money</th>
 
                   <th className="border border-gray-200 px-4 py-2">Amount</th>
+                  <th className="border border-gray-200 px-4 py-2">Delete</th>
                 </tr>
-                {/* <tr>
-                  <th colSpan="4"></th>
-                  <th className="border border-gray-200 px-4 py-2">
-                    (without tax)
-                  </th>
-                  <th colSpan="3"></th>
-                </tr> */}
               </thead>
               <tbody>
                 {items.map((item, index) => (
@@ -218,6 +247,11 @@ const CreateExpence = () => {
                     </td>
                     <td className="border border-gray-200 px-4 py-2">
                       {item.amount.toFixed(2)}
+                    </td>
+                    <td className="border justify-center border-gray-200 px-4 py-2">
+                      <button onClick={() => handleDelete(index)}>
+                        <MdDelete />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -312,7 +346,7 @@ const CreateExpence = () => {
                         className="border m-3 px-4 text-black rounded"
                         required
                       >
-                        <option value="">Select Tax</option>
+                        <option value="">Select GST</option>
                         {taxData.map((state) => (
                           <option key={state} value={state}>
                             {state}
@@ -342,27 +376,6 @@ const CreateExpence = () => {
           </div>
         </div>
         <div className="flex">
-          <div className="flex items-center gap-4 w-full justify-start p-4">
-            <label htmlFor="payment" className="inline-block 1/3 mb-2 mr-4">
-              Payment Mode:
-            </label>
-            <select
-              id="payment"
-              name="paymentType"
-              value={paymentType}
-              onChange={(e) => {
-                setPaymentType(e.target.value);
-              }}
-              className="border m-3 px-4 text-black rounded"
-              required
-            >
-              {paymentMode.map((state) => (
-                <option key={state} value={state}>
-                  {state}
-                </option>
-              ))}
-            </select>
-          </div>
           <div className="flex items-end gap-4 w-full justify-center p-4">
             <div>
               <input
@@ -394,14 +407,13 @@ const CreateExpence = () => {
 
         <hr />
         <div className="flex justify-end items-end">
-          <button
+          <Link
+            to={"/create-expence-bills"}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-            onClick={() => {
-              window.print();
-            }}
+            state={{ items, partyData }}
           >
-            Print
-          </button>
+            Goto create bills
+          </Link>
         </div>
       </div>
     </div>

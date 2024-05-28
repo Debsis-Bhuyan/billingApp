@@ -9,37 +9,21 @@ import { removeItem } from "../store/estimateSlice";
 const ViewEstimate = () => {
   const estimateData = useSelector((state) => state.estimate).estimate;
   const dispatch = useDispatch();
-console.log(estimateData)
-  const [purchaseOrders, setPurchaseOrders] = useState(estimateData);
+  const [estimateOrder, setEstimateOrder] = useState(estimateData);
+
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(purchaseOrders)
+
+  const handleDelete = (index) => {
+    dispatch(removeItem(index));
+  };
 
   // useEffect(() => {
   //   const filteredOrders = estimateData.filter((order) =>
   //     order.party.toLowerCase().includes(searchQuery.toLowerCase())
   //   );
-  //   setPurchaseOrders(filteredOrders);
-  // }, [searchQuery, estimateData]);
 
-  // Load purchase orders from local storage on component mount
-  //   useEffect(() => {
-  //     const savedPurchaseOrders = localStorage.getItem("purchaseOrders");
-  //     if (savedPurchaseOrders) {
-  //       setPurchaseOrders(JSON.parse(savedPurchaseOrders));
-  //     }
-  //   }, []);
-
-  // Save purchase orders to local storage whenever it changes
-  //   useEffect(() => {
-  //     localStorage.setItem("purchaseOrders", JSON.stringify(purchaseOrders));
-  //   }, [purchaseOrders]);
-
-  const handleDelete = (index) => {
-    dispatch(removeItem(index));
-  };
-  useEffect(()=>{
-    setPurchaseOrders(estimateData)
-  }, [handleDelete])
+  //   setEstimateOrder(filteredOrders);
+  // }, [searchQuery, handleDelete]);
 
   return (
     <div className=" w-full  p-4">
@@ -57,6 +41,7 @@ console.log(estimateData)
           />
           <FaSearch className="text-gray-700" />
         </div>
+        <div></div>
         <div className="flex items-center justify-end pb-4">
           <Link
             to={"/create-estimate"}
@@ -85,22 +70,21 @@ console.log(estimateData)
           </thead>
 
           <tbody>
-          {/* {party: "Debasis Bhuyan", number: 1, date: "2024-05-03", toatalquantity: 45, totalAmount: 122130000,…} */}
+            {/* {party: "Debasis Bhuyan", number: 1, date: "2024-05-03", toatalquantity: 45, totalAmount: 122130000,…} */}
 
-            {purchaseOrders.map((order, index) => (
+            {estimateOrder.map((order, index) => (
               <tr key={index}>
                 <td className="border px-4 py-2">{index + 1}</td>
 
                 <td className="border px-4 py-2">{order.party}</td>
                 <td className="border px-4 py-2">{order.number}</td>
                 <td className="border px-4 py-2">{order.date}</td>
-                <td className="border px-4 py-2">    {(order.totalAmount).toFixed()} </td>
                 <td className="border px-4 py-2">
-                {order.toatalquantity}
+                  {" "}
+                  {order.totalAmount.toFixed()}{" "}
                 </td>
-                <td className="border px-4 py-2">
-                {order.type}
-                </td>
+                <td className="border px-4 py-2">{order.toatalquantity}</td>
+                <td className="border px-4 py-2">{order.type}</td>
 
                 <td className="border px-4 py-2">
                   <button onClick={() => handleDelete(index)}>

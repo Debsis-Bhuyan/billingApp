@@ -1,14 +1,20 @@
-
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaPlus } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { addSales } from "../store/saleSlice";
 import { Link } from "react-router-dom";
+import DataDropDown from "../components/DataDropDown";
+import dayjs from "dayjs";
+import quarterOfYear from "dayjs/plugin/quarterOfYear";
+
+dayjs.extend(quarterOfYear);
 
 const SalesTransaction = () => {
   const salesData = useSelector((state) => state.sales).sales;
   const dispatch = useDispatch();
-  const [numberData, setNumberData] = useState(Number(salesData[salesData.length-1].number) + 1 || 1)
+  const [numberData, setNumberData] = useState(
+    Number(salesData[salesData.length - 1]?.number) + 1 || 1
+  );
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [purchaseOrders, setPurchaseOrders] = useState(salesData);
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,58 +28,121 @@ const SalesTransaction = () => {
   const [dueDate, setDueDate] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [balance, setBalance] = useState("");
-  const [type, setType] = useState("Sale");
-  const [status, setStatus] = useState("Pending");
+  // const [type, setType] = useState("Sale");
+  const [status, setStatus] = useState("Paid");
+  const [paymentType, setPaymentType] = useState("Cash");
+  const [dateRange, setDateRange] = useState("");
 
   // Function to handle form submission
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const formData = {
       party,
-      number:numberData ,
-      date,
+      number: numberData,
+      date: new Date().toLocaleDateString(),
       dueDate,
       totalAmount,
       balance,
-      type,
+      type: paymentType,
       status,
     };
 
     dispatch(addSales(formData));
 
     setPurchaseOrders([...purchaseOrders, formData]);
- 
+
     setParty("");
-    setNumber("");
+
     setDate("");
     setDueDate("");
     setTotalAmount("");
     setBalance("");
-    setType("Sale");
-    setStatus("Pending");
-    setNumberData(numberData + 1)
+    setPaymentType("Cash");
+    setStatus("Paid");
+    setNumberData(numberData + 1);
 
     setPopupOpen(false);
   };
-  
 
   useEffect(() => {
-    const filteredOrders = salesData.filter(order =>
+    const filteredOrders = salesData.filter((order) =>
       order.party.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setPurchaseOrders(filteredOrders);
   }, [searchQuery, salesData]);
 
-  
+  useEffect(() => {
+    const filterByDateRange = () => {
+      const now = dayjs();
+      let filteredOrders = salesData;
+      console.log(dateRange);
+      switch (dateRange) {
+        case "today":
+          filteredOrders = salesData.filter((order) =>
+            dayjs(order.date).isSame(now, "day")
+          );
+          console.log(filteredOrders);
+
+          break;
+        case "this_week":
+          filteredOrders = salesData.filter((order) =>
+            dayjs(order.date).isSame(now, "week")
+          );
+          console.log(filteredOrders);
+
+          break;
+        case "this_month":
+          filteredOrders = salesData.filter((order) =>
+            dayjs(order.date).isSame(now, "month")
+          );
+          console.log(filteredOrders);
+
+          break;
+        case "quarterly":
+          const startOfQuarter = now.startOf("quarter");
+          const endOfQuarter = now.endOf("quarter");
+          filteredOrders = salesData.filter(
+            (order) =>
+              dayjs(order.date).isAfter(startOfQuarter) &&
+              dayjs(order.date).isBefore(endOfQuarter)
+          );
+          console.log(filteredOrders);
+
+          break;
+        case "halfyearly":
+          filteredOrders = salesData.filter(
+            (order) => now.diff(dayjs(order.date), "month") < 6
+          );
+          console.log(filteredOrders);
+
+          break;
+        case "this_year":
+          filteredOrders = salesData.filter((order) =>
+            dayjs(order.date).isSame(now, "year")
+          );
+          console.log(filteredOrders);
+
+          break;
+        default:
+          console.log(filteredOrders);
+          break;
+      }
+
+      setPurchaseOrders(filteredOrders);
+    };
+
+    filterByDateRange();
+  }, [dateRange, salesData]);
 
   return (
     <div className=" w-full  p-4">
-      <div className="flex w-full justify-between items-center py-3">
-        <div className="flex items-center">
-          <p className="mr-2 text-2xl">All Sales Transactions</p>
-        </div>
+                <p className="mr-2 text-3xl">All Sales Transactions</p>
+
+      <div className="flex w-full justify-between items-center py-3 gap-2">
+        {/* <div className="flex items-center">
+        </div> */}
         <div className="flex items-center">
           <input
             type="text"
@@ -93,6 +162,10 @@ const SalesTransaction = () => {
             Add Sales Transaction
           </button>
         </div>
+        <div className="flex items-center space-x-4  ">
+          <DataDropDown onDateRangeChange={setDateRange} />
+        </div>
+
         <div className="flex items-center space-x-4">
           <Link
             to={"/create-sales"}
@@ -118,23 +191,27 @@ const SalesTransaction = () => {
                   <input
                     type="text"
                     id="party"
-                    className="w-full px-4 py-2 border rounded-md"
+                    className="w-full px-4 py-1 border rounded-md"
                     value={party}
                     onChange={(e) => setParty(e.target.value)}
                   />
                 </div>
-                
+
                 <div className="mb-4">
-                  <label htmlFor="date" className="block mb-2">
-                    Date:
+                  <label htmlFor="date" className="flex mb-2">
+                    Order Date:
                   </label>
+                  <p className="w-full px-4  border rounded-md mr-0">
+                    {new Date().toLocaleDateString()}
+                  </p>
+                  {/* 
                   <input
                     type="date"
                     id="date"
                     className="w-full px-4 py-2 border rounded-md"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                  />
+                  /> */}
                 </div>
                 <div className="mb-4 ">
                   <label htmlFor="dueDate" className="block mb-2">
@@ -143,7 +220,7 @@ const SalesTransaction = () => {
                   <input
                     type="date"
                     id="dueDate"
-                    className="w-full px-4 py-2 border rounded-md"
+                    className="w-full px-4 py-1 border rounded-md"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
                   />
@@ -155,7 +232,7 @@ const SalesTransaction = () => {
                   <input
                     type="number"
                     id="totalAmount"
-                    className="w-full px-4 py-2 border rounded-md"
+                    className="w-full px-4 py-1 border rounded-md"
                     value={totalAmount}
                     onChange={(e) => setTotalAmount(e.target.value)}
                   />
@@ -167,7 +244,7 @@ const SalesTransaction = () => {
                   <input
                     type="number"
                     id="balance"
-                    className="w-full px-4 py-2 border rounded-md"
+                    className="w-full px-4 py-1 border rounded-md"
                     value={balance}
                     onChange={(e) => setBalance(e.target.value)}
                   />
@@ -178,11 +255,10 @@ const SalesTransaction = () => {
                   </label>
                   <select
                     id="type"
-                    className="w-full mx-4 py-2 border rounded-md"
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                  > 
-                  
+                    className="w-full mx-4 py-1 border rounded-md"
+                    value={paymentType}
+                    onChange={(e) => setPaymentType(e.target.value)}
+                  >
                     <option value="Cash">Cash</option>
                     <option value="UPI">UPI</option>
                     <option value="Card">Card</option>
@@ -264,18 +340,19 @@ const SalesTransaction = () => {
                 <td className="border px-4 py-2">{order.number}</td>
                 <td className="border px-4 py-2">{order.date}</td>
                 <td className="border px-4 py-2">{order.dueDate}</td>
-                <td className="border px-4 py-2">{Number(order.totalAmount).toFixed()}</td>
-                <td className="border px-4 py-2">{Number(order.balance).toFixed()}</td>
+                <td className="border px-4 py-2">
+                  {Number(order.totalAmount).toFixed()}
+                </td>
+                <td className="border px-4 py-2">
+                  {Number(order.balance).toFixed()}
+                </td>
                 <td className="border px-4 py-2">{order.type}</td>
                 <td className="border px-4 py-2">{order.status}</td>
-
-              
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
     </div>
   );
 };

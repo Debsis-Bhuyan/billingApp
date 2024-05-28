@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { addPurchase, clearPurchase, removeItem } from "../store/purchaseSlice";
 import { MdDelete } from "react-icons/md";
@@ -18,6 +17,10 @@ const CreatePurchaseOrder = () => {
   const [addRow, setAddRow] = useState(false);
   const [dueDate, setDueDate] = useState("");
   const [paymentType, setPaymentType] = useState("Cash");
+  const [paymentStatus, setPaymentStatus] = useState("Paid");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [partyData, setPartyData] = useState({});
+
 
   // State for form fields
 
@@ -82,98 +85,140 @@ const CreatePurchaseOrder = () => {
   const handleDelete = (index) => {
     dispatch(removeItem(index));
   };
+
   useEffect(() => {
     setPurchaseOrders(purchaseData);
   }, [handleDelete]);
+
   const handleTransaction = (e) => {
     e.preventDefault();
     const obj = {
       party: partyName,
       number: orderNo,
-      date: orderDate,
+      date: new Date().toLocaleDateString(),
       dueDate,
       totalAmount: totalAmount,
       balance: totalAmount,
       type: paymentType,
-      status: "paid",
+      status: paymentStatus,
     };
     dispatch(addTransaction(obj));
-    // localStorage.setItem('formData')
-    setPurchaseOrders([...purchaseOrders, obj]);
-    console.log(obj);
-
-    console.log("helo");
-    setPartyName("");
-    setOrderDate("");
-    setDueDate("");
-    // setBalance(0);
-    setPaymentType("Sale");
-    setOrderNo(orderNo + 1);
+    alert("successfully updated")
   };
+
+  useEffect(() => {
+    setPurchaseOrders(purchaseData);
+  }, [handleTransaction]);
 
   const handleClear = () => {
     dispatch(clearPurchase());
     setTotalAmount(0);
     setTotalQuantity(0);
+
+    setPartyName("");
+
+    setDueDate("");
+    // setBalance(0);
+    setPaymentType("Cash");
+    setPaymentStatus("Paid");
+    setOrderNo(Number(transctionData[transctionData.length - 1].number) + 1);
+    setPhoneNo("");
   };
+
+  useEffect(() => {
+    const obj = {
+      party: partyName,
+      number: orderNo,
+      date: new Date().toLocaleDateString(),
+      dueDate,
+      totalAmount: totalAmount,
+      balance: totalAmount,
+      type: paymentType,
+      status: paymentStatus,
+      toatalquantity,
+    };
+    setPartyData(obj);
+  }, [
+    partyName,
+    orderNo,
+    orderDate,
+    dueDate,
+    totalAmount,
+    paymentStatus,
+    paymentType,
+  ]);
+
   return (
     <div className="w-full p-2">
       <h2 className=" text-3xl pb-3">Purchase Order</h2>
       <hr />
       <div className=" w-full  p-4">
         <form onSubmit={handleTransaction}>
-          <div className="flex items-center justify-end">
-            <button
-              type="submit"
-              className="w-20 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-            >
-              Save
-            </button>
+          <div className="flex justify-end items-center gap-4">
+            <div className="flex items-center justify-end">
+              <button
+                type="submit"
+                className="w-20 py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                Save
+              </button>
+            </div>
+            <div className="flex items-center justify-end">
+              <Link
+                to={"/purchase"}
+                className="  py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                view Purchase
+              </Link>
+            </div>
           </div>
           <div className="flex w-full justify-between items-center py-3">
-            <div className=" w-1/2 flex  items-center  justify-between">
-              <label htmlFor="type" className=" w-2/3 flex  ">
-                Party Name :
-                <input
-                  type="text"
-                  id="setPartyName"
-                  name="setPartyName"
-                  required
-                  className="w-full px-4 py-2 border-2 rounded-md"
-                  value={partyName}
-                  onChange={(e) => setPartyName(e.target.value)}
-                  placeholder="Enter Party Name"
-                />
-              </label>
+            <div className=" w-full">
+              <div className=" w-full flex  items-center  justify-between">
+                <label htmlFor="type" className=" w-2/3 flex  ">
+                  Party Name:
+                  <input
+                    type="text"
+                    id="setPartyName"
+                    name="setPartyName"
+                    required
+                    className="w-full px-4 py-2 border-2 rounded-md"
+                    value={partyName}
+                    onChange={(e) => setPartyName(e.target.value)}
+                    placeholder="Enter Party Name"
+                  />
+                </label>
+              </div>
+              <div className="  flex py-1 items-center  justify-between">
+                <label htmlFor="phoneNo" className=" w-2/3 flex  ">
+                  Phone No:
+                  <input
+                    type="number"
+                    id="phoneNo"
+                    name="phoneNo"
+                    className="w-full px-4 py-2 border-2 rounded-md"
+                    value={phoneNo}
+                    onChange={(e) => setPhoneNo(e.target.value)}
+                    placeholder="Enter phone No. "
+                    minLength="10"
+                  />
+                </label>
+              </div>
             </div>
-
             <div className="flex w-1/2 flex-col items-center justify-center">
               <div className="mb-2  w-full items-center flex justify-center">
                 <label htmlFor="number1" className="1/3 mb-2 px-2 mr-3">
                   Order No:
                 </label>
                 <p className="w-2/3 px-4  border rounded-md mr-0">{orderNo}</p>
-                {/* <input
-                type="number"
-                id="number1"
-                className="w-2/3 px-4  border rounded-md mr-0"
-                value={orderNo}
-                readOnly
-                // onChange={(e) => setOrderNo(e.target.value)}
-              /> */}
               </div>
               <div className="mb-2  w-full flex justify-center">
                 <label htmlFor="number" className="inline-block 1/3   mr-4">
                   Order Date:
                 </label>
-                <input
-                  type="Date"
-                  id="number"
-                  className="w-2/3 px-4  border rounded-md"
-                  value={orderDate}
-                  onChange={(e) => setOrderDate(e.target.value)}
-                  required
-                />
+                <p className="w-2/3 px-4  border rounded-md">
+                  {new Date().toLocaleDateString()}
+                </p>
               </div>
               <div className="mb-2  w-full flex justify-center">
                 <label htmlFor="number" className="inline-block 1/3   mr-7">
@@ -393,6 +438,23 @@ const CreatePurchaseOrder = () => {
               ))}
             </select>
           </div>
+          <div className="flex items-center gap-4 w-full justify-start p-4">
+            <label htmlFor="payment" className="inline-block 1/3 mb-2 mr-4">
+              Payment Status:
+            </label>
+            <select
+              id="paymentStatus"
+              name="paymentStatus"
+              value={paymentStatus}
+              onChange={(e) => {
+                setPaymentStatus(e.target.value);
+              }}
+              className="border  m-3  px-4 text-black rounded"
+            >
+              <option value={"paid"}>paid</option>
+              <option value={"pending"}>pending</option>
+            </select>
+          </div>
           <div className="flex items-end gap-4 w-full justify-center p-4">
             <div className="flex">
               <input
@@ -429,10 +491,7 @@ const CreatePurchaseOrder = () => {
           <Link
             to={"/create-purchase-bills"}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-            state={{
-              name: "Some thing",
-              price: 123,
-            }}
+            state={{ purchaseOrders, partyData }}
           >
             Goto create bills
           </Link>

@@ -12,18 +12,19 @@ import { addSales, removeSaleItem, clearSales } from "../store/saleSlice";
 import { Link } from "react-router-dom";
 
 const CreateSaleOrder = () => {
-  const purchaseData = useSelector((state) => state.salesItem).salesItem;
+  const salesItem = useSelector((state) => state.salesItem).salesItem;
+  const salesData = useSelector((state) => state.sales).sales;
 
+  console.log(salesData);
   const transctionData = useSelector((state) => state.transaction).transaction;
-  const dispatch = useDispatch("");
+  const dispatch = useDispatch();
 
-  const [purchaseOrders, setPurchaseOrders] = useState(purchaseData);
+  const [purchaseOrders, setPurchaseOrders] = useState(salesItem);
   const [partyData, setPartyData] = useState({});
   const [orderDate, setOrderDate] = useState("");
   const [orderNo, setOrderNo] = useState(
-    Number(transctionData[transctionData.length - 1].number) + 1
+    Number(salesData[salesData.length - 1]?.number) + 1 || 1
   );
-  console.log( Number(transctionData[transctionData.length - 1].number) + 1)
   const [addRow, setAddRow] = useState(false);
   const [dueDate, setDueDate] = useState("");
   const [paymentType, setPaymentType] = useState("Cash");
@@ -99,7 +100,7 @@ const CreateSaleOrder = () => {
     const obj = {
       party: partyName,
       number: orderNo,
-      date: orderDate,
+      date: new Date().toLocaleDateString(),
       dueDate,
       totalAmount: totalAmount,
       balance: totalAmount,
@@ -118,7 +119,7 @@ const CreateSaleOrder = () => {
     paymentType,
   ]);
   useEffect(() => {
-    setPurchaseOrders(purchaseData);
+    setPurchaseOrders(salesItem);
   }, [handleDelete]);
   const handleTransaction = (e) => {
     e.preventDefault();
@@ -143,14 +144,7 @@ const CreateSaleOrder = () => {
 
     alert("Sale item added Successfully.");
     setPartyData(obj);
-
-    // setPartyName("");
-    // setOrderDate("");
-    // setDueDate("");
-    // // setBalance(0);
-    // setPaymentType("Sale");
-    // setOrderNo(orderNo + 1);
-    // setPhoneNo("");
+    setOrderNo(orderNo + 1);
   };
 
   const handleClear = () => {
@@ -158,11 +152,11 @@ const CreateSaleOrder = () => {
     setTotalAmount(0);
     setTotalQuantity(0);
     setPartyName("");
-    
+
     setDueDate("");
     // setBalance(0);
     setPaymentType("Sale");
-    setOrderNo( Number(transctionData[transctionData.length - 1].number) + 1);
+    setOrderNo(Number(transctionData[transctionData.length - 1].number) + 1);
     setPhoneNo("");
   };
   return (

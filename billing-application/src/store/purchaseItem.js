@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  // purchaseItem: JSON.parse(localStorage.getItem("purchaseItem")) || [], // Initialize with stored data if available
   purchaseItem: JSON.parse(localStorage.getItem("purchaseItem")) || [], // Initialize with stored data if available
 };
 
@@ -23,7 +24,8 @@ const purchaseItemSlice = createSlice({
     // clear all the purchase order
     clearpurchaseItem: (state) => {
       state.purchaseItem = [];
-      localStorage.setItem("purchaseItem", JSON.stringify(state.estimate));
+      console.log(state.purchaseItem);
+      localStorage.setItem("purchaseItem", JSON.stringify(state.purchaseItem));
     },
   },
 });
