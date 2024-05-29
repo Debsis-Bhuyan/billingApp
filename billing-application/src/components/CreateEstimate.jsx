@@ -23,7 +23,7 @@ const CreateEstimate = () => {
     Number(estimateData[estimateData.length - 1]?.number) + 1 || 1
   );
   const [addRow, setAddRow] = useState(false);
-  const [partyData,setPartyData]= useState({})
+  const [partyData, setPartyData] = useState({});
 
   // State for form fields
   const [customerName, setCustomerName] = useState("");
@@ -52,12 +52,13 @@ const CreateEstimate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const optionValue = formData.tax;
+    const taxData = optionValue.match(/\d+/)[0];
     const newItem = {
       ...formData,
       amount:
         Number(formData.qty) * formData.pricePerUnit +
-        (Number(formData.qty) * formData.pricePerUnit * Number(formData.tax)) /
-          100,
+        (Number(formData.qty) * formData.pricePerUnit * Number(taxData)) / 100,
     };
     // setItems([...items, newItem]);
     // localStorage.setItem("items", JSON.stringify([...items, newItem]));
@@ -72,7 +73,19 @@ const CreateEstimate = () => {
     });
   };
   const taxData = [28, 18, 12, 16];
-  const unitData = ["m", "cm", "kg", "number"];
+  const unitData = [
+    "Numbers (n)",
+    "Centimeters (cm)",
+    "Meters (m)",
+    "Kilometers (km)",
+    "Inches (in)",
+    " Grams (g)",
+    "Kilograms (kg)",
+    "Tonnes (t)",
+    "Pounds (lb)",
+    " Milliliters (ml)",
+    "Liters (l) ",
+  ];
   useEffect(() => {
     let total = 0;
     let toatalQty = 0;
@@ -93,7 +106,7 @@ const CreateEstimate = () => {
       totalAmount: totalAmount,
       type: type,
     };
-    setPartyData(tableData)
+    setPartyData(tableData);
     dispatch(addEstimate(tableData));
     alert("Saved");
   };
@@ -217,7 +230,7 @@ const CreateEstimate = () => {
                   <th className="border border-gray-200 px-4 py-2">Qty</th>
                   <th className="border border-gray-200 px-4 py-2">Unit</th>
                   <th className="border border-gray-200 px-4 py-2">
-                    Price/Unit (without tax)
+                    Price/Unit (without GST)
                   </th>
                   <th className="border border-gray-200 px-4 py-2">GST</th>
 
@@ -350,12 +363,18 @@ const CreateEstimate = () => {
                         className="border  m-3  px-4 text-black rounded"
                         required
                       >
-                        <option value=" ">Select GST</option>
-                        {taxData.map((state) => (
-                          <option key={state} value={state}>
-                            {state}
-                          </option>
-                        ))}
+                        <option value="">Select GST</option>
+
+                        <option value="GST@0%">GST@0%</option>
+                        <option value="IGST@0%">IGST@0%</option>
+                        <option value="GST5%">GST5%</option>
+                        <option value="IGST5%">IGST5%</option>
+                        <option value="GST12%">GST12%</option>
+                        <option value="IGST12%">IGST12%</option>
+                        <option value="GST18%">GST18%</option>
+                        <option value="IGST18%">IGST18%</option>
+                        <option value="GST28%">GST28%</option>
+                        <option value="IGST28%">IGST28%</option>
                       </select>
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
@@ -412,7 +431,7 @@ const CreateEstimate = () => {
             <Link
               to={"/create-estimate-bills"}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
-              state={{ purchaseItemData ,partyData}}
+              state={{ purchaseItemData, partyData }}
             >
               Goto create bills
             </Link>

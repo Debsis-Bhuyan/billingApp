@@ -59,11 +59,14 @@ const CreateSaleOrder = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const optionValue = formData.tax
+    const taxData = optionValue.match(/\d+/)[0];
+ 
     const newItem = {
       ...formData,
       amount:
         Number(formData.qty) * formData.pricePerUnit +
-        (Number(formData.qty) * formData.pricePerUnit * Number(formData.tax)) /
+        (Number(formData.qty) * formData.pricePerUnit * Number(taxData)) /
           100,
     };
     setItems([...purchaseOrders, newItem]);
@@ -78,7 +81,19 @@ const CreateSaleOrder = () => {
     });
   };
   const taxData = [28, 18, 12, 16];
-  const unitData = ["m", "cm", "kg", "number"];
+  const unitData = [
+    "Numbers (n)",
+    "Centimeters (cm)",
+    "Meters (m)",
+    "Kilometers (km)",
+    "Inches (in)",
+    " Grams (g)",
+    "Kilograms (kg)",
+    "Tonnes (t)",
+    "Pounds (lb)",
+    " Milliliters (ml)",
+    "Liters (l) ",
+  ];
   const paymentMode = ["Cash", "UPI", "Card"];
 
   const handleDelete = (index) => {
@@ -283,7 +298,7 @@ const CreateSaleOrder = () => {
                   <th className="border border-gray-200 px-4 py-2">Qty</th>
                   <th className="border border-gray-200 px-4 py-2">Unit</th>
                   <th className="border border-gray-200 px-4 py-2">
-                    Price/Unit (without tax)
+                    Price/Unit (without GST)
                   </th>
                   <th className="border border-gray-200 px-4 py-2">GST</th>
                   <th className="border border-gray-200 px-4 py-2">Amount</th>
@@ -404,7 +419,7 @@ const CreateSaleOrder = () => {
                         value={formData.pricePerUnit}
                         onChange={handleChange}
                         placeholder="Price Per Unit without tax"
-                        className=" border  m-3  px-4 text-black rounded"
+                        className=" border  m-3  px-1 text-black rounded"
                         required
                       />
                       <select
@@ -416,11 +431,18 @@ const CreateSaleOrder = () => {
                         required
                       >
                         <option value="">Select GST</option>
-                        {taxData.map((state) => (
-                          <option key={state} value={state}>
-                            {state}
-                          </option>
-                        ))}
+
+                        <option value="GST@0%">GST@0%</option>
+                        <option value="IGST@0%">IGST@0%</option>
+                        <option value="GST5%">GST5%</option>
+                        <option value="IGST5%">IGST5%</option>
+                        <option value="GST12%">GST12%</option>
+                        <option value="IGST12%">IGST12%</option>
+                        <option value="GST18%">GST18%</option>
+                        <option value="IGST18%">IGST18%</option>
+                        <option value="GST28%">GST28%</option>
+                        <option value="IGST28%">IGST28%</option>
+                        {/* </select> */}
                       </select>
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"

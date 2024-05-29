@@ -126,7 +126,7 @@ const SalesTransaction = () => {
 
           break;
         default:
-          console.log(filteredOrders);
+          filteredOrders = salesData;
           break;
       }
 
@@ -138,7 +138,7 @@ const SalesTransaction = () => {
 
   return (
     <div className=" w-full  p-4">
-                <p className="mr-2 text-3xl">All Sales Transactions</p>
+      <p className="mr-2 text-3xl">All Sales Transactions</p>
 
       <div className="flex w-full justify-between items-center py-3 gap-2">
         {/* <div className="flex items-center">

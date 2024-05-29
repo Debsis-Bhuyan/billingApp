@@ -34,6 +34,7 @@ import CreateSalesBills from "./pages/CreateSalesBills";
 import CreateEstimateBills from "./pages/CreateEstimateBills";
 import ExpenceData from "./pages/ExpenceData";
 import CreateExpenceBills from "./pages/CreateExpenceBills";
+import ForgetPassword from "./components/ForgetPassword";
 
 const Layout = () => {
   const user = useSelector((state) => state.user);
@@ -88,7 +89,7 @@ function App() {
         </Route>
         <Route path="/auth/register" element={<SignUp />} />
         <Route path="/auth/login" element={<Signin />} />
-        <Route path="/auth/forget" element={<Signin />} />
+        <Route path="/auth/forget" element={<ForgetPassword />} />
         <Route path="/auth" element={<StartPage />} />
         <Route path="/create-sales-bills" element={<CreateSalesBills />} />
         <Route

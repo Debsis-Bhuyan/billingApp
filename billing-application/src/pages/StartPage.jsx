@@ -9,24 +9,24 @@ function StartPage() {
       <NavBar />
       <div
         className={
-          "w-full h-screen px-0 md:px-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#302943]"
+          "w-full h-90 px-0 md:px-4 justify-center items-center flex   "
         }
       >
         <div
           className="w-full h-full flex flex-col items-center justify-center 
        md:gap-6 px-4"
         >
-          <div className="w-full  flex flex-col items-center justify-center gap-y-10 ">
+          <div className="w-full  flex flex-col pt-20   items-center justify-center gap-y-10 ">
             
             <h1
               className={
-                "text-4xl 2xl:text-6xl font-bold text-center text-gray-400"
+                "text-4xl 2xl:text-6xl font-bold text-center text-gray-700"
               }
             >
               Join Our Sphere code Billing app
             </h1>
             <span
-              className={"text-base md:text-[18px] text-center text-slate-700"}
+              className={"text-base md:text-[18px] text-center  text-slate-900"}
             >
               Sphere Code, a leading provider of innovative software solutions,
               introduces its cutting-edge billing app designed to revolutionize

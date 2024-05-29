@@ -36,10 +36,12 @@ const CreateExpenseWithOutGst = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const optionValue = formData.tax
+    const taxData = optionValue.match(/\d+/)[0];
     const taxAmount =
       (Number(formData.qty) *
         Number(formData.pricePerUnit) *
-        Number(formData.tax)) /
+        Number(taxData)) /
       100;
     const newItem = {
       ...formData,
@@ -58,7 +60,19 @@ const CreateExpenseWithOutGst = () => {
   };
 
   const taxData = [28, 18, 12, 16];
-  const unitData = ["m", "cm", "kg", "number"];
+  const unitData = [
+    "Numbers (n)",
+    "Centimeters (cm)",
+    "Meters (m)",
+    "Kilometers (km)",
+    "Inches (in)",
+    " Grams (g)",
+    "Kilograms (kg)",
+    "Tonnes (t)",
+    "Pounds (lb)",
+    " Milliliters (ml)",
+    "Liters (l) ",
+  ];
   const paymentMode = ["Cash", "UPI", "Card"];
 
   useEffect(() => {
@@ -76,7 +90,7 @@ const CreateExpenseWithOutGst = () => {
     <div className="w-full p-2">
       <hr />
       <div className="w-full p-2">
-      <form className="w-full ">
+        <form className="w-full ">
           <div className="flex justify-end gap-4 items-center">
             <button
               type="submit"
@@ -84,10 +98,7 @@ const CreateExpenseWithOutGst = () => {
             >
               Save
             </button>
-            <button
-             
-              className="bg-blue-500 flex items-center hover:bg-blue-700 text-white font-bold py-1  px-4 rounded"
-            >
+            <button className="bg-blue-500 flex items-center hover:bg-blue-700 text-white font-bold py-1  px-4 rounded">
               Cancel
             </button>
           </div>
@@ -174,14 +185,14 @@ const CreateExpenseWithOutGst = () => {
             <table className="w-full border-collapse border border-gray-200">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="border border-gray-200 px-4 py-2">#</th>
+                  <th className="border border-gray-200 px-4 py-2">Sl No.</th>
                   <th className="border border-gray-200 px-4 py-2">Item</th>
                   <th className="border border-gray-200 px-4 py-2">Qty</th>
                   <th className="border border-gray-200 px-4 py-2">Unit</th>
                   <th className="border border-gray-200 px-4 py-2">
                     Price/Unit (without tax)
-                  </th> 
-                  <th className="border border-gray-200 px-4 py-2">Tax </th>
+                  </th>
+                  <th className="border border-gray-200 px-4 py-2">GST </th>
                   <th className="border border-gray-200 px-4 py-2">Money</th>
 
                   <th className="border border-gray-200 px-4 py-2">Amount</th>
@@ -307,19 +318,25 @@ const CreateExpenseWithOutGst = () => {
                         required
                       />
                       <select
-                        id="unist"
+                        id="unit"
                         name="tax"
                         value={formData.tax || ""}
                         onChange={handleChange}
                         className="border m-3 px-4 text-black rounded"
                         required
                       >
-                        <option value="">Select Tax</option>
-                        {taxData.map((state) => (
-                          <option key={state} value={state}>
-                            {state}
-                          </option>
-                        ))}
+                        <option value="">Select GST</option>
+
+                        <option value="GST@0%">GST@0%</option>
+                        <option value="IGST@0%">IGST@0%</option>
+                        <option value="GST5%">GST5%</option>
+                        <option value="IGST5%">IGST5%</option>
+                        <option value="GST12%">GST12%</option>
+                        <option value="IGST12%">IGST12%</option>
+                        <option value="GST18%">GST18%</option>
+                        <option value="IGST18%">IGST18%</option>
+                        <option value="GST28%">GST28%</option>
+                        <option value="IGST28%">IGST28%</option>
                       </select>
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"

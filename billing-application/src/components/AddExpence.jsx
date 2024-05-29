@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addExpenceItem, clearExpenceItem } from "../store/expenceItem";
+import { addExpenceItem, clearExpenceItem, removeExpenceItem } from "../store/expenceItem";
 import { addExpence } from "../store/expenceSlice";
 import { MdDelete } from "react-icons/md";
 
@@ -39,10 +39,12 @@ const CreateExpence = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const optionValue = formData.tax;
+    const taxData = optionValue.match(/\d+/)[0];
     const taxAmount =
       (Number(formData.qty) *
         Number(formData.pricePerUnit) *
-        Number(formData.tax)) /
+        Number(taxData)) /
       100;
     const newItem = {
       ...formData,
@@ -61,7 +63,19 @@ const CreateExpence = () => {
   };
 
   const taxData = [28, 18, 12, 16];
-  const unitData = ["m", "cm", "kg", "number"];
+  const unitData = [
+    "Numbers (n)",
+    "Centimeters (cm)",
+    "Meters (m)",
+    "Kilometers (km)",
+    "Inches (in)",
+    " Grams (g)",
+    "Kilograms (kg)",
+    "Tonnes (t)",
+    "Pounds (lb)",
+    " Milliliters (ml)",
+    "Liters (l) ",
+  ];
 
   const saveExpence = (e) => {
     e.preventDefault();
@@ -99,7 +113,7 @@ const CreateExpence = () => {
     setTotalAmount(total);
   }, [items]);
   const handleDelete = (index) => {
-    dispatch(clearExpenceItem(index));
+    dispatch(removeExpenceItem(index));
   };
   useEffect(() => {
     setItems(expenceItem);
@@ -207,14 +221,14 @@ const CreateExpence = () => {
             <table className="w-full border-collapse border border-gray-200">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="border border-gray-200 px-4 py-2">#</th>
+                  <th className="border border-gray-200 px-4 py-2">Sl No.</th>
                   <th className="border border-gray-200 px-4 py-2">Item</th>
                   <th className="border border-gray-200 px-4 py-2">Qty</th>
                   <th className="border border-gray-200 px-4 py-2">Unit</th>
                   <th className="border border-gray-200 px-4 py-2">
                     Price/Unit (with tax)
                   </th>
-                  <th className="border border-gray-200 px-4 py-2">Tax </th>
+                  <th className="border border-gray-200 px-4 py-2">GST </th>
                   <th className="border border-gray-200 px-4 py-2">Money</th>
 
                   <th className="border border-gray-200 px-4 py-2">Amount</th>
@@ -346,12 +360,17 @@ const CreateExpence = () => {
                         className="border m-3 px-4 text-black rounded"
                         required
                       >
-                        <option value="">Select GST</option>
-                        {taxData.map((state) => (
-                          <option key={state} value={state}>
-                            {state}
-                          </option>
-                        ))}
+                         <option value="0">Select GST</option>
+                        <option value="0">GST@0%</option>
+                          <option value="0">IGST@0%</option>
+                          <option value="5">GST5%</option>
+                          <option value="5">IGST5%</option>
+                          <option value="12">GST12%</option>
+                          <option value="12">IGST12%</option>
+                          <option value="18">GST18%</option>
+                          <option value="18">IGST18%</option>
+                          <option value="28">GST28%</option>
+                          <option value="28">IGST28%</option>
                       </select>
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"
