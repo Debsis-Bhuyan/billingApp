@@ -38,14 +38,14 @@ const ProfilePage = () => {
         </span>
       </h1>
       <div className="flex flex-wrap">
-        <div className="w-1/2 pr-4  pt-5   ">
-          <img src={user?.profileUrl || image} alt="Sample Image" className="w-full h-auto" />
+        <div className="w-1/2 pr-4   flex items-center justify-center   ">
+          <img src={user?.profileUrl || image} alt="Sample Image" className="w-full h-auto rounded-full" />
           <section className="text-center font-bold mt-4"></section>
         </div>
         <div className="w-1/2 pl-4">
           <form className="w-full">
             <div className="flex flex-wrap -mx-3">
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-2">
                 <label
                   htmlFor="businessName"
                   className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
@@ -62,7 +62,7 @@ const ProfilePage = () => {
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-2">
                 <label
                   htmlFor="gstin"
                   className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
@@ -80,7 +80,7 @@ const ProfilePage = () => {
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-2">
                 <label
                   htmlFor="phoneNo"
                   className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
@@ -98,7 +98,7 @@ const ProfilePage = () => {
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-2">
                 <label
                   htmlFor="email"
                   className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
@@ -116,7 +116,7 @@ const ProfilePage = () => {
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-2">
                 {/* Other input fields */}
                 <label
                   htmlFor="state"
@@ -142,7 +142,7 @@ const ProfilePage = () => {
                   ))} */}
                 {/* </select> */}
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-2">
                 <label
                   htmlFor="businessAddress"
                   className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
@@ -159,7 +159,7 @@ const ProfilePage = () => {
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-2">
                 <label
                   htmlFor="pincode"
                   className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
@@ -176,7 +176,7 @@ const ProfilePage = () => {
                   readOnly
                 />
               </div>
-              <div className="w-full md:w-1/2 px-3 mb-6">
+              <div className="w-full md:w-1/2 px-3 mb-2">
                 <label
                   htmlFor="businessDetails"
                   className="block uppercase tracking-wide text-gray-700 text-xs font-medium mb-2"
@@ -194,10 +194,10 @@ const ProfilePage = () => {
                 ></textarea>
               </div>
             </div>
-            <div className="mt-6">
+            <div className="mt-2">
               
-              <Link to={"/profile/edit"} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Edit
+              <Link to={"/profile/edit"} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                Edit Profile
               </Link>
             </div>
           </form>

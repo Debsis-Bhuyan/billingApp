@@ -10,9 +10,9 @@ const CreateExpenceBills = () => {
   const data = location.state;
   const [purchaseDetails, setPurchaseDetails] = useState(data.items);
   const [partyData, setPartyData] = useState(data.partyData);
-
+console.log(data)
   const [amount, setAmount] = useState(
-    numberToWords(Number(partyData?.totalAmount).toFixed())
+    numberToWords(Number(partyData?.totalAmount || 0).toFixed() )
   );
   const handlePrint = () => {
     window.print();
@@ -58,9 +58,9 @@ const CreateExpenceBills = () => {
               <th className="border border-gray-200 px-4 py-1">Qty</th>
               <th className="border border-gray-200 px-4 py-1">Unit</th>
               <th className="border border-gray-200 px-4 py-1">
-                Price/Unit (without tax)
+                Price/Unit (without GST)
               </th>
-              <th className="border border-gray-200 px-4 py-1">Tax</th>
+              <th className="border border-gray-200 px-4 py-1">GST</th>
               <th className="border border-gray-200 px-4 py-1">Amount</th>
             </tr>
           </thead>
@@ -96,7 +96,7 @@ const CreateExpenceBills = () => {
                 Total quantity:
               </td>
               <td className="border border-gray-200 px-4 py-1">
-                {partyData?.toatalquantity}
+                {partyData?.toatalquantity || 0}
               </td>
               <td
                 colSpan="3"
@@ -105,7 +105,7 @@ const CreateExpenceBills = () => {
                 Total Amount:
               </td>
               <td className="border border-gray-200 px-4 py-1">
-                {partyData?.totalAmount} Rs
+                {partyData?.totalAmount || 0} Rs
               </td>
             </tr>
           </tfoot>
@@ -122,15 +122,15 @@ const CreateExpenceBills = () => {
         <div className="w-1/2 text-gray-700">
           <div className="flex justify-between bg-purple-100 p-1">
             <p className="font-semibold">Total</p>
-            <p>{partyData?.totalAmount} Rs</p>
+            <p>{partyData?.totalAmount || 0} Rs</p>
           </div>
           <div className="flex justify-between p-1  ">
             <p>Paid</p>
-            <p>{partyData?.totalAmount} Rs</p>
+            <p>{partyData?.totalAmount || 0} Rs</p>
           </div>
           <div className="flex justify-between p-1">
             <p>Balance</p>
-            <p>{partyData?.totalAmount} Rs</p>
+            <p>{partyData?.totalAmount || 0} Rs</p>
           </div>
         </div>
       </div>

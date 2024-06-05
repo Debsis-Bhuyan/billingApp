@@ -1,19 +1,27 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-function ForgotPassword() {
-  const [email, setEmail] = useState("");
+const ResetPassword = () => {
+  const [newPassword, setNewPassword] = useState("");
+  const [errMsg, setErrMsg] = useState("");
   const [err, setErr] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const { userId, token } = useParams();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (newPassword !== confirmPassword) {
+      alert("Password not matched");
+      return;
+    }
+    console.log(confirmPassword, userId);
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user/forget-password",
-        { email }
+        "http://localhost:5000/api/user/update-password",
+        { userId, password: confirmPassword, token }
       );
-      console.log(res.data);
+
       if (res.data?.status === "failed") {
         setErr(res.data);
       } else {
@@ -26,36 +34,57 @@ function ForgotPassword() {
     }
   };
 
+  useEffect(() => {
+    if (newPassword !== confirmPassword) {
+      setErrMsg("password not matched");
+    } else {
+      setErrMsg("");
+    }
+  }, [confirmPassword]);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Forgot your password?
+            Reset your password?
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email address below and we'll send you a link to reset
-            your password.
-          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
+            <div className="mb-4 w-full  ">
+              <label htmlFor="newPassword" className="block mb-2">
+                New Password:
               </label>
               <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
+                type="password"
+                id="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
               />
+            </div>
+          </div>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div className="mb-4 w-full  ">
+              <label htmlFor="confirmPassword" className="block mb-2">
+                Confirm Password:
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded"
+                required
+              />
+              {errMsg && (
+                <span className="text-xs text-[#f64949fe] mt-0.5 ">
+                  {errMsg}
+                </span>
+              )}
             </div>
             {err && (
               <span
@@ -91,13 +120,13 @@ function ForgotPassword() {
                   />
                 </svg>
               </span>
-              Send Reset Link
+              Update
             </button>
           </div>
         </form>
       </div>
     </div>
   );
-}
+};
 
-export default ForgotPassword;
+export default ResetPassword;

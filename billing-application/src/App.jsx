@@ -35,6 +35,7 @@ import CreateEstimateBills from "./pages/CreateEstimateBills";
 import ExpenceData from "./pages/ExpenceData";
 import CreateExpenceBills from "./pages/CreateExpenceBills";
 import ForgetPassword from "./components/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 const Layout = () => {
   const user = useSelector((state) => state.user);
@@ -58,7 +59,7 @@ const Layout = () => {
 };
 function App() {
   return (
-    <div className="w-full p-0 m-0 min-h-screen">
+    <div className="w-full p-0 m-0  ">
       <Routes>
         <Route element={<Layout />}>
           <Route index path="/" element={<Navigate to={"/dashboard"} />} />
@@ -89,6 +90,7 @@ function App() {
         </Route>
         <Route path="/auth/register" element={<SignUp />} />
         <Route path="/auth/login" element={<Signin />} />
+        <Route path="/users/reset-password/:userId/:token" element={<ResetPassword />} />
         <Route path="/auth/forget" element={<ForgetPassword />} />
         <Route path="/auth" element={<StartPage />} />
         <Route path="/create-sales-bills" element={<CreateSalesBills />} />

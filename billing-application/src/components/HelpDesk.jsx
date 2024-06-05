@@ -10,50 +10,33 @@ const HelpDesk = () => {
   const questions = [
     {
       id: 1,
-      question: "Question 1?",
-      answer: "Answer to question 1",
+      question: "How do I create a new account?",
+      answer:
+        " To create a new account, add all credentials details and click to the Sign Up.",
     },
+
     {
       id: 2,
-      question: "Question 2?",
-      answer: "Answer to question 2",
+      question: "How do I log in to my account?",
+      answer: "Add on your Credentials infromation then click to the Log in out ",
     },
     {
       id: 3,
-      question: "Question 3?",
-      answer: "Answer to question 3",
+      question: "If a perso forget pPassword?",
+      answer: "Go to log in page there wil be shown like hat forget passwor the fill all term and condiion.",
     },
     {
       id: 4,
-      question: "Question 4?",
-      answer: "Answer to question 4",
+      question: "How do I add and update my profile details?",
+      answer: "After logging in,click on the profile . Here, you can add and update your personal details",
     },
     {
       id: 5,
-      question: "Question 5?",
-      answer: "Answer to question 5",
-    },
-    {
-      id: 6,
-      question: "Question 6?",
-      answer: "Answer to question 6",
-    },
-    {
-      id: 7,
-      question: "Question 7?",
-      answer: "Answer to question 7",
-    },
-    {
-      id: 8,
-      question: "Question 8?",
-      answer: "Answer to question 8",
-    },
-    {
-      id: 9,
-      question: "Question 9?",
-      answer: "Answer to question 9",
+      question: "How do I log out of the app?",
+      answer: "Click on your profile picture or the user icon at the top right corner of the dashboard , then select logout from the dropdown menu. ",
     },
   ];
+
 
   const handleLogoClick = () => {
     setShowContainer(!showContainer);
@@ -66,6 +49,13 @@ const HelpDesk = () => {
   const handleLoadMore = () => {
     setCurrentPage(currentPage + 1);
     setActiveQuestionId(null); // Reset the active question when loading more
+  };
+
+  const handleLoadLess = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+      setActiveQuestionId(null); // Reset the active question when loading more
+    }
   };
 
   const startIndex = currentPage * questionsPerPage;
@@ -91,6 +81,14 @@ const HelpDesk = () => {
       </div>
       {showContainer && (
         <div className="absolute top--20 right-0 bg-white p-4 rounded-lg shadow-lg max-w-xs w-full">
+          {currentPage >=1 && (
+            <button
+              className="load-more-button text-blue-500 mt-4"
+              onClick={handleLoadLess}
+            >
+              Load less
+            </button>
+          )}
           {displayedQuestions.map((question) => (
             <div key={question.id} className="mb-4">
               <button

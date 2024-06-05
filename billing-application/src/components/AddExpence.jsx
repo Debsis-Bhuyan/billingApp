@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addExpenceItem, clearExpenceItem, removeExpenceItem } from "../store/expenceItem";
+import {
+  addExpenceItem,
+  clearExpenceItem,
+  removeExpenceItem,
+} from "../store/expenceItem";
 import { addExpence } from "../store/expenceSlice";
 import { MdDelete } from "react-icons/md";
 
@@ -42,9 +46,7 @@ const CreateExpence = () => {
     const optionValue = formData.tax;
     const taxData = optionValue.match(/\d+/)[0];
     const taxAmount =
-      (Number(formData.qty) *
-        Number(formData.pricePerUnit) *
-        Number(taxData)) /
+      (Number(formData.qty) * Number(formData.pricePerUnit) * Number(taxData)) /
       100;
     const newItem = {
       ...formData,
@@ -61,6 +63,17 @@ const CreateExpence = () => {
       tax: "",
     });
   };
+  useEffect(() => {
+    const obj = {
+      party: purchaserName,
+      number: orderNo,
+      date: new Date().toLocaleDateString(),
+      purchaseCat,
+      totalAmount: totalAmount,
+      toatalquantity,
+    };
+    setPartyData(obj);
+  }, [purchaseCat, purchaserName, totalAmount, toatalquantity]);
 
   const taxData = [28, 18, 12, 16];
   const unitData = [
@@ -99,8 +112,8 @@ const CreateExpence = () => {
 
     setPurchaserName("");
 
-    setOrderNo( Number(expenseData[expenseData.length - 1]?.number) + 1 || 1);
-   };
+    setOrderNo(Number(expenseData[expenseData.length - 1]?.number) + 1 || 1);
+  };
 
   useEffect(() => {
     let total = 0;
@@ -117,7 +130,7 @@ const CreateExpence = () => {
   };
   useEffect(() => {
     setItems(expenceItem);
-  }, [handleSubmit,handleDelete]);
+  }, [handleSubmit, handleDelete]);
   return (
     <div className="w-full p-2">
       <hr />
@@ -360,17 +373,17 @@ const CreateExpence = () => {
                         className="border m-3 px-4 text-black rounded"
                         required
                       >
-                         <option value="0">Select GST</option>
+                        <option value="0">Select GST</option>
                         <option value="0">GST@0%</option>
-                          <option value="0">IGST@0%</option>
-                          <option value="5">GST5%</option>
-                          <option value="5">IGST5%</option>
-                          <option value="12">GST12%</option>
-                          <option value="12">IGST12%</option>
-                          <option value="18">GST18%</option>
-                          <option value="18">IGST18%</option>
-                          <option value="28">GST28%</option>
-                          <option value="28">IGST28%</option>
+                        <option value="0">IGST@0%</option>
+                        <option value="5">GST5%</option>
+                        <option value="5">IGST5%</option>
+                        <option value="12">GST12%</option>
+                        <option value="12">IGST12%</option>
+                        <option value="18">GST18%</option>
+                        <option value="18">IGST18%</option>
+                        <option value="28">GST28%</option>
+                        <option value="28">IGST28%</option>
                       </select>
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold m-3 py-2 px-4 rounded"

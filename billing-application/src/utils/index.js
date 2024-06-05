@@ -145,3 +145,74 @@ export const numberToWords = (number) => {
     return "Number is too large to convert.";
   }
 };
+
+export const dateToSeconds = (dateString) => {
+  let delimiter;
+  if (dateString.includes("-")) {
+    delimiter = "-";
+  } else if (dateString.includes("/")) {
+    delimiter = "/";
+  } else {
+    delimiter = " ";
+  }
+
+  const dateParts = dateString.split(delimiter);
+  let year, month, day;
+
+  if (delimiter === "-") {
+    year = parseInt(dateParts[0], 10);
+    month = parseInt(dateParts[1], 10);
+    day = parseInt(dateParts[2], 10);
+  } else {
+    // For the formats DD MM YYYY and DD/MM/YYYY
+    day = parseInt(dateParts[0], 10);
+    month = parseInt(dateParts[1], 10); // Month in JavaScript starts from 0
+    year = parseInt(dateParts[2], 10);
+  }
+
+  const timestampInSeconds = new Date(year, month, day).getTime();
+  return timestampInSeconds;
+};
+
+export const dataFetch = (sales) => {
+  let timestampData = [];
+  for (let i = 0; i < sales.length; i++) {
+    const element = sales[i];
+    if (i <= 12) {
+      let timestamp;
+      if (!element.date) {
+        timestamp = dateToSeconds(new Date().toLocaleDateString());
+      } else {
+        timestamp = dateToSeconds(element.date);
+      }
+      const da = [timestamp, parseInt(element.totalAmount || 0)];
+      timestampData.push(da);
+    }
+  }
+  return timestampData;
+};
+
+function getFirstDayOfPreviousMonth(date) {
+  var year = date.getFullYear();
+  var month = date.getMonth();
+  if (month === 0) {
+    month = 11;
+    year--;
+  } else {
+    month--;
+  }
+  return new Date(year, month, 1);
+}
+
+export const getHalfYearDate = () => {
+  var currentDate = new Date();
+
+  let av;
+  for (var i = 0; i < 6; i++) {
+    var firstDayOfPreviousMonth = getFirstDayOfPreviousMonth(currentDate);
+    currentDate = firstDayOfPreviousMonth;
+    av = firstDayOfPreviousMonth;
+  }
+
+  return av;
+};

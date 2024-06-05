@@ -91,12 +91,18 @@ const SideBar = () => {
             >
               Estimate
             </Link>
-             
+
             <Link
               to="/settings"
               className="block p-1 text-xl px-4  rounded hover:bg-blue-500"
             >
               Settings
+            </Link>
+            <Link
+              to="/utilitis"
+              className="block p-1 text-xl px-4  rounded hover:bg-blue-500"
+            >
+              Utilities
             </Link>
 
             <Link
@@ -105,7 +111,7 @@ const SideBar = () => {
             >
               Feedback
             </Link>
-            
+
             <Link
               className="block p-1 text-xl px-4  rounded hover:bg-blue-500"
               onClick={() => {

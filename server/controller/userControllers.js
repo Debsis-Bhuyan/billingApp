@@ -22,7 +22,9 @@ export const verifyEmail = async (req, res) => {
                 res.redirect(`/users/verified?status=error&message=${message}`);
               })
               .catch((err) => {
-                res.redirect(`/users/verified?status=error&message=${err.message}`);
+                res.redirect(
+                  `/users/verified?status=error&message=${err.message}`
+                );
               });
           })
           .catch((error) => {
@@ -103,38 +105,37 @@ export const requestPasswordReset = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   const { userId, token } = req.params;
-
+  console.log(userId, token);
   try {
     // find record
     const user = await Users.findById(userId);
 
     if (!user) {
       const message = "Invalid password reset link. Try again";
-      res.redirect(`/users/resetpassword?status=error&message=${message}`);
+      res.status(400).json({ status: "error", message });
     }
 
     const resetPassword = await PasswordReset.findOne({ userId });
 
     if (!resetPassword) {
       const message = "Invalid password reset link. Try again";
-      return res.redirect(
-        `/users/resetpassword?status=error&message=${message}`
-      );
+      res.status(400).json({ status: "error", message });
     }
 
     const { expiresAt, token: resetToken } = resetPassword;
 
     if (expiresAt < Date.now()) {
       const message = "Reset Password link has expired. Please try again";
-      res.redirect(`/users/resetpassword?status=error&message=${message}`);
+      res.status(400).json({ status: "error", message });
     } else {
       const isMatch = await compareString(token, resetToken);
 
       if (!isMatch) {
         const message = "Invalid reset password link. Please try again";
-        res.redirect(`/users/resetpassword?status=error&message=${message}`);
+        return res.status(400).json({ status: "error", message });
       } else {
-        res.redirect(`/users/resetpassword?type=reset&id=${userId}`);
+        return (type = "reset");
+        res.status(201).json({ status: "reset", userId });
       }
     }
   } catch (error) {
@@ -143,9 +144,10 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-export const changePassword = async (req, res, next) => {
+export const updatePassword = async (req, res, next) => {
   try {
     const { userId, password } = req.body;
+    console.log(userId, password)
 
     const hashedpassword = await hashString(password);
 
@@ -158,7 +160,7 @@ export const changePassword = async (req, res, next) => {
       await PasswordReset.findOneAndDelete({ userId });
 
       res.status(200).json({
-        ok: true,
+        ok: true,message:"Successfully Fogoted Password. Please Login"
       });
     }
   } catch (error) {

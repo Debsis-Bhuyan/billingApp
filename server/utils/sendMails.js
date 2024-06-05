@@ -10,7 +10,10 @@ dotenv.config();
 const { AUTH_EMAIL, AUTH_PASSWORD, APP_URL } = process.env;
 
 let transporter = nodemailer.createTransport({
-  host: "smtp-mail.outlook.com",
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: false,
   auth: {
     user: AUTH_EMAIL,
     pass: AUTH_PASSWORD,
@@ -83,6 +86,7 @@ export const sendVerificationEmail = async (user, res) => {
 
 export const resetPasswordLink = async (user, res) => {
   const { _id, email } = user;
+  
 
   const token = _id + uuidv4();
   const link = APP_URL + "users/reset-password/" + _id + "/" + token;
@@ -91,7 +95,7 @@ export const resetPasswordLink = async (user, res) => {
   const mailOptions = {
     from: AUTH_EMAIL,
     to: email,
-    subject: "Password Reset",
+    subject: "SphereBills Password Reset",
     html: `<p style="font-family: Arial, sans-serif; font-size: 16px; color: #333; background-color: #f7f7f7; padding: 20px; border-radius: 5px;">
          Password reset link. Please click the link below to reset password.
         <br>

@@ -12,6 +12,7 @@ const AddItem = () => {
   const [itemPrice, setItemPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showInstructions, setShowInstructions] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,16 +26,12 @@ const AddItem = () => {
     setItemName("");
     setItemPrice("");
     setQuantity("");
-    setItems(itemData)
+    setItems(itemData);
   };
 
   const handleDelete = (index) => {
     dispatch(removeItem(index));
   };
-
-  // useEffect(() => {
-  //   setItems(itemData);
-  // }, [itemData]);
 
   useEffect(() => {
     const filteredItems = itemData.filter((item) =>
@@ -42,9 +39,40 @@ const AddItem = () => {
     );
     setItems(filteredItems);
   }, [searchQuery, itemData]);
+  const handleInstructionsToggle = () => {
+    setShowInstructions(!showInstructions);
+  };
 
   return (
     <div className="mx-auto mt-2 h-[90vh] p-4">
+      <button
+        onClick={handleInstructionsToggle}
+        className="absolute top-4 right-4 bg-gray-300 text-black px-4 my-16 py-2 rounded-md hover:bg-gray-400 focus:outline-none"
+      >
+        Instructions
+      </button>
+
+      {showInstructions && (
+        <div className="absolute top-16 right-4 bg-white border border-gray-300 rounded-md p-4 shadow-lg z-50">
+          <h2 className="text-lg font-bold mb-2">
+            Inventory Items Instructions
+          </h2>
+          <ol className="list-decimal list-inside">
+            <li>Enter item name, quantity, and price.</li>
+            <li>click on the add item.</li>
+            <li>
+              If you want to search items you can search by the item name.
+            </li>
+          </ol>
+          <button
+            onClick={handleInstructionsToggle}
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none"
+          >
+            Close
+          </button>
+        </div>
+      )}
+
       <h1
         style={{ color: "orange", textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}
         className="text-3xl mb-6"
@@ -157,7 +185,6 @@ const AddItem = () => {
         </table>
       </div>
     </div>
-
   );
 };
 

@@ -162,6 +162,7 @@ const CreatePurchaseOrder = () => {
 
   return (
     <div className="w-full p-2">
+      
       <h2 className=" text-3xl pb-3">Purchase Order</h2>
       <hr />
       <div className=" w-full  p-4">

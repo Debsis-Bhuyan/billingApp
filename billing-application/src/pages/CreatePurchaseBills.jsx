@@ -41,13 +41,13 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
       <div className="flex justify-between border-b border-gray-300 pb-4 mb-6">
         <div className="text-gray-700">
           <p className="font-semibold">From: {user?.businessName || "SphereCode"}</p>
-          <p className="font-semibold">To: {partyData?.party}</p>
+          <p className="font-semibold">To: {partyData?.party || "User"}</p>
           <p>Order Number: {partyData?.number}</p>
         </div>
         <div className="text-gray-700">
           <p className="font-semibold">Order Details</p>
           <p>Date: {new Date().toLocaleDateString()}</p>
-          <p>Due Date: {partyData?.dueDate}</p>
+          <p>Due Date: {partyData?.dueDate || new Date().toLocaleDateString()}</p>
         </div>
       </div>
       <div className="py-2 px-2 w-full">
