@@ -36,7 +36,11 @@ export const helpForm = async (req, res) => {
 
 export const sendInvoice = async (req, res) => {
   // Generate HTML content for invoice
-  const {email} = req.body;
+  const { data, email, amount, type } = req.body;
+  console.log(data);
+  console.log(email);
+  const { user, partyData, purchaseDetails } = data;
+  console.log(user, purchaseDetails, partyData);
   const generateHTMLInvoice = () => {
     let html = `
       <div>
@@ -47,7 +51,7 @@ export const sendInvoice = async (req, res) => {
             padding: 0;
             background-color: #f8f8f8;
           }
-  
+          
           .container {
             width: 90%;
             margin: auto;
@@ -180,24 +184,30 @@ export const sendInvoice = async (req, res) => {
         <div class="container">
           <header class="header">
             <div class="header-left">
-              <h1 class="business-name">soft-tech</h1>
-              <p class="phone-number">Phone Number: 4555455120</p>
+              <h1 class="business-name">${
+                user?.businessName || user?.fullName
+              }</h1>
+              <p class="phone-number">Phone Number: ${user?.phoneNo}</p>
             </div>
             <div class="header-right">
-              <img src="logo.png" alt="Business Logo" class="business-logo" />
+              <img src=${
+                user?.profileUrl
+              } alt="Business Logo" class="business-logo" />
             </div>
           </header>
           <h2 class="title">Sale Order</h2>
           <div class="order-details">
             <div class="from-to">
-              <p><strong>From:</strong> soft-tech</p>
-              <p><strong>To:</strong> Debasis Bhuyan</p>
-              <p><strong>Order Number:</strong> 33</p>
+              <p><strong>From:</strong>From: ${
+                user?.businessName || user?.fullName
+              }</p>
+              <p><strong>To:</strong> To: ${partyData?.party}</p>
+              <p><strong>Order Number: ${partyData?.number}</strong> 33</p>
             </div>
             <div class="dates">
               <p><strong>Order Details</strong></p>
-              <p><strong>Date:</strong> 6/6/2024</p>
-              <p><strong>Due Date:</strong> 2024-06-06</p>
+              <p><strong>Date: ${new Date().toLocaleDateString()}</strong> 6/6/2024</p>
+              <p><strong>Due Date: ${partyData?.dueDate}</strong> 2024-06-06</p>
             </div>
           </div>
           <table class="order-table">
@@ -212,48 +222,30 @@ export const sendInvoice = async (req, res) => {
                 <th>Amount</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Camera</td>
-                <td>45</td>
-                <td>number</td>
-                <td>23000 Rs</td>
-                <td>18</td>
-                <td>1221300.00 Rs</td>
+            {purchaseDetails.map((purchase, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{purchase.item}</td>
+                <td>{purchase.qty}</td>
+                <td>{purchase.unit}</td>
+                <td>{purchase.pricePerUnit}</td>
+                <td>{purchase.tax}</td>
+                <td>{purchase.amount}</td>
               </tr>
-              <tr>
-                <td>2</td>
-                <td>Car</td>
-                <td>4</td>
-                <td>number</td>
-                <td>23000 Rs</td>
-                <td>28</td>
-                <td>117760.00 Rs</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>www</td>
-                <td>2</td>
-                <td>Numbers(m)</td>
-                <td>10000 Rs</td>
-                <td>IGST5%</td>
-                <td>21000.00 Rs</td>
-              </tr>
-            </tbody>
+            })
             <tfoot>
               <tr>
                 <td colspan="2" class="text-right">Total quantity:</td>
-                <td>51</td>
+                <td> ${partyData?.toatalquantity}</td>
                 <td colspan="3" class="text-right">Total Amount:</td>
-                <td>1360060 Rs</td>
+                <td>${partyData?.totalAmount} Rs</td>
               </tr>
             </tfoot>
           </table>
           <div class="summary">
             <div class="summary-left">
               <p><strong>Order Amount In Words</strong></p>
-              <p>Thirteen Lakh Sixty Thousand Sixty only</p>
+              <p>${amount}</p>
               <p><strong>Terms and Conditions</strong></p>
               <p>Thanks for doing business with us!</p>
               <p>Please visit Again</p>
@@ -261,15 +253,15 @@ export const sendInvoice = async (req, res) => {
             <div class="summary-right">
               <div class="summary-row">
                 <p>Total</p>
-                <p>1360060 Rs</p>
+                <p>${partyData?.totalAmount} Rs</p>
               </div>
               <div class="summary-row">
                 <p>Paid</p>
-                <p>1360060 Rs</p>
+                <p>${partyData?.totalAmount} Rs</p>
               </div>
               <div class="summary-row">
                 <p>Balance</p>
-                <p>1360060 Rs</p>
+                <p>${partyData?.totalAmount} Rs</p>
               </div>
             </div>
           </div>
@@ -286,7 +278,7 @@ export const sendInvoice = async (req, res) => {
   };
 
   // Generate PDF invoice from HTML content
-  const generatePDFInvoice =  (htmlContent) => {
+  const generatePDFInvoice = (htmlContent) => {
     pdf.create(htmlContent).toFile("./billingData/invoice.pdf", (err) => {
       if (err) {
         console.error(err);
@@ -294,7 +286,7 @@ export const sendInvoice = async (req, res) => {
           .status(500)
           .json({ success: false, message: "Failed to generate PDF" });
       }
-      sendInvoicePdf(email,res)
+      sendInvoicePdf(email, res);
       console.log("PDF invoice generated successfully");
       res.status(200).json({
         success: true,

@@ -146,7 +146,7 @@ export const sendInvoicePdf = (email, res) => {
     mailOptions = {
       from: AUTH_EMAIL,
       to: email,
-      subject: "Invoice Sending",
+      subject: "Invoice attachment on billing",
       html: `<div
     style='font-family: Arial, sans-serif; font-size: 20px; color: #333; background-color: #f7f7f7; padding: 20px; border-radius: 5px;'>
     <h3 style="color: rgb(8, 56, 188)">Please verify your email address</h3>
@@ -155,7 +155,7 @@ export const sendInvoicePdf = (email, res) => {
     <p>
         Please verify your email address so we can know that it's really you.
         <br>
-    <p>This link <b>expires in 1 hour</b></p>
+    <p>This Date- <b>${new Date().toLocaleDateString()} - ${ new Date().toLocaleTimeString()}</b></p>
     <br>
     <a href="/"
         style="color: #fff; padding: 14px; text-decoration: none; background-color: #000;  border-radius: 8px; font-size: 18px;">Verify

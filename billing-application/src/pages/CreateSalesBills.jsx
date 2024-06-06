@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { numberToWords } from "../utils";
- 
+import ShareButton from "../components/ShareButton";
+
 const CreateSalesBills = () => {
   const user = useSelector((state) => state.user).user.user;
 
@@ -10,10 +11,18 @@ const CreateSalesBills = () => {
   const data = location.state;
   const [purchaseDetails, setPurchaseDetails] = useState(data.purchaseOrders);
   const [partyData, setPartyData] = useState(data.partyData);
-
-  const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount));
+  const [isOpen, setIsOpen] = useState(false);
+  const amount = numberToWords(partyData?.totalAmount);
+  
   const handlePrint = () => {
     window.print();
+  };
+  const obj = {
+    purchaseDetails,
+    partyData,
+    user,
+    amount,
+    type:"Sales"
   };
 
   return (
@@ -21,7 +30,7 @@ const CreateSalesBills = () => {
       <div className="flex items-center justify-between mb-4 border-b pb-2">
         <div>
           <h2 className="text-3xl font-bold text-gray-900">
-            {user?.businessName}
+            {user?.businessName || user?.fullName}
           </h2>
           <p className="text-gray-700">Phone Number: {user?.phoneNo}</p>
         </div>
@@ -38,7 +47,7 @@ const CreateSalesBills = () => {
       </h3>
       <div className="flex justify-between border-b border-gray-300 pb-4 mb-6">
         <div className="text-gray-700">
-          <p className="font-semibold">From: {user?.businessName}</p>
+          <p className="font-semibold">From: {user?.businessName || user?.fullName }</p>
           <p className="font-semibold">To: {partyData?.party}</p>
           <p>Order Number: {partyData?.number}</p>
         </div>
@@ -138,13 +147,22 @@ const CreateSalesBills = () => {
           <p className="mt-6 font-semibold">Authorized Signatory</p>
         </div>
       </div>
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 gap-3 flex justify-center">
         <button
           onClick={handlePrint}
           className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
         >
           Print
         </button>
+        <button
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        >
+          Share
+        </button>
+        {isOpen && <ShareButton isOpen={isOpen} setIsOpen={setIsOpen} data={obj} />}
       </div>
     </div>
   );
