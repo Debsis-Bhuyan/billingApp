@@ -100,7 +100,7 @@ class ApexChart extends React.Component {
         ApexCharts.exec(
           "area-datetime",
           "zoomX",
-          new Date("27 May 2024").getTime(),
+          new Date("02 May 2024").getTime(),
 
           new Date(currentDate).getTime()
         );

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { hashString } from "./index.js";
 import Verification from "../models/emailVerification.js";
 import PasswordReset from "../models/resetModel.js";
+import fs from "fs";
 
 dotenv.config();
 
@@ -86,7 +87,6 @@ export const sendVerificationEmail = async (user, res) => {
 
 export const resetPasswordLink = async (user, res) => {
   const { _id, email } = user;
-  
 
   const token = _id + uuidv4();
   const link = APP_URL + "users/reset-password/" + _id + "/" + token;
@@ -134,4 +134,58 @@ export const resetPasswordLink = async (user, res) => {
     console.log(error);
     res.status(404).json({ message: "Something went wrong" });
   }
+};
+export const sendInvoicePdf = (email, res) => {
+  //   mail options
+  console.log(email);
+  let mailOptions;
+  const filePath = "/billingData/invoice.pdf"; // Update the path to your PDF file
+  console.log(filePath);
+  fs.readFile("./billingData/invoice.pdf", function (err, data) {
+    if (err) throw err;
+    mailOptions = {
+      from: AUTH_EMAIL,
+      to: email,
+      subject: "Invoice Sending",
+      html: `<div
+    style='font-family: Arial, sans-serif; font-size: 20px; color: #333; background-color: #f7f7f7; padding: 20px; border-radius: 5px;'>
+    <h3 style="color: rgb(8, 56, 188)">Please verify your email address</h3>
+    <hr>
+    <h4>Hi Debasis,</h4>
+    <p>
+        Please verify your email address so we can know that it's really you.
+        <br>
+    <p>This link <b>expires in 1 hour</b></p>
+    <br>
+    <a href="/"
+        style="color: #fff; padding: 14px; text-decoration: none; background-color: #000;  border-radius: 8px; font-size: 18px;">Verify
+        Email Address</a>
+    </p>
+    <div style="margin-top: 20px;">
+        <h5>Best Regards</h5>
+        <h5>Connect with your team</h5>
+    </div>
+</div>`,
+
+      attachments: [
+        {
+          filename: "invoice.pdf",
+          content: data,
+          contentType: "application/pdf",
+        },
+      ],
+    };
+
+    try {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error("Error sending email:", error);
+        } else {
+          console.log("Email sent:", info.response);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
 };

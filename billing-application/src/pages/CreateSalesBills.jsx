@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { numberToWords } from "../utils";
-import { MdDelete } from "react-icons/md";
-
+ 
 const CreateSalesBills = () => {
   const user = useSelector((state) => state.user).user.user;
 
@@ -11,21 +10,12 @@ const CreateSalesBills = () => {
   const data = location.state;
   const [purchaseDetails, setPurchaseDetails] = useState(data.purchaseOrders);
   const [partyData, setPartyData] = useState(data.partyData);
-  
-const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
+
+  const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount));
   const handlePrint = () => {
     window.print();
   };
-  // const obj = {
-  //   party: partyName,
-  //   number: orderNo,
-  //   date: orderDate,
-  //   dueDate,
-  //   totalAmount: totalAmount,
-  //   balance: totalAmount,
-  //   type: paymentType,
-  //   status: paymentStatus,
-  // };
+
   return (
     <div className="px-8 py-2 bg-white shadow-lg rounded-lg  mx-auto">
       <div className="flex items-center justify-between mb-4 border-b pb-2">
@@ -75,31 +65,26 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
           </thead>
           <tbody>
             {purchaseDetails.map((item, index) => (
-                  <tr key={index}>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {index + 1}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.item}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.qty}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.unit}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.pricePerUnit} Rs
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.tax}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {Number(item.amount).toFixed(2)} Rs
-                    </td>
-                    
-                  </tr>
-                ))}
+              <tr key={index}>
+                <td className="border border-gray-200 px-4 py-1">
+                  {index + 1}
+                </td>
+                <td className="border border-gray-200 px-4 py-1">
+                  {item.item}
+                </td>
+                <td className="border border-gray-200 px-4 py-1">{item.qty}</td>
+                <td className="border border-gray-200 px-4 py-1">
+                  {item.unit}
+                </td>
+                <td className="border border-gray-200 px-4 py-1">
+                  {item.pricePerUnit} Rs
+                </td>
+                <td className="border border-gray-200 px-4 py-1">{item.tax}</td>
+                <td className="border border-gray-200 px-4 py-1">
+                  {Number(item.amount).toFixed(2)} Rs
+                </td>
+              </tr>
+            ))}
           </tbody>
           <tfoot>
             <tr>
@@ -119,7 +104,7 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
                 Total Amount:
               </td>
               <td className="border border-gray-200 px-4 py-1">
-              {partyData?.totalAmount} Rs
+                {partyData?.totalAmount} Rs
               </td>
             </tr>
           </tfoot>

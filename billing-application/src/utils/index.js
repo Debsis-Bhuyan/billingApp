@@ -175,15 +175,17 @@ export const dateToSeconds = (dateString) => {
 };
 
 export const dataFetch = (sales) => {
+  console.log(sales)
   let timestampData = [];
   for (let i = 0; i < sales.length; i++) {
     const element = sales[i];
     if (i <= 12) {
       let timestamp;
       if (!element.date) {
-        timestamp = dateToSeconds(new Date().toLocaleDateString());
+        timestamp = new Date().getTime()
       } else {
-        timestamp = dateToSeconds(element.date);
+        timestamp = new Date(element.date).getTime()
+        // timestamp = dateToSeconds(element.date);
       }
       const da = [timestamp, parseInt(element.totalAmount || 0)];
       timestampData.push(da);
