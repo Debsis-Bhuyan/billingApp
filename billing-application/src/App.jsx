@@ -85,12 +85,15 @@ function App() {
           <Route path="/create-purchase" element={<CreatePurchaseOrder />} />
           <Route path="/utilitis" element={<UtilityPage />} />
           <Route path="/settings" element={<SettingPage />} />
-          <Route path="/help" element={<HelpPage />} />
-          <Route path="/company" element={<CompanyPage />} />
         </Route>
+        <Route path="/help" element={<HelpPage />} />
+        <Route path="/company" element={<CompanyPage />} />
         <Route path="/auth/register" element={<SignUp />} />
         <Route path="/auth/login" element={<Signin />} />
-        <Route path="/users/reset-password/:userId/:token" element={<ResetPassword />} />
+        <Route
+          path="/users/reset-password/:userId/:token"
+          element={<ResetPassword />}
+        />
         <Route path="/auth/forget" element={<ForgetPassword />} />
         <Route path="/auth" element={<StartPage />} />
         <Route path="/create-sales-bills" element={<CreateSalesBills />} />
@@ -102,10 +105,7 @@ function App() {
           path="/create-estimate-bills"
           element={<CreateEstimateBills />}
         />
-         <Route
-          path="/create-expence-bills"
-          element={<CreateExpenceBills />}
-        />
+        <Route path="/create-expence-bills" element={<CreateExpenceBills />} />
       </Routes>
     </div>
   );

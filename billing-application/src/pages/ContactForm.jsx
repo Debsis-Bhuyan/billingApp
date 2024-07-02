@@ -1,17 +1,19 @@
 import { useState } from "react";
 import useStore from "../store";
 import axios from "axios";
+import { APP_URL } from "../utils";
 
 const Contact = () => {
   const { user } = useStore();
-  const [name, setName] = useState(user?.user.fullName);
+  const [name, setName] = useState(user?.fullName);
   const [email, setEmail] = useState(user?.user.email);
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // TODO feedback form
-    const url = "http://localhost:5000/api/utils/feedback";
+    APP_URL
+    const url = `${APP_URL}/utils/feedback`;
     try {
       const response =await axios.post(url, { fullName: name, userId:user?.user._id, email, message },
         {

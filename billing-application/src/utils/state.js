@@ -288,3 +288,21 @@ export const state = [
 ];
 export const taxData = 
 [ 0, 5, 12, 18, 28]
+
+export const unitData = [
+  "Numbers (n)",
+  "Centimeters (cm)",
+  "Meters (m)",
+  "Kilometers (km)",
+  "Inches (in)",
+  " Grams (g)",
+  "Kilograms (kg)",
+  "Tonnes (t)",
+  "Pounds (lb)",
+  " Milliliters (ml)",
+  "Liters (l) ",
+];
+// const gstData =[{
+//   "GST@0%":0,
+
+// }]

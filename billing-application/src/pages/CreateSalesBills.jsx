@@ -21,7 +21,7 @@ const CreateSalesBills = () => {
     purchaseDetails,
     partyData,
     user,
-    amount,
+    amount:numberToWords(partyData?.totalAmount),
     type:"Sales"
   };
 

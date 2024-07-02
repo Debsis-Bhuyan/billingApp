@@ -8,6 +8,7 @@ import {
 } from "react-icons/hi";
 import { MdOutlinePrivacyTip } from "react-icons/md";
 import { useSelector, useDispatch } from "react-redux";
+import { APP_URL } from "../utils";
 
 const SettingsPage = () => {
   const user = useSelector((state) => state.user.user);
@@ -20,7 +21,7 @@ const SettingsPage = () => {
 
   const handleSaving = async (e) => {
     e.preventDefault();
-    const url = "http://localhost:5000/api/user/reset-password";
+    const url = `${APP_URL}/user/reset-password`;
     try {
       const response = await axios.post(
         url,

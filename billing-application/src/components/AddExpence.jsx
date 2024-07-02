@@ -8,6 +8,7 @@ import {
 } from "../store/expenceItem";
 import { addExpence } from "../store/expenceSlice";
 import { MdDelete } from "react-icons/md";
+import { unitData } from "../utils/state";
 
 const CreateExpence = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,6 @@ const CreateExpence = () => {
       amount: Number(formData.qty) * Number(formData.pricePerUnit) + taxAmount,
       taxAmount: taxAmount,
     };
-    // setItems([...items, newItem]);
     dispatch(addExpenceItem(newItem));
     setFormData({
       item: "",
@@ -74,21 +74,9 @@ const CreateExpence = () => {
     };
     setPartyData(obj);
   }, [purchaseCat, purchaserName, totalAmount, toatalquantity]);
-
+  
   const taxData = [28, 18, 12, 16];
-  const unitData = [
-    "Numbers (n)",
-    "Centimeters (cm)",
-    "Meters (m)",
-    "Kilometers (km)",
-    "Inches (in)",
-    " Grams (g)",
-    "Kilograms (kg)",
-    "Tonnes (t)",
-    "Pounds (lb)",
-    " Milliliters (ml)",
-    "Liters (l) ",
-  ];
+
 
   const saveExpence = (e) => {
     e.preventDefault();

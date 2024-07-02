@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { APP_URL } from "../utils";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -18,7 +19,7 @@ const ResetPassword = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/user/update-password",
+        `${APP_URL}/user/update-password`,
         { userId, password: confirmPassword, token }
       );
 

@@ -7,8 +7,13 @@ import { dataFetch, dateToSeconds, getHalfYearDate } from "../utils";
 class ApexChart extends React.Component {
   constructor(props) {
     super(props);
-    const sales = this.props.sales;
-
+    // const sales = this.props.sales;
+    // const year = "2022";
+    // const month = "04";
+    // const date = "25";
+    // const c= new Date(`${year}-${month}-${date}`).getTime();
+    // const d = new Date("2022 Mar 25").getTime();
+   
     this.state = {
       series: [
         {

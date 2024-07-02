@@ -7,7 +7,6 @@ const ShareButton = ({ isOpen, setIsOpen, data }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(email);
-
     const url = "http://localhost:5000/api/utils/generate-invoice-pdf";
     try {
       const response = await axios.post(url,{ data,email});

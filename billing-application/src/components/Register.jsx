@@ -34,7 +34,7 @@ const SignUp = () => {
       setErr("Password and Conform Password are not matched");
       return;
     }
-    console.log(email, password, name, conformPassword);
+    console.log(email, password, name, conformPassword,fileURL);
     const url = "http://localhost:5000/api/user/register";
     try {
       const response = await axios.post(url, {

@@ -36,13 +36,15 @@ export const helpForm = async (req, res) => {
 
 export const sendInvoice = async (req, res) => {
   // Generate HTML content for invoice
-  const { data, email, amount, type } = req.body;
+  const { data, email } = req.body;
   console.log(data);
   console.log(email);
-  const { user, partyData, purchaseDetails } = data;
+  const { user, partyData, purchaseDetails, amount, type } = data;
+  console.log(amount, type);
+
   console.log(user, purchaseDetails, partyData);
   const generateHTMLInvoice = () => {
-    let html = `
+     let html = `
       <div>
         <style>
           body {
@@ -195,19 +197,19 @@ export const sendInvoice = async (req, res) => {
               } alt="Business Logo" class="business-logo" />
             </div>
           </header>
-          <h2 class="title">Sale Order</h2>
+          <h2 class="title">${type} Order</h2>
           <div class="order-details">
             <div class="from-to">
               <p><strong>From:</strong>From: ${
                 user?.businessName || user?.fullName
               }</p>
               <p><strong>To:</strong> To: ${partyData?.party}</p>
-              <p><strong>Order Number: ${partyData?.number}</strong> 33</p>
+              <p><strong>Order Number: </strong>${partyData?.number}</p>
             </div>
             <div class="dates">
               <p><strong>Order Details</strong></p>
-              <p><strong>Date: ${new Date().toLocaleDateString()}</strong> 6/6/2024</p>
-              <p><strong>Due Date: ${partyData?.dueDate}</strong> 2024-06-06</p>
+              <p><strong>Date: </strong>${new Date().toLocaleDateString()} </p>
+              <p><strong>Due Date: </strong> ${partyData?.dueDate}</p>
             </div>
           </div>
           <table class="order-table">
@@ -222,17 +224,7 @@ export const sendInvoice = async (req, res) => {
                 <th>Amount</th>
               </tr>
             </thead>
-            {purchaseDetails.map((purchase, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{purchase.item}</td>
-                <td>{purchase.qty}</td>
-                <td>{purchase.unit}</td>
-                <td>{purchase.pricePerUnit}</td>
-                <td>{purchase.tax}</td>
-                <td>{purchase.amount}</td>
-              </tr>
-            })
+            <tbody id="purchaseList">hello</tbody>
             <tfoot>
               <tr>
                 <td colspan="2" class="text-right">Total quantity:</td>
@@ -270,23 +262,47 @@ export const sendInvoice = async (req, res) => {
           </div>
            
         </div>
-         
+        <script>
+        const result =${purchaseDetails}
+        const purchaseList = document.getElementById("purchaseList");
+         if (result && result.length > 0) {
+           for (let i = 0; i < result.length; i++) {
+             const purchase = result[i];
+             const row = document.createElement("tr");
+             row.innerHTML = 
+               <td>i + 1</td>
+               <td>purchase.item</td>
+               <td>purchase.qty</td>
+               <td>purchase.unit</td>
+               <td>purchase.pricePerUnit</td>
+               <td>purchase.tax</td>
+               <td>purchase.amount</td>
+           ;
+          
+             purchaseList.appendChild(row);
+           }
+         } else {
+           const row = document.createElement("tr");
+          row.innerHTML = <td colspan="7">No data available</td>;
+           purchaseList.appendChild(row);
+         }
+       </script>
       </div>
       `;
 
-    return html;
+    return  html;
   };
 
   // Generate PDF invoice from HTML content
   const generatePDFInvoice = (htmlContent) => {
-    pdf.create(htmlContent).toFile("./billingData/invoice.pdf", (err) => {
+      pdf.create(htmlContent).toFile("./billingData/invoice.pdf", (err) => {
       if (err) {
         console.error(err);
         return res
           .status(500)
           .json({ success: false, message: "Failed to generate PDF" });
       }
-      sendInvoicePdf(email, res);
+       sendInvoicePdf(email, res);
       console.log("PDF invoice generated successfully");
       res.status(200).json({
         success: true,
@@ -297,8 +313,8 @@ export const sendInvoice = async (req, res) => {
   };
 
   // Call functions to generate HTML content and PDF invoice
-  const htmlContent = generateHTMLInvoice();
-  generatePDFInvoice(htmlContent);
+  const htmlContent =await generateHTMLInvoice();
+ await generatePDFInvoice(htmlContent);
   setTimeout(() => {
     fs.unlink("./billingData/invoice.pdf", function (err) {
       if (err) return console.log(err);

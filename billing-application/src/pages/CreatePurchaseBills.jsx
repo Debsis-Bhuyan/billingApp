@@ -10,13 +10,12 @@ const CreatePurchaseBills = () => {
   const data = location.state;
   const [purchaseDetails, setPurchaseDetails] = useState(data.purchaseOrders);
   const [partyData, setPartyData] = useState(data.partyData);
-  
-const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
+
+  const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount));
   const handlePrint = () => {
     window.print();
   };
- 
-  
+
   return (
     <div className="px-8 py-2 bg-white shadow-lg rounded-lg  mx-auto">
       <div className="flex items-center justify-between mb-4 border-b pb-2">
@@ -24,7 +23,9 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
           <h2 className="text-3xl font-bold text-gray-900">
             {user?.businessName || user?.fullName}
           </h2>
-          <p className="text-gray-700">Phone Number: {user?.phoneNo || 1234567890}</p>
+          <p className="text-gray-700">
+            Phone Number: {user?.phoneNo || 1234567890}
+          </p>
           <p className="text-gray-700">Address: {user?.address || "Address"}</p>
         </div>
         <div>
@@ -40,14 +41,18 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
       </h3>
       <div className="flex justify-between border-b border-gray-300 pb-4 mb-6">
         <div className="text-gray-700">
-          <p className="font-semibold">From: {user?.businessName || "SphereCode"}</p>
+          <p className="font-semibold">
+            From: {user?.businessName || "SphereCode"}
+          </p>
           <p className="font-semibold">To: {partyData?.party || "User"}</p>
           <p>Order Number: {partyData?.number}</p>
         </div>
         <div className="text-gray-700">
           <p className="font-semibold">Order Details</p>
           <p>Date: {new Date().toLocaleDateString()}</p>
-          <p>Due Date: {partyData?.dueDate || new Date().toLocaleDateString()}</p>
+          <p>
+            Due Date: {partyData?.dueDate || new Date().toLocaleDateString()}
+          </p>
         </div>
       </div>
       <div className="py-2 px-2 w-full">
@@ -67,31 +72,26 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
           </thead>
           <tbody>
             {purchaseDetails.map((item, index) => (
-                  <tr key={index}>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {index + 1}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.item}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.qty}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.unit}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.pricePerUnit} Rs
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {item.tax}
-                    </td>
-                    <td className="border border-gray-200 px-4 py-1">
-                      {Number(item.amount).toFixed(2)} Rs
-                    </td>
-                    
-                  </tr>
-                ))}
+              <tr key={index}>
+                <td className="border border-gray-200 px-4 py-1">
+                  {index + 1}
+                </td>
+                <td className="border border-gray-200 px-4 py-1">
+                  {item.item}
+                </td>
+                <td className="border border-gray-200 px-4 py-1">{item.qty}</td>
+                <td className="border border-gray-200 px-4 py-1">
+                  {item.unit}
+                </td>
+                <td className="border border-gray-200 px-4 py-1">
+                  {item.pricePerUnit} Rs
+                </td>
+                <td className="border border-gray-200 px-4 py-1">{item.tax}</td>
+                <td className="border border-gray-200 px-4 py-1">
+                  {Number(item.amount).toFixed(2)} Rs
+                </td>
+              </tr>
+            ))}
           </tbody>
           <tfoot>
             <tr>
@@ -111,7 +111,7 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
                 Total Amount:
               </td>
               <td className="border border-gray-200 px-4 py-1">
-              {partyData?.totalAmount} Rs
+                {partyData?.totalAmount} Rs
               </td>
             </tr>
           </tfoot>
@@ -158,4 +158,3 @@ const [amount, setAmount] = useState(numberToWords(partyData?.totalAmount))
 };
 
 export default CreatePurchaseBills;
-

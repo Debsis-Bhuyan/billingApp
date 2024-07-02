@@ -12,7 +12,7 @@ const CreatePurchaseOrder = () => {
   const [purchaseOrders, setPurchaseOrders] = useState(purchaseData);
   const [orderDate, setOrderDate] = useState("");
   const [orderNo, setOrderNo] = useState(
-    Number(transctionData[transctionData.length - 1].number) + 1
+    Number(transctionData[transctionData.length - 1]?.number) + 1 ||1
   );
   const [addRow, setAddRow] = useState(false);
   const [dueDate, setDueDate] = useState("");
@@ -133,7 +133,7 @@ const CreatePurchaseOrder = () => {
     // setBalance(0);
     setPaymentType("Cash");
     setPaymentStatus("Paid");
-    setOrderNo(Number(transctionData[transctionData.length - 1].number) + 1);
+    setOrderNo(Number(transctionData[transctionData.length - 1]?.number) + 1 || 1);
     setPhoneNo("");
   };
 

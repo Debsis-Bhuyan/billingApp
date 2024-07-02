@@ -139,8 +139,7 @@ export const sendInvoicePdf = (email, res) => {
   //   mail options
   console.log(email);
   let mailOptions;
-  const filePath = "/billingData/invoice.pdf"; // Update the path to your PDF file
-  console.log(filePath);
+  
   fs.readFile("./billingData/invoice.pdf", function (err, data) {
     if (err) throw err;
     mailOptions = {

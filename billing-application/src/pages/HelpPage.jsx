@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
 import HelpDesk from "../components/HelpDesk";
+import { APP_URL } from "../utils";
 
 const HelpPage = () => {
   const [name, setName] = useState("");
@@ -15,7 +16,8 @@ const HelpPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // TODO feedback form
-    const url = "http://localhost:5000/api/utils/help";
+    
+    const url = `${APP_URL}/utils/help`;
     try {
       const response = await axios.post(url, {
         fullName: name,
